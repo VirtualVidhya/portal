@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import LottieAnimCanvas from "../components/LottieAnimCanvas.astro";
+
+const metadata = {
+  title:
+    "V.Vidhya - Your virtual path to knowledge | Computer Education for All in Surat",
+  description:
+    "Learn top computer courses at V.Vidhya in Surat. From programming to graphic design, boost your skills and indulge your creativity to do real work with the help of technology.",
+};
+---
+
+<BaseLayout
+  metadata={metadata}
+  includeLottieAnimScript={true}
+  navSection="home"
+>
+  <main class="flex flex-col items-center justify-center gap-3 w-full mb-24">
+    <section
+      class="flex flex-col items-center justify-center gap-3 mx-auto max-w-mdsm md:max-w-2xl lg:max-w-4xl 2xl:max-w-6xl"
+    >
+      <h2
+        class="text-center text-font-color-sec text-3xl md:text-5xl font-extrabold"
+      >
+        V.Vidhya Portal
+      </h2>
+
+      <img
+        src="/images/doodles/co-working.svg"
+        alt="an Illustration of a woman doing designing"
+        class="ind-course-illus"
+        decoding="async"
+      />
+    </section>
+  </main>
+</BaseLayout>
