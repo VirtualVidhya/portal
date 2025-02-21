@@ -1,0 +1,845 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FormArrow from "../components/FormArrow.astro";
+
+const metadata = {
+  title: "Application Form - V.Vidhya | For Best Computer Education in Surat",
+  description:
+    "Get in touch with V.Vidhya for the best computer education in Surat. Visit our institute, call us, or drop a message to learn more about offered courses.",
+};
+---
+
+<BaseLayout metadata={metadata} navSection="application-form">
+  <main class="my-20">
+    <section
+      class="flex flex-col items-center justify-center gap-3 mx-auto mb-24 max-w-mdsm md:max-w-2xl lg:max-w-4xl 2xl:max-w-6xl"
+    >
+      <h2
+        class="text-center text-font-color-sec text-3xl md:text-5xl font-extrabold"
+      >
+        Welcome
+      </h2>
+
+      <img
+        src="/images/doodles/people-doing-partnership.svg"
+        alt="an Illustration of a woman doing designing"
+        class="ind-course-illus"
+        decoding="async"
+      />
+    </section>
+
+    <div
+      class="mx-auto mb-24 w-full px-7 xs:px-0 xs:max-w-[420px] sm:max-w-lg md:max-w-2xl lg:max-w-4xl 2xl:max-w-5xl"
+    >
+      <h2 class="text-center contact-section-heading mt-3 mb-9">
+        Application Form
+      </h2>
+
+      <form
+        name="contact"
+        method="POST"
+        id="form"
+        action="/api/submit-contact-form"
+        class="flex flex-col items-center justify-center gap-20 mx-auto py-10 md:py-20 border-solid border-2 border-b-6 rounded-xl bg-navbar-color-pri"
+      >
+        <fieldset class="form-fieldset">
+          <legend class="app-form-legend">Personal Details</legend>
+
+          <div class="flex flex-col w-4/5">
+            <label class="form-label">Full Name *</label>
+
+            <div class="flex flex-col gap-[6px]">
+              <input
+                id="first-name"
+                name="first-name"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your first name"
+              />
+              <input
+                id="middle-name"
+                name="middle-name"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your middle name (i.e. father's or mother's name)"
+              />
+              <input
+                id="last-name"
+                name="last-name"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your last name (i.e. surname)"
+              />
+            </div>
+
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="age" class="form-label">Age *</label>
+            <input
+              id="age"
+              name="age"
+              class="form-fieldbox"
+              type="number"
+              placeholder="Enter your age"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="dob" class="form-label">Date of Birth *</label>
+            <input
+              id="dob"
+              name="dob"
+              class="form-fieldbox"
+              type="date"
+              placeholder="Enter your date of birth"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="relative flex flex-col w-4/5">
+            <label class="form-label">Gender *</label>
+            <select class="form-fieldbox" required>
+              <option value="" selected disabled>Select your gender</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+              <option value="other">Other</option>
+            </select>
+            <FormArrow />
+
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="relative flex flex-col w-4/5">
+            <label class="form-label">Employment Status *</label>
+            <select class="form-fieldbox" required>
+              <option value="" selected disabled
+                >Select your employment status</option
+              >
+              <option value="school-student">School Student</option>
+              <option value="college-student">College Student</option>
+              <option value="self-employed/business-owner"
+                >Self-Employed/Business Owner</option
+              >
+              <option value="employed">Employed (Part-Time/Full-Time)</option>
+              <option value="freelancer/contactor">Freelancer/Contractor</option
+              >
+              <option value="homemaker">Homemaker</option>
+              <option value="retired">Retired</option>
+              <option value="unemployed">Unemployed/Looking for work</option>
+            </select>
+            <FormArrow />
+
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="occupation" class="form-label">Occupation *</label>
+            <input
+              id="occupation"
+              name="occupation"
+              class="form-fieldbox"
+              type="text"
+              placeholder="Enter your occupation details (i.e. what type of work do you do for living)"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="w-4/5 hidden">
+            <label for="address" class="form-label">Address *</label>
+            <input
+              id="address"
+              name="address"
+              class="form-fieldbox"
+              type="text"
+              placeholder="Enter your address"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <!-- <div class="error text-font-color-red-dark"></div> -->
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label class="form-label">Passport Photo *</label>
+            <label for="photo" class="form-fieldbox file-upload-text"
+              >Upload your passport-sized photo (png/jpeg/jpg)</label
+            >
+            <input
+              id="photo"
+              name="photo"
+              class="hidden"
+              type="file"
+              accept="image/png, image/jpeg, image/jpg"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label class="form-label">Aadhar Card *</label>
+            <label for="aadhar" class="form-fieldbox file-upload-text"
+              >Upload your scanned copy of aadhar card (pdf)</label
+            >
+            <input
+              id="aadhar"
+              name="aadhar"
+              class="hidden"
+              type="file"
+              accept="pdf"
+              placeholder="Upload your scanned copy of AADHAR card (pdf)"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="form-fieldset">
+          <legend class="app-form-legend">Parent/Guardian's Details</legend>
+
+          <div class="flex flex-col w-4/5">
+            <label class="form-label">Parent/Guardian's Full Name *</label>
+
+            <div class="flex flex-col gap-[6px]">
+              <input
+                id="parent-first-name"
+                name="parent-first-name"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your parent's first name"
+              />
+              <input
+                id="parent-middle-name"
+                name="parent-middle-name"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your parent's middle name (i.e. their father's or mother's name)"
+              />
+              <input
+                id="parent-last-name"
+                name="parent-last-name"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your parent's last name (i.e. surname)"
+              />
+            </div>
+
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="parent-occupation" class="form-label"
+              >Parent/Guardian's Occupation *</label
+            >
+            <input
+              id="parent-occupation"
+              name="parent-occupation"
+              class="form-fieldbox"
+              type="text"
+              placeholder="Enter your parent's occupation (i.e. what type of work do they do for living)"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="form-fieldset">
+          <legend class="app-form-legend">Contact Details</legend>
+
+          <div class="flex flex-col w-4/5">
+            <label for="contact-no" class="form-label">Mobile Number *</label>
+            <input
+              id="contact-no"
+              name="contact-no"
+              class="form-fieldbox"
+              type="tel"
+              placeholder="Enter your contact number"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="email" class="form-label">Email ID *</label>
+            <input
+              id="email"
+              name="email"
+              class="form-fieldbox"
+              type="text"
+              placeholder="Enter your email address"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="parent-contact-no" class="form-label"
+              >Parent's Mobile Number</label
+            >
+            <input
+              id="parent-contact-no"
+              name="parentcontact-no"
+              class="form-fieldbox"
+              type="tel"
+              placeholder="Enter your parent's contact number"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label class="form-label">Current Address *</label>
+
+            <div class="flex flex-col gap-[6px]">
+              <input
+                id="curr-add-line1"
+                name="curr-add-line1"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your apt, suite etc. info"
+              />
+              <input
+                id="curr-add-line2"
+                name="curr-add-line2"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your street address"
+              />
+              <input
+                id="curr-city"
+                name="curr-city"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your city"
+              />
+              <input
+                id="curr-state"
+                name="curr-state"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your state"
+              />
+              <input
+                id="curr-pincode"
+                name="curr-pincode"
+                class="form-fieldbox"
+                type="number"
+                placeholder="Enter your pin-code"
+              />
+            </div>
+
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label class="form-label">Permanent Address</label>
+
+            <div class="flex flex-col gap-[6px]">
+              <input
+                id="per-add-line1"
+                name="per-add-line1"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your apt, suite etc. info"
+              />
+              <input
+                id="per-add-line2"
+                name="per-add-line2"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your street address"
+              />
+              <input
+                id="per-city"
+                name="per-city"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your city"
+              />
+              <input
+                id="per-state"
+                name="per-state"
+                class="form-fieldbox"
+                type="text"
+                placeholder="Enter your state"
+              />
+              <input
+                id="per-pincode"
+                name="per-pincode"
+                class="form-fieldbox"
+                type="number"
+                placeholder="Enter your pin-code"
+              />
+            </div>
+
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <!-- <textarea
+            class="w-4/5 form-fieldbox"
+            id="current-address"
+            name="current-address"
+            placeholder="Enter your current address"
+            cols="30"
+            rows="5"
+            resize="vertical"></textarea> -->
+        </fieldset>
+
+        <fieldset class="form-fieldset">
+          <legend class="app-form-legend">Course Details</legend>
+
+          <div class="relative flex flex-col w-4/5">
+            <label for="course" class="form-label">Course Name *</label>
+            <input
+              id="course"
+              name="course"
+              class="form-fieldbox no-datalist-arrow"
+              type="text"
+              placeholder="Enter your course name"
+              list="course-list"
+            />
+            <FormArrow />
+            <datalist id="course-list">
+              <option value="Graphics Design">Graphics Design</option>
+              <option value="Video Editing">Video Editing</option>
+              <option value="Digital Textile Design">
+                Digital Textile Design
+              </option>
+              <option value="Interior Design">Interior Design</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Jewellery Design">Jewellery Design</option>
+              <option value="Adobe Photoshop">Adobe Photoshop</option>
+              <option value="Adobe Illustrator">Adobe Illustrator</option>
+              <option value="Adobe After Effects">Adobe After Effects</option>
+              <option value="Adobe Premier Pro">Adobe Premier Pro</option>
+              <option value="Corel Draw">Corel Draw</option>
+              <option value="Figma">Figma</option>
+
+              <option value="Game Development">Game Development</option>
+              <option value="Full-stack Web-Development">
+                Full-stack Web-Development
+              </option>
+              <option value="Front-end Web-Development">
+                Front-end Web-Development
+              </option>
+              <option value="Back-end Web-Development">
+                Back-end Web-Development
+              </option>
+              <option value="Fundamentals of Computer Application">
+                Fundamentals of Computer Application
+              </option>
+              <option value="C++ Programming">C++ Programming</option>
+              <option value="C Programming">C Programming</option>
+              <option value="Python Programming">Python Programming</option>
+              <option value="Java Programming">Java Programming</option>
+
+              <option value="Scratch Programming">Scratch Programming</option>
+              <option value="MS Office">MS Office</option>
+
+              <option value="Desktop Publishing (DTP)">
+                Desktop Publishing (DTP)
+              </option>
+              <option value="Accounting">Accounting</option>
+              <option value="Digital Marketing">Digital Marketing</option>
+              <option value="Advance Excel">Advance Excel</option>
+            </datalist>
+
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="relative flex flex-col w-4/5">
+            <label for="academic-qual" class="form-label"
+              >Academic Qualification *</label
+            >
+            <input
+              id="academic-qual"
+              name="academic-qual"
+              class="form-fieldbox no-datalist-arrow"
+              type="text"
+              placeholder="Enter your academic qualification"
+              list="academic-qual-list"
+            />
+            <FormArrow />
+            <datalist id="academic-qual-list">
+              <option value="Primary Schooling">Primary Schooling</option>
+              <option value="High-school">High-school</option>
+              <option value="BCA">BCA</option>
+            </datalist>
+
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="comp-proficiency" class="form-label"
+              >Computer Proficiency</label
+            >
+            <input
+              id="comp-proficiency"
+              name="comp-proficiency"
+              class="form-fieldbox"
+              type="text"
+              placeholder="Enter your computer efficiency level"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="rel-skills" class="form-label"
+              >Skills Relevant to the Course</label
+            >
+            <input
+              id="rel-skills"
+              name="rel-skills"
+              class="form-fieldbox"
+              type="text"
+              placeholder="Enter the skills you've which are relevant to your course"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="prev-training" class="form-label"
+              >Prev. Training related to the similar course</label
+            >
+            <input
+              id="prev-training"
+              name="prev-training"
+              class="form-fieldbox"
+              type="text"
+              placeholder="Enter the details about any previous training you've had related to the similar course"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+        </fieldset>
+
+        <!-- <fieldset class="form-fieldset">
+          <legend class="app-form-legend">Payment Details</legend>
+
+          <div class="relative flex flex-col w-4/5">
+            <label for="course" class="form-label">Course Name *</label>
+            <input
+              id="course"
+              name="course"
+              class="form-fieldbox no-datalist-arrow"
+              type="text"
+              placeholder="Enter your course name"
+              list="course-list"
+            />
+            <FormArrow />
+            <datalist id="course-list">
+              <option value="Graphics Design">Graphics Design</option>
+              <option value="Video Editing">Video Editing</option>
+              <option value="Digital Textile Design">
+                Digital Textile Design
+              </option>
+              <option value="Interior Design">Interior Design</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Jewellery Design">Jewellery Design</option>
+              <option value="Adobe Photoshop">Adobe Photoshop</option>
+              <option value="Adobe Illustrator">Adobe Illustrator</option>
+              <option value="Adobe After Effects">Adobe After Effects</option>
+              <option value="Adobe Premier Pro">Adobe Premier Pro</option>
+              <option value="Corel Draw">Corel Draw</option>
+              <option value="Figma">Figma</option>
+
+              <option value="Game Development">Game Development</option>
+              <option value="Full-stack Web-Development">
+                Full-stack Web-Development
+              </option>
+              <option value="Front-end Web-Development">
+                Front-end Web-Development
+              </option>
+              <option value="Back-end Web-Development">
+                Back-end Web-Development
+              </option>
+              <option value="Fundamentals of Computer Application">
+                Fundamentals of Computer Application
+              </option>
+              <option value="C++ Programming">C++ Programming</option>
+              <option value="C Programming">C Programming</option>
+              <option value="Python Programming">Python Programming</option>
+              <option value="Java Programming">Java Programming</option>
+
+              <option value="Scratch Programming">Scratch Programming</option>
+              <option value="MS Office">MS Office</option>
+
+              <option value="Desktop Publishing (DTP)">
+                Desktop Publishing (DTP)
+              </option>
+              <option value="Accounting">Accounting</option>
+              <option value="Digital Marketing">Digital Marketing</option>
+              <option value="Advance Excel">Advance Excel</option>
+            </datalist>
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="relative flex flex-col w-4/5">
+            <label for="academic-qual" class="form-label">Academic Qualification</label>
+            <input
+              id="academic-qual"
+              name="academic-qual"
+              class="form-fieldbox no-datalist-arrow"
+              type="text"
+              placeholder="Enter your academic qualification"
+              list="academic-qual-list"
+            />
+            <FormArrow />
+            <datalist id="academic-qual-list">
+              <option value="Primary Schooling">Primary Schooling</option>
+              <option value="High-school">High-school</option>
+              <option value="BCA">BCA</option>
+            </datalist>
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="comp-proficiency" class="form-label">Computer Proficiency</label>
+            <input
+              id="comp-proficiency"
+              name="comp-proficiency"
+              class="form-fieldbox"
+              type="text"
+              placeholder="Enter your computer efficiency level"
+            />
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="rel-skills" class="form-label">Skills Relevant to the Course</label>
+            <input
+              id="rel-skills"
+              name="rel-skills"
+              class="form-fieldbox"
+              type="text"
+              placeholder="Enter the skills you've which are relevant to your course"
+            />
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="prev-training" class="form-label">Prev. Training related to the similar course</label>
+            <input
+              id="prev-training"
+              name="prev-training"
+              class="form-fieldbox"
+              type="text"
+              placeholder="Enter the details about any previous training you've had related to the similar course"
+            />
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="" class="form-label">Successful Payment Proof *</label>
+            <label for="payment-ss" class="form-fieldbox file-upload-text"
+              >Upload the screenshot of a successful payment with bank & transaction details clearly visible (png/jpeg/jpg)</label
+            >
+            <input
+              id="payment-ss"
+              name="payment-ss"
+              class="hidden"
+              type="file"
+              accept="image/png, image/jpeg, image/jpg"
+              placeholder="Upload the screenshot of a successful payment with bank & transaction details clearly visible (png/jpeg/jpg)"
+            />
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+        </fieldset> -->
+
+        <fieldset class="form-fieldset">
+          <legend class="app-form-legend">Agreement Details</legend>
+
+          <div class="flex flex-col w-4/5">
+            <label for="parent-occupation" class="form-label"
+              >Have you submitted the following documents? *<br />
+            </label>
+
+            <div class="flex flex-col gap-[6px]">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="documents"
+                  value="passport-photo-doc"
+                  class="w-4 h-4"
+                />
+                2 passport sized colour photos with white background
+              </label>
+
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="documents"
+                  value="identity-proof-doc"
+                  class="w-4 h-4"
+                />
+                Identity Proof
+              </label>
+
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="documents"
+                  value="address-proof-doc"
+                  class="w-4 h-4"
+                />
+                Address Proof
+              </label>
+
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="documents"
+                  value="academic-certificates-doc"
+                  class="w-4 h-4"
+                />
+                Academic Certificates
+              </label>
+            </div>
+
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label for="parent-occupation" class="form-label"
+              >Have you read the terms & conditions carefully? *<br />
+              <span class="text-base font-normal"
+                >(Read them <a
+                  href="https://www.vvidhya.com/terms-&-conditions/"
+                  class="font-semibold link-interaction-effect"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Terms & Conditions">here</a
+                >. By submitting your application, you agree to abide by the
+                rules & regulations.)</span
+              >
+            </label>
+            <div class="flex items-center gap-4">
+              <label class="flex items-center gap-1 cursor-pointer">
+                <input
+                  type="radio"
+                  name="read-tnc"
+                  value="yes"
+                  class="w-4 h-4"
+                  required
+                />
+                Yes
+              </label>
+
+              <label class="flex items-center gap-1 cursor-pointer">
+                <input
+                  type="radio"
+                  name="read-tnc"
+                  value="no"
+                  class="w-4 h-4"
+                />
+                No
+              </label>
+            </div>
+
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="form-fieldset">
+          <legend class="app-form-legend">Extra Details</legend>
+
+          <div class="flex flex-col w-4/5">
+            <label for="reference" class="form-label"
+              >How did you hear about us?</label
+            >
+            <textarea
+              class="w-full form-fieldbox"
+              id="reference"
+              name="reference"
+              placeholder="Tell us about how did you come to know about us"
+              cols="30"
+              rows="5"
+              resize="vertical"></textarea>
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+        </fieldset>
+
+        <button
+          id="submit"
+          class="form-submit-btn"
+          type="submit"
+          aria-label="Submit Form"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+
+    <div
+      id="form-success-msg"
+      class="hidden flex-col items-center justify-center gap-3 mx-auto mb-24 max-w-mdsm md:max-w-2xl lg:max-w-4xl"
+    >
+      <!-- <i class="fa-solid fa-circle-check text-font-color-sec text-5xl"></i> -->
+      <div class="text-font-color-green text-5xl">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+          class="util-icon"
+          fill="currentColor"
+          stroke="currentColor"
+          stroke-width="5"
+        >
+          <path
+            d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"
+          ></path></svg
+        >
+      </div>
+      <h2 class="text-font-color-sec text-3xl md:text-5xl font-extrabold mb-3">
+        Thank you!
+      </h2>
+      <p class="text-lg text-center">
+        Your response has been submitted successfully.
+      </p>
+      <p class="font-bold text-center">Our team will contact you soon.</p>
+    </div>
+  </main>
+
+  <slot slot="specific-scripts-slot">
+    <script src="../scripts/specific/contact-form-validation.js"></script>
+  </slot>
+</BaseLayout>

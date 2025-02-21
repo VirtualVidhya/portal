@@ -1,0 +1,44 @@
+---
+interface Props {
+  animData: {
+    id: string;
+    path: string;
+    img: string;
+  };
+}
+
+const { animData } = Astro.props;
+---
+
+<!-- <canvas
+  id={animData.id}
+  class="w-full sm:w-2/5 aspect-square order-2 mt-4 sm:mt-0"
+  data-lottie={animData.path}
+  data-loaded="false"
+>
+  <img
+    src={animData.img}
+    alt="Loading animation..."
+    class="lottie-placeholder"
+  />
+</canvas> -->
+<div
+  class="lottie-container relative w-full sm:w-2/5 aspect-square order-2 mt-4 sm:mt-0"
+>
+  <!-- Static Image (Placeholder) -->
+  <img
+    src={animData.img}
+    alt="Loading animation..."
+    class="lottie-placeholder absolute inset-0 w-full h-full object-contain"
+    decoding="async"
+    loading="lazy"
+  />
+
+  <!-- Lottie Animation Canvas -->
+  <canvas
+    id={animData.id}
+    class="w-full h-full"
+    data-lottie={animData.path}
+    data-loaded="false"
+    data-enabled="false"></canvas>
+</div>

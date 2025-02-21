@@ -1,0 +1,15 @@
+name: Deploy Worker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # - name: Trigger Cloudflare Deployment Webhook
+      #   run: curl -s -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/${TOKEN}"
+      #   env:
+      #     TOKEN: ${{ secrets.CLOUDFLARE_BUILD_HOOK_TOKEN }}

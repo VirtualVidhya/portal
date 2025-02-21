@@ -1,0 +1,38 @@
+---
+import Head from "../components/Head.astro";
+import ScrollUpBtn from "../components/Scroll-Up-Btn.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  metadata: {
+    title: string;
+    description: string;
+  };
+  includeLottieAnimScript?: boolean;
+  navSection: string;
+}
+
+const metadata = Astro.props.metadata;
+const includeLottieAnimScript = Astro.props.includeLottieAnimScript ?? false;
+const navSection = Astro.props.navSection ?? "none";
+---
+
+<!doctype html>
+<html lang="en">
+  <Head metadata={metadata} includeLottieAnimScript={includeLottieAnimScript} />
+
+  <body
+    class="bg-mainbg-color text-font-color-pri font-notosans flex flex-col min-h-screen"
+  >
+    <ScrollUpBtn />
+
+    <Header navSection={navSection} />
+
+    <slot />
+
+    <Footer />
+
+    <slot name="specific-scripts-slot" />
+  </body>
+</html>

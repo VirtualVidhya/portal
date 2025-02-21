@@ -1,0 +1,59 @@
+---
+interface Props {
+  courseCardDetails: {
+    refLink: string;
+    icon: string;
+    lazyLoadIconImg: boolean;
+    name: string;
+    description: string;
+    duration: string;
+  };
+}
+
+const {
+  courseCardDetails = {
+    refLink: "#",
+    icon: "",
+    lazyLoadIconImg: false,
+    name: "Course Name",
+    description: "Course Description",
+    duration: "2-3",
+  },
+} = Astro.props;
+---
+
+<a href={courseCardDetails.refLink} class="course-card">
+  <img
+    class="course-card-image"
+    src={courseCardDetails.icon}
+    alt="course-logo"
+    decoding="async"
+    loading={courseCardDetails.refLink ? "lazy" : undefined}
+  />
+  <h4 class="course-card-heading" style="white-space: pre-wrap;">
+    {courseCardDetails.name}
+  </h4>
+  <!-- <hr class="course-card-border" /> -->
+  <p class="course-card-desc">
+    {courseCardDetails.description}
+  </p>
+  <div class="course-card-duration">
+    <!-- <i class="fa-regular fa-clock"></i> -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512"
+      class="util-icon"
+      fill="currentColor"
+      stroke="currentColor"
+      stroke-width="5"
+    >
+      <path
+        d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
+      ></path></svg
+    >
+    <p>{courseCardDetails.duration} months</p>
+  </div>
+  <div class="course-card-tags-container">
+    <slot name="course-tool-tags-slot" />
+  </div>
+</a>

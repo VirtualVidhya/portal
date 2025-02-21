@@ -1,0 +1,117 @@
+---
+import "/src/styles/global.css";
+// import "/src/styles/fontawesome.min.css";
+
+interface Props {
+  metadata: {
+    title: string;
+    description: string;
+  };
+  includeLottieAnimScript: boolean;
+}
+
+const metadata = Astro.props.metadata;
+const includeLottieAnimScript = Astro.props.includeLottieAnimScript ?? false;
+---
+
+<head>
+  <!-- #Pragma Directives# -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- #Title# -->
+  <title>{metadata.title}</title>
+
+  <!-- SiteMap -->
+  <link rel="sitemap" href="/sitemap-index.xml" />
+
+  <!-- Meta-Data -->
+  <meta name="description" content={metadata.description} />
+  <meta property="og:title" content={metadata.title} />
+  <meta property="og:description" content={metadata.description} />
+  <meta name="twitter:title" content={metadata.title} />
+  <meta name="twitter:description" content={metadata.description} />
+
+  <!-- #Preconnect Hints# -->
+
+  <!-- #Asynchronous Scripts# -->
+
+  <!-- #Import Styles# -->
+
+  <!-- #Synchronous Scripts# -->
+
+  <!-- #Synchronous Styles# -->
+  <!-- <link href="/styles/input.css" rel="stylesheet" /> -->
+  <!-- font-awesome icons -->
+  <!-- <link
+    rel="stylesheet"
+    href="/styles/fontawesome.min.css"
+    media="print"
+    onload="this.media='all'"
+  /> -->
+
+  <!-- #Preload Hints# -->
+  <!-- Preloaded locally hosted necessary fonts -->
+  <link
+    rel="preload"
+    href="/fonts/noto-sans-v37-latin-regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/noto-sans-v37-latin-800.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+  <!-- lotti-anim-loader-script -->
+  {
+    includeLottieAnimScript && (
+      <>
+        {/* <link
+          rel="preload"
+          as="script"
+          href="https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-web/+esm"
+        /> */}
+
+        <script src="../scripts/specific/lottie-anim.js" />
+      </>
+    )
+  }
+
+  <!-- #Deferred Scripts# -->
+
+  <!-- #Prefetch and Prerender Hints# -->
+
+  <!-- #Everything Else# -->
+  <!-- favicons -->
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="/favicons/apple-touch-icon.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="/favicons/favicon-32x32.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="16x16"
+    href="/favicons/favicon-16x16.png"
+  />
+  <link rel="manifest" href="/favicons/site.webmanifest" />
+  <link
+    rel="mask-icon"
+    href="/favicons/safari-pinned-tab.svg"
+    color="#000000"
+  />
+  <link rel="shortcut icon" href="/favicons/favicon.ico" />
+  <meta name="msapplication-TileColor" content="#ffffff" />
+  <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff" />
+</head>

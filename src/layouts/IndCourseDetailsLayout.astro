@@ -1,0 +1,193 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  metadata: {
+    title: string;
+    description: string;
+  };
+  navSection: string;
+
+  courseDetails: {
+    name: string;
+    duration: string;
+    image: string;
+    imgAlt: string;
+    overview: string;
+  };
+}
+
+const { metadata, navSection, courseDetails } = Astro.props;
+---
+
+<BaseLayout metadata={metadata} navSection={navSection}>
+  <main class="ind-course-main-section">
+    <section class="ind-course-header-section">
+      <h2 class="ind-course-heading">{courseDetails.name}</h2>
+
+      <button class="enroll-btn" aria-label="Enroll Now">
+        <a href="/contact/">Enroll Now</a>
+      </button>
+
+      <div class="ind-course-duration">
+        <!-- <i class="fa-regular fa-clock"></i> -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+          class="util-icon"
+          fill="currentColor"
+          stroke="currentColor"
+          stroke-width="10"
+        >
+          <path
+            d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
+          ></path></svg
+        >
+        <p>{courseDetails.duration} months</p>
+      </div>
+
+      <img
+        src={courseDetails.image}
+        alt={courseDetails.imgAlt}
+        class="ind-course-illus"
+        decoding="async"
+      />
+    </section>
+
+    <!-- Overview -->
+    <section class="ind-course-overview-section">
+      <h4 class="ind-course-section-heading">Overview</h4>
+      <p class="text-left">
+        {courseDetails.overview}
+      </p>
+    </section>
+
+    <!-- Curriculum -->
+    <section class="ind-course-curriculum-section">
+      <h4 class="ind-course-section-heading">Course Curriculum</h4>
+
+      <ul class="list-outside list-none mx-auto">
+        <slot name="course-curriculum-slot" />
+      </ul>
+    </section>
+
+    <!-- Course Work -->
+    <!-- <section class="text-center mb-24">
+      <h4
+        class="text-font-color-sec text-xl md:text-3xl font-extrabold mt-3 mb-5"
+      >
+        Course Work
+      </h4>
+      <iframe
+        class="w-80 h-80 md:w-152 md:h-96 mx-auto border-2 aspect-w-16 aspect-h-9"
+        src="https://www.youtube.com/embed/mal0ApRKU58"
+        title="Crimson Tactics: The Rise of The White Banner - RELEASE GAMEPLAY TRAILER"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    </section> -->
+
+    <!-- Related Courses -->
+    <!-- <section class="text-center mb-24">
+      <h4
+        class="text-font-color-sec text-xl md:text-3xl font-extrabold mt-3 mb-5"
+      >
+        Related Courses
+      </h4>
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mx-auto"
+      >
+        <a
+          href="/courses/programming/game-development.html"
+          class="flex flex-col items-center justify-center gap-2 h-auto rounded-xl bg-navbar-color-pri p-5 border-2 border-b-6 border-color-border-pri hover:border-font-color-pri"
+        >
+          <img
+            class="w-32 h-auto"
+            src="../images/unity-icon.png"
+            alt="course-logo"
+          />
+          <h4
+            class="text-center font-extrabold text-2xl mb-3 text-font-color-sec"
+          >
+            Game Development
+          </h4>
+          <p class="text-center mb-2">
+            Make cool 2D & 3D games using Unity game engine & C#...
+          </p>
+          <div class="flex flex-row items-center justify-center gap-2">
+            <i class="fa-regular fa-clock"></i>
+            <p>7-12 months</p>
+          </div>
+          <div class="flex flex-row flex-wrap gap-3">
+            <div class="bg-font-color-blue py-1 px-2 rounded-md">Unity</div>
+            <div class="bg-font-color-blue py-1 px-2 rounded-md">C#</div>
+          </div>
+        </a>
+
+        <a
+          href="web-design.html"
+          class="flex flex-col items-center justify-center gap-2 h-auto rounded-xl bg-navbar-color-pri p-5 border-2 border-b-6 border-color-border-pri hover:border-font-color-pri"
+        >
+          <img
+            class="w-32 h-auto"
+            src="../images/html-icon.png"
+            alt="course-logo"
+          />
+          <h4
+            class="text-center font-extrabold text-2xl mb-3 text-font-color-sec"
+          >
+            Web Design
+          </h4>
+          <p class="text-center mb-2">
+            Make cool websites using HTML, CSS, JavaScript...
+          </p>
+          <div class="flex flex-row items-center justify-center gap-2">
+            <i class="fa-regular fa-clock"></i>
+            <p>5-8 months</p>
+          </div>
+          <div class="flex flex-row flex-wrap gap-3">
+            <div class="bg-font-color-blue py-1 px-2 rounded-md">HTML5</div>
+            <div class="bg-font-color-blue py-1 px-2 rounded-md">CSS3</div>
+            <div class="bg-font-color-blue py-1 px-2 rounded-md">JS</div>
+          </div>
+        </a>
+
+        <a
+          href="#"
+          class="flex flex-col items-center justify-center gap-2 h-auto rounded-xl bg-navbar-color-pri p-5 border-2 border-b-6 border-color-border-pri hover:border-font-color-pri"
+        >
+          <img
+            class="w-32 h-auto"
+            src="../images/graphicdesign-icon.png"
+            alt="course-logo"
+          />
+          <h4
+            class="text-center font-extrabold text-2xl mb-3 text-font-color-sec"
+          >
+            Graphics Design
+          </h4>
+          <p class="text-center mb-2">
+            Make cool designs using CorelDraw, Photoshop, Illustrator...
+          </p>
+          <div class="flex flex-row items-center justify-center gap-2">
+            <i class="fa-regular fa-clock"></i>
+            <p>5-8 months</p>
+          </div>
+          <div class="flex flex-row flex-wrap gap-3">
+            <div class="bg-font-color-blue py-1 px-2 rounded-md">
+              Photoshop
+            </div>
+            <div class="bg-font-color-blue py-1 px-2 rounded-md">
+              CorelDraw
+            </div>
+            <div class="bg-font-color-blue py-1 px-2 rounded-md">
+              Illustrator
+            </div>
+          </div>
+        </a>
+      </div>
+    </section> -->
+  </main>
+</BaseLayout>
