@@ -564,7 +564,7 @@
 
   /* CONTACT */
   .contact-section-heading {
-    @apply text-font-color-green text-2xl md:text-4xl font-extrabold mb-3;
+    @apply text-font-color-green text-[28px] md:text-4xl font-extrabold mb-3;
   }
 
   .form-submit-btn {
@@ -587,11 +587,11 @@
   }
 
   .app-form-legend {
-    @apply text-center text-font-color-green text-xl md:text-3xl font-extrabold mb-3 md:mb-5;
+    @apply text-center text-font-color-green text-xl md:text-3xl font-extrabold mb-4 md:mb-6;
   }
 
   .form-label {
-    @apply font-semibold text-xl mb-1;
+    @apply font-semibold text-base md:text-lg mb-1;
   }
 
   input[type="date"]::-webkit-datetime-edit-day-field,
