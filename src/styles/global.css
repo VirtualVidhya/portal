@@ -577,7 +577,7 @@
   }
 
   .form-fieldbox {
-    @apply transition-all bg-mainbg-color p-3 border-solid border-1 focus:outline-1 focus:outline-font-color-pri border-color-border-pri focus:border-font-color-pri active:border-font-color-pri rounded-lg;
+    @apply transition-all w-full bg-mainbg-color p-3 border-solid border-1 focus:outline-1 focus:outline-font-color-pri border-color-border-pri focus:border-font-color-pri active:border-font-color-pri rounded-lg;
   }
 
   /* APPLICATION FORM */
@@ -637,5 +637,9 @@
 
   .file-upload-text {
     @apply text-color-border-pri;
+  }
+
+  input[type="file"]::file-selector-button {
+    @apply w-full;
   }
 }

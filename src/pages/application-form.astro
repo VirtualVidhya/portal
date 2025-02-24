@@ -35,11 +35,17 @@ const metadata = {
         Application Form
       </h2>
 
-      <form
+      <!-- <form
         name="contact"
         method="POST"
         id="form"
         action="/api/submit-contact-form"
+        class="flex flex-col items-center justify-center gap-20 mx-auto py-10 md:py-20 border-solid border-2 border-b-6 rounded-xl bg-navbar-color-pri"
+      > -->
+      <form
+        name="contact"
+        method="POST"
+        id="form"
         class="flex flex-col items-center justify-center gap-20 mx-auto py-10 md:py-20 border-solid border-2 border-b-6 rounded-xl bg-navbar-color-pri"
       >
         <fieldset class="form-fieldset">
@@ -48,33 +54,43 @@ const metadata = {
           <div class="flex flex-col w-4/5">
             <label class="form-label">Full Name *</label>
 
-            <div class="flex flex-col gap-[6px]">
-              <input
-                id="first-name"
-                name="first-name"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your first name"
-              />
-              <input
-                id="middle-name"
-                name="middle-name"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your middle name (i.e. father's or mother's name)"
-              />
-              <input
-                id="last-name"
-                name="last-name"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your last name (i.e. surname)"
-              />
+            <div class="flex flex-col gap-3">
+              <div class="w-full">
+                <input
+                  id="first-name"
+                  name="first-name"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your first name"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
+
+              <div class="w-full">
+                <input
+                  id="middle-name"
+                  name="middle-name"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your middle name (i.e. father's or mother's name)"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
+
+              <div class="w-full">
+                <input
+                  id="last-name"
+                  name="last-name"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your last name (i.e. surname)"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
             </div>
 
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
-            <div class="error text-font-color-red-dark"></div>
           </div>
 
           <div class="flex flex-col w-4/5">
@@ -106,14 +122,16 @@ const metadata = {
           </div>
 
           <div class="relative flex flex-col w-4/5">
-            <label class="form-label">Gender *</label>
-            <select class="form-fieldbox" required>
-              <option value="" selected disabled>Select your gender</option>
-              <option value="female">Female</option>
-              <option value="male">Male</option>
-              <option value="other">Other</option>
-            </select>
-            <FormArrow />
+            <label for="gender" class="form-label">Gender *</label>
+            <div class="relative">
+              <select id="gender" name="gender" class="form-fieldbox" required>
+                <option value="" selected disabled>Select your gender</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="other">Other</option>
+              </select>
+              <FormArrow />
+            </div>
 
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
@@ -121,32 +139,50 @@ const metadata = {
           </div>
 
           <div class="relative flex flex-col w-4/5">
-            <label class="form-label">Employment Status *</label>
-            <select class="form-fieldbox" required>
-              <option value="" selected disabled
-                >Select your employment status</option
+            <label for="employment-status" class="form-label"
+              >Employment Status *</label
+            >
+
+            <div class="relative">
+              <select
+                id="employment-status"
+                name="employment-status"
+                class="form-fieldbox"
+                required
               >
-              <option value="school-student">School Student</option>
-              <option value="college-student">College Student</option>
-              <option value="self-employed/business-owner"
-                >Self-Employed/Business Owner</option
-              >
-              <option value="employed">Employed (Part-Time/Full-Time)</option>
-              <option value="freelancer/contactor">Freelancer/Contractor</option
-              >
-              <option value="homemaker">Homemaker</option>
-              <option value="retired">Retired</option>
-              <option value="unemployed">Unemployed/Looking for work</option>
-            </select>
-            <FormArrow />
+                <option value="" selected disabled
+                  >Select your employment status</option
+                >
+                <option value="school-student">School Student</option>
+                <option value="college-student">College Student</option>
+                <option value="self-employed/business-owner"
+                  >Self-Employed/Business Owner</option
+                >
+                <option value="employed">Employed (Part-Time/Full-Time)</option>
+                <option value="freelancer/contactor"
+                  >Freelancer/Contractor</option
+                >
+                <option value="unemployed">Unemployed/Looking for work</option>
+                <option value="homemaker">Homemaker</option>
+                <option value="retired">Retired</option>
+              </select>
+
+              <FormArrow />
+            </div>
 
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
             <div class="error text-font-color-red-dark"></div>
           </div>
 
-          <div class="flex flex-col w-4/5">
-            <label for="occupation" class="form-label">Occupation *</label>
+          <div
+            class="flex flex-col w-4/5"
+            id="occupation-field"
+            style="display: none;"
+          >
+            <label id="occupation-label" for="occupation" class="form-label"
+              >Occupation *</label
+            >
             <input
               id="occupation"
               name="occupation"
@@ -175,16 +211,21 @@ const metadata = {
 
           <div class="flex flex-col w-4/5">
             <label class="form-label">Passport Photo *</label>
-            <label for="photo" class="form-fieldbox file-upload-text"
-              >Upload your passport-sized photo (png/jpeg/jpg)</label
-            >
-            <input
-              id="photo"
-              name="photo"
-              class="hidden"
-              type="file"
-              accept="image/png, image/jpeg, image/jpg"
-            />
+            <div class="relative form-fieldbox" id="photo-field">
+              <label
+                id="photo-label"
+                for="photo"
+                class="absolute left-0 top-0 file-upload-text w-full p-3"
+                >Upload your passport-sized photo (png/jpeg/jpg)</label
+              >
+              <input
+                id="photo"
+                name="photo"
+                class="w-full bg-color-transparent opacity-0"
+                type="file"
+                accept="image/png, image/jpeg, image/jpg"
+              />
+            </div>
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
             <div class="error text-font-color-red-dark"></div>
@@ -192,17 +233,21 @@ const metadata = {
 
           <div class="flex flex-col w-4/5">
             <label class="form-label">Aadhar Card *</label>
-            <label for="aadhar" class="form-fieldbox file-upload-text"
-              >Upload your scanned copy of aadhar card (pdf)</label
-            >
-            <input
-              id="aadhar"
-              name="aadhar"
-              class="hidden"
-              type="file"
-              accept="pdf"
-              placeholder="Upload your scanned copy of AADHAR card (pdf)"
-            />
+            <div class="relative form-fieldbox" id="aadhar-field">
+              <label
+                id="aadhar-label"
+                for="aadhar"
+                class="absolute left-0 top-0 file-upload-text w-full p-3"
+                >Upload your scanned copy of aadhar card (pdf)</label
+              >
+              <input
+                id="aadhar"
+                name="aadhar"
+                class="w-full bg-color-transparent opacity-0"
+                type="file"
+                accept=".pdf"
+              />
+            </div>
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
             <div class="error text-font-color-red-dark"></div>
@@ -415,59 +460,61 @@ const metadata = {
 
           <div class="relative flex flex-col w-4/5">
             <label for="course" class="form-label">Course Name *</label>
-            <input
-              id="course"
-              name="course"
-              class="form-fieldbox no-datalist-arrow"
-              type="text"
-              placeholder="Enter your course name"
-              list="course-list"
-            />
-            <FormArrow />
-            <datalist id="course-list">
-              <option value="Graphics Design">Graphics Design</option>
-              <option value="Video Editing">Video Editing</option>
-              <option value="Digital Textile Design">
-                Digital Textile Design
-              </option>
-              <option value="Interior Design">Interior Design</option>
-              <option value="UI/UX Design">UI/UX Design</option>
-              <option value="Jewellery Design">Jewellery Design</option>
-              <option value="Adobe Photoshop">Adobe Photoshop</option>
-              <option value="Adobe Illustrator">Adobe Illustrator</option>
-              <option value="Adobe After Effects">Adobe After Effects</option>
-              <option value="Adobe Premier Pro">Adobe Premier Pro</option>
-              <option value="Corel Draw">Corel Draw</option>
-              <option value="Figma">Figma</option>
+            <div class="relative">
+              <input
+                id="course"
+                name="course"
+                class="form-fieldbox no-datalist-arrow"
+                type="text"
+                placeholder="Enter your course name"
+                list="course-list"
+              />
+              <FormArrow />
+              <datalist id="course-list">
+                <option value="Graphics Design">Graphics Design</option>
+                <option value="Video Editing">Video Editing</option>
+                <option value="Digital Textile Design">
+                  Digital Textile Design
+                </option>
+                <option value="Interior Design">Interior Design</option>
+                <option value="UI/UX Design">UI/UX Design</option>
+                <option value="Jewellery Design">Jewellery Design</option>
+                <option value="Adobe Photoshop">Adobe Photoshop</option>
+                <option value="Adobe Illustrator">Adobe Illustrator</option>
+                <option value="Adobe After Effects">Adobe After Effects</option>
+                <option value="Adobe Premier Pro">Adobe Premier Pro</option>
+                <option value="Corel Draw">Corel Draw</option>
+                <option value="Figma">Figma</option>
 
-              <option value="Game Development">Game Development</option>
-              <option value="Full-stack Web-Development">
-                Full-stack Web-Development
-              </option>
-              <option value="Front-end Web-Development">
-                Front-end Web-Development
-              </option>
-              <option value="Back-end Web-Development">
-                Back-end Web-Development
-              </option>
-              <option value="Fundamentals of Computer Application">
-                Fundamentals of Computer Application
-              </option>
-              <option value="C++ Programming">C++ Programming</option>
-              <option value="C Programming">C Programming</option>
-              <option value="Python Programming">Python Programming</option>
-              <option value="Java Programming">Java Programming</option>
+                <option value="Game Development">Game Development</option>
+                <option value="Full-stack Web-Development">
+                  Full-stack Web-Development
+                </option>
+                <option value="Front-end Web-Development">
+                  Front-end Web-Development
+                </option>
+                <option value="Back-end Web-Development">
+                  Back-end Web-Development
+                </option>
+                <option value="Fundamentals of Computer Application">
+                  Fundamentals of Computer Application
+                </option>
+                <option value="C++ Programming">C++ Programming</option>
+                <option value="C Programming">C Programming</option>
+                <option value="Python Programming">Python Programming</option>
+                <option value="Java Programming">Java Programming</option>
 
-              <option value="Scratch Programming">Scratch Programming</option>
-              <option value="MS Office">MS Office</option>
+                <option value="Scratch Programming">Scratch Programming</option>
+                <option value="MS Office">MS Office</option>
 
-              <option value="Desktop Publishing (DTP)">
-                Desktop Publishing (DTP)
-              </option>
-              <option value="Accounting">Accounting</option>
-              <option value="Digital Marketing">Digital Marketing</option>
-              <option value="Advance Excel">Advance Excel</option>
-            </datalist>
+                <option value="Desktop Publishing (DTP)">
+                  Desktop Publishing (DTP)
+                </option>
+                <option value="Accounting">Accounting</option>
+                <option value="Digital Marketing">Digital Marketing</option>
+                <option value="Advance Excel">Advance Excel</option>
+              </datalist>
+            </div>
 
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
@@ -478,20 +525,22 @@ const metadata = {
             <label for="academic-qual" class="form-label"
               >Academic Qualification *</label
             >
-            <input
-              id="academic-qual"
-              name="academic-qual"
-              class="form-fieldbox no-datalist-arrow"
-              type="text"
-              placeholder="Enter your academic qualification"
-              list="academic-qual-list"
-            />
-            <FormArrow />
-            <datalist id="academic-qual-list">
-              <option value="Primary Schooling">Primary Schooling</option>
-              <option value="High-school">High-school</option>
-              <option value="BCA">BCA</option>
-            </datalist>
+            <div class="relative">
+              <input
+                id="academic-qual"
+                name="academic-qual"
+                class="form-fieldbox no-datalist-arrow"
+                type="text"
+                placeholder="Enter your academic qualification"
+                list="academic-qual-list"
+              />
+              <FormArrow />
+              <datalist id="academic-qual-list">
+                <option value="Primary Schooling">Primary Schooling</option>
+                <option value="High-school">High-school</option>
+                <option value="BCA">BCA</option>
+              </datalist>
+            </div>
 
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
@@ -709,7 +758,7 @@ const metadata = {
                 Identity Proof
               </label>
 
-              <label class="flex items-center gap-2 cursor-pointer">
+              <!-- <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   name="documents"
@@ -717,7 +766,7 @@ const metadata = {
                   class="w-4 h-4"
                 />
                 Address Proof
-              </label>
+              </label> -->
 
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
@@ -769,6 +818,93 @@ const metadata = {
                   class="w-4 h-4"
                 />
                 No
+              </label>
+            </div>
+
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="form-fieldset">
+          <legend class="app-form-legend">Payment Details</legend>
+
+          <div class="flex flex-col w-4/5">
+            <label for="parent-occupation" class="form-label"
+              >Via which mode, are you going to pay the initial fees amount? *
+              <!-- <br />
+              <span class="text-base font-normal"
+                >(Read them <a
+                  href="https://www.vvidhya.com/terms-&-conditions/"
+                  class="font-semibold link-interaction-effect"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Terms & Conditions">here</a
+                >. By submitting your application, you agree to abide by the
+                rules & regulations.)</span
+              > -->
+            </label>
+            <div class="flex flex-col justify-center gap-[6px]">
+              <label class="flex items-center gap-1 cursor-pointer">
+                <input
+                  type="radio"
+                  name="read-tnc"
+                  value="no"
+                  class="w-4 h-4"
+                />
+                UPI (Google Pay, PhonePe, Paytm, etc.)
+              </label>
+
+              <label class="flex items-center gap-1 cursor-pointer">
+                <input
+                  type="radio"
+                  name="read-tnc"
+                  value="no"
+                  class="w-4 h-4"
+                />
+                Credit/Debit Card
+              </label>
+
+              <label class="flex items-center gap-1 cursor-pointer">
+                <input
+                  type="radio"
+                  name="read-tnc"
+                  value="no"
+                  class="w-4 h-4"
+                />
+                Net Banking
+              </label>
+
+              <label class="flex items-center gap-1 cursor-pointer">
+                <input
+                  type="radio"
+                  name="read-tnc"
+                  value="yes"
+                  class="w-4 h-4"
+                  required
+                />
+                Cash
+              </label>
+
+              <label class="flex items-center gap-1 cursor-pointer">
+                <input
+                  type="radio"
+                  name="read-tnc"
+                  value="no"
+                  class="w-4 h-4"
+                />
+                Bank Transfer (NEFT/IMPS/RTGS)
+              </label>
+
+              <label class="flex items-center gap-1 cursor-pointer">
+                <input
+                  type="radio"
+                  name="read-tnc"
+                  value="no"
+                  class="w-4 h-4"
+                />
+                Cheque/Demand Draft (DD)
               </label>
             </div>
 
