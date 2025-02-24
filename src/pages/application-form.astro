@@ -46,16 +46,20 @@ const metadata = {
         name="contact"
         method="POST"
         id="form"
+        autocomplete="off"
         class="flex flex-col items-center justify-center gap-20 mx-auto py-10 md:py-20 border-solid border-2 border-b-6 rounded-xl bg-navbar-color-pri"
       >
         <fieldset class="form-fieldset">
           <legend class="app-form-legend">Personal Details</legend>
 
           <div class="flex flex-col w-4/5">
-            <label class="form-label">Full Name *</label>
+            <label class="form-label"
+              >Full Name <span class="form-req-label">*</span></label
+            >
 
             <div class="flex flex-col gap-3">
               <div class="w-full">
+                <label class="form-sublabel">First Name</label>
                 <input
                   id="first-name"
                   name="first-name"
@@ -67,6 +71,7 @@ const metadata = {
               </div>
 
               <div class="w-full">
+                <label class="form-sublabel">Middle Name</label>
                 <input
                   id="middle-name"
                   name="middle-name"
@@ -78,6 +83,7 @@ const metadata = {
               </div>
 
               <div class="w-full">
+                <label class="form-sublabel">Last Name</label>
                 <input
                   id="last-name"
                   name="last-name"
@@ -94,7 +100,9 @@ const metadata = {
           </div>
 
           <div class="flex flex-col w-4/5">
-            <label for="age" class="form-label">Age *</label>
+            <label for="age" class="form-label"
+              >Age <span class="form-req-label">*</span></label
+            >
             <input
               id="age"
               name="age"
@@ -108,7 +116,9 @@ const metadata = {
           </div>
 
           <div class="flex flex-col w-4/5">
-            <label for="dob" class="form-label">Date of Birth *</label>
+            <label for="dob" class="form-label"
+              >Date of Birth <span class="form-req-label">*</span></label
+            >
             <input
               id="dob"
               name="dob"
@@ -122,7 +132,9 @@ const metadata = {
           </div>
 
           <div class="relative flex flex-col w-4/5">
-            <label for="gender" class="form-label">Gender *</label>
+            <label for="gender" class="form-label"
+              >Gender <span class="form-req-label">*</span></label
+            >
             <div class="relative">
               <select id="gender" name="gender" class="form-fieldbox" required>
                 <option value="" selected disabled>Select your gender</option>
@@ -140,7 +152,7 @@ const metadata = {
 
           <div class="relative flex flex-col w-4/5">
             <label for="employment-status" class="form-label"
-              >Employment Status *</label
+              >Employment Status <span class="form-req-label">*</span></label
             >
 
             <div class="relative">
@@ -210,7 +222,12 @@ const metadata = {
           </div>
 
           <div class="flex flex-col w-4/5">
-            <label class="form-label">Passport Photo *</label>
+            <label class="form-label"
+              >Passport Photo <span class="form-req-label">*</span><br /><span
+                class="text-base font-normal"
+                >(Allowed File Types: png/jpeg/jpg & File Size Limit: 20mb)</span
+              ></label
+            >
             <div class="relative form-fieldbox" id="photo-field">
               <label
                 id="photo-label"
@@ -232,7 +249,12 @@ const metadata = {
           </div>
 
           <div class="flex flex-col w-4/5">
-            <label class="form-label">Aadhar Card *</label>
+            <label class="form-label"
+              >Aadhar Card <span class="form-req-label">*</span><br /><span
+                class="text-base font-normal"
+                >(Allowed File Types: pdf & File Size Limit: 20mb)</span
+              ></label
+            >
             <div class="relative form-fieldbox" id="aadhar-field">
               <label
                 id="aadhar-label"
@@ -254,44 +276,51 @@ const metadata = {
           </div>
         </fieldset>
 
-        <fieldset class="form-fieldset">
+        <!-- <fieldset class="form-fieldset">
           <legend class="app-form-legend">Parent/Guardian's Details</legend>
 
           <div class="flex flex-col w-4/5">
-            <label class="form-label">Parent/Guardian's Full Name *</label>
+            <label class="form-label">Parent/Guardian's Full Name <span class="form-req-label">*</span></label>
 
-            <div class="flex flex-col gap-[6px]">
-              <input
-                id="parent-first-name"
-                name="parent-first-name"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your parent's first name"
-              />
-              <input
-                id="parent-middle-name"
-                name="parent-middle-name"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your parent's middle name (i.e. their father's or mother's name)"
-              />
-              <input
-                id="parent-last-name"
-                name="parent-last-name"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your parent's last name (i.e. surname)"
-              />
+            <div class="flex flex-col gap-3">
+              <div class="w-full">
+                <input
+                  id="parent-first-name"
+                  name="parent-first-name"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your parent's first name"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
+
+              <div class="w-full">
+                <input
+                  id="parent-middle-name"
+                  name="parent-middle-name"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your parent's middle name (i.e. their father's or mother's name)"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
+
+              <div class="w-full">
+                <input
+                  id="parent-last-name"
+                  name="parent-last-name"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your parent's last name (i.e. surname)"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
             </div>
-
-            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
-            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
-            <div class="error text-font-color-red-dark"></div>
           </div>
 
           <div class="flex flex-col w-4/5">
             <label for="parent-occupation" class="form-label"
-              >Parent/Guardian's Occupation *</label
+              >Parent/Guardian's Occupation <span class="form-req-label">*</span></label
             >
             <input
               id="parent-occupation"
@@ -300,17 +329,19 @@ const metadata = {
               type="text"
               placeholder="Enter your parent's occupation (i.e. what type of work do they do for living)"
             />
-            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
-            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
             <div class="error text-font-color-red-dark"></div>
           </div>
-        </fieldset>
+        </fieldset> -->
 
         <fieldset class="form-fieldset">
           <legend class="app-form-legend">Contact Details</legend>
 
           <div class="flex flex-col w-4/5">
-            <label for="contact-no" class="form-label">Mobile Number *</label>
+            <label for="contact-no" class="form-label"
+              >Mobile Number <span class="form-req-label">*</span><br /><span class="text-base font-normal"
+              >(If you're a school student without a mobile phone, enter your parent/guardian's number.)</span
+            ></label
+            >
             <input
               id="contact-no"
               name="contact-no"
@@ -324,7 +355,11 @@ const metadata = {
           </div>
 
           <div class="flex flex-col w-4/5">
-            <label for="email" class="form-label">Email ID *</label>
+            <label for="email" class="form-label"
+              >Email ID <span class="form-req-label">*</span><br /><span class="text-base font-normal"
+              >(If you're a school student without an email, enter your parent/guardian's email id.)</span
+            ></label
+            >
             <input
               id="email"
               name="email"
@@ -339,7 +374,11 @@ const metadata = {
 
           <div class="flex flex-col w-4/5">
             <label for="parent-contact-no" class="form-label"
-              >Parent's Mobile Number</label
+              >Emergency Contact Number<span
+                class="form-req-label">*</span
+              ><br /><span class="text-base font-normal"
+                >(Give your parent/guardian/spouse's mobile number here.)</span
+              ></label
             >
             <input
               id="parent-contact-no"
@@ -354,95 +393,135 @@ const metadata = {
           </div>
 
           <div class="flex flex-col w-4/5">
-            <label class="form-label">Current Address *</label>
+            <label class="form-label"
+              >Current Address <span class="form-req-label">*</span></label
+            >
 
             <div class="flex flex-col gap-[6px]">
-              <input
-                id="curr-add-line1"
-                name="curr-add-line1"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your apt, suite etc. info"
-              />
-              <input
-                id="curr-add-line2"
-                name="curr-add-line2"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your street address"
-              />
-              <input
-                id="curr-city"
-                name="curr-city"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your city"
-              />
-              <input
-                id="curr-state"
-                name="curr-state"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your state"
-              />
-              <input
-                id="curr-pincode"
-                name="curr-pincode"
-                class="form-fieldbox"
-                type="number"
-                placeholder="Enter your pin-code"
-              />
+              <div class="w-full">
+                <label class="form-sublabel">Apt, Suite etc. info</label>
+                <input
+                  id="curr-add-line1"
+                  name="curr-add-line1"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your apt, suite etc. info"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
+              <div class="w-full">
+                <label class="form-sublabel">Street</label>
+                <input
+                  id="curr-add-line2"
+                  name="curr-add-line2"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your street address"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
+              <div class="w-full">
+                <label class="form-sublabel">City</label>
+                <input
+                  id="curr-city"
+                  name="curr-city"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your city"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
+              <div class="w-full">
+                <label class="form-sublabel">State</label>
+                <input
+                  id="curr-state"
+                  name="curr-state"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your state"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
+              <div class="w-full">
+                <label class="form-sublabel">PIN Code</label>
+                <input
+                  id="curr-pincode"
+                  name="curr-pincode"
+                  class="form-fieldbox"
+                  type="number"
+                  placeholder="Enter your pin-code"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
             </div>
 
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
-            <div class="error text-font-color-red-dark"></div>
           </div>
 
           <div class="flex flex-col w-4/5">
             <label class="form-label">Permanent Address</label>
 
             <div class="flex flex-col gap-[6px]">
-              <input
-                id="per-add-line1"
-                name="per-add-line1"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your apt, suite etc. info"
-              />
-              <input
-                id="per-add-line2"
-                name="per-add-line2"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your street address"
-              />
-              <input
-                id="per-city"
-                name="per-city"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your city"
-              />
-              <input
-                id="per-state"
-                name="per-state"
-                class="form-fieldbox"
-                type="text"
-                placeholder="Enter your state"
-              />
-              <input
-                id="per-pincode"
-                name="per-pincode"
-                class="form-fieldbox"
-                type="number"
-                placeholder="Enter your pin-code"
-              />
+              <div class="w-full">
+                <label class="form-sublabel">Apt, Suite etc. info</label>
+                <input
+                  id="per-add-line1"
+                  name="per-add-line1"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your apt, suite etc. info"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
+              <div class="w-full">
+                <label class="form-sublabel">Street</label>
+                <input
+                  id="per-add-line2"
+                  name="per-add-line2"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your street address"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
+              <div class="w-full">
+                <label class="form-sublabel">City</label>
+                <input
+                  id="per-city"
+                  name="per-city"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your city"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
+              <div class="w-full">
+                <label class="form-sublabel">State</label>
+                <input
+                  id="per-state"
+                  name="per-state"
+                  class="form-fieldbox"
+                  type="text"
+                  placeholder="Enter your state"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
+              <div class="w-full">
+                <label class="form-sublabel">PIN Code</label>
+                <input
+                  id="per-pincode"
+                  name="per-pincode"
+                  class="form-fieldbox"
+                  type="number"
+                  placeholder="Enter your pin-code"
+                />
+                <div class="error text-font-color-red-dark"></div>
+              </div>
             </div>
 
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
-            <div class="error text-font-color-red-dark"></div>
           </div>
 
           <!-- <textarea
@@ -459,7 +538,9 @@ const metadata = {
           <legend class="app-form-legend">Course Details</legend>
 
           <div class="relative flex flex-col w-4/5">
-            <label for="course" class="form-label">Course Name *</label>
+            <label for="course" class="form-label"
+              >Course Name <span class="form-req-label">*</span></label
+            >
             <div class="relative">
               <input
                 id="course"
@@ -523,7 +604,8 @@ const metadata = {
 
           <div class="relative flex flex-col w-4/5">
             <label for="academic-qual" class="form-label"
-              >Academic Qualification *</label
+              >Academic Qualification <span class="form-req-label">*</span
+              ></label
             >
             <div class="relative">
               <input
@@ -733,11 +815,13 @@ const metadata = {
           <legend class="app-form-legend">Agreement Details</legend>
 
           <div class="flex flex-col w-4/5">
-            <label for="parent-occupation" class="form-label"
-              >Have you submitted the following documents? *<br />
+            <label for="documents" class="form-label"
+              >Have you submitted the following documents? <span
+                class="form-req-label">*</span
+              ><br />
             </label>
 
-            <div class="flex flex-col gap-[6px]">
+            <div class="flex flex-col gap-[6px]" id="documents">
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
@@ -785,8 +869,10 @@ const metadata = {
           </div>
 
           <div class="flex flex-col w-4/5">
-            <label for="parent-occupation" class="form-label"
-              >Have you read the terms & conditions carefully? *<br />
+            <label for="t&c" class="form-label"
+              >Have you read the terms & conditions carefully? <span
+                class="form-req-label">*</span
+              ><br />
               <span class="text-base font-normal"
                 >(Read them <a
                   href="https://www.vvidhya.com/terms-&-conditions/"
@@ -798,7 +884,7 @@ const metadata = {
                 rules & regulations.)</span
               >
             </label>
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4" id="t&c">
               <label class="flex items-center gap-1 cursor-pointer">
                 <input
                   type="radio"
@@ -831,21 +917,12 @@ const metadata = {
           <legend class="app-form-legend">Payment Details</legend>
 
           <div class="flex flex-col w-4/5">
-            <label for="parent-occupation" class="form-label"
-              >Via which mode, are you going to pay the initial fees amount? *
-              <!-- <br />
-              <span class="text-base font-normal"
-                >(Read them <a
-                  href="https://www.vvidhya.com/terms-&-conditions/"
-                  class="font-semibold link-interaction-effect"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Terms & Conditions">here</a
-                >. By submitting your application, you agree to abide by the
-                rules & regulations.)</span
-              > -->
+            <label for="payment-modes" class="form-label"
+              >Payment Mode <span class="form-req-label">*</span><br /><span
+                class="text-base font-normal">(For initial fees amount)</span
+              >
             </label>
-            <div class="flex flex-col justify-center gap-[6px]">
+            <div class="flex flex-col justify-center gap-[6px]" id="payment-modes">
               <label class="flex items-center gap-1 cursor-pointer">
                 <input
                   type="radio"
@@ -919,7 +996,8 @@ const metadata = {
 
           <div class="flex flex-col w-4/5">
             <label for="reference" class="form-label"
-              >How did you hear about us?</label
+              >How did you hear about us? <span class="form-req-label">*</span
+              ></label
             >
             <textarea
               class="w-full form-fieldbox"

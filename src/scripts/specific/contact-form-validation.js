@@ -27,35 +27,35 @@ const occupationInput = document.getElementById("occupation");
 const occupationLabel = document.getElementById("occupation-label");
 const occupationDetailsMap = {
   "school-student": {
-    label: "Standard and School Name *",
+    label: `Standard and School Name <span class="form-req-label">*</span>`,
     placeholder: "e.g., 10th Grade - XYZ School",
   },
   "college-student": {
-    label: "Course and College Name *",
+    label: `Course and College Name <span class="form-req-label">*</span>`,
     placeholder: "e.g., B.Sc. Computer Science - XYZ University",
   },
   "self-employed/business-owner": {
-    label: "Nature of Your Work *",
+    label: `Nature of Your Work <span class="form-req-label">*</span>`,
     placeholder: "e.g., Freelance Graphic Designer, Bakery Owner etc.",
   },
   employed: {
-    label: "Occupation and Company Name *",
+    label: `Occupation and Company Name <span class="form-req-label">*</span>`,
     placeholder: "e.g., Software Engineer - XYZ Corp.",
   },
   "freelancer/contactor": {
-    label: "Type of Freelancing Work *",
+    label: `Type of Freelancing Work <span class="form-req-label">*</span>`,
     placeholder: "e.g., Content Writing, Web Development, etc.",
   },
   unemployed: {
-    label: "Type of Work You're Seeking *",
+    label: `Type of Work You're Seeking <span class="form-req-label">*</span>`,
     placeholder: "e.g., Marketing, IT Support, Teaching, etc.",
   },
   homemaker: {
-    label: "Additional Work Details (If Any)",
+    label: `Additional Work Details (If Any)`,
     placeholder: "e.g., Volunteer work, Home business, etc.",
   },
   retired: {
-    label: "Previous Occupation",
+    label: `Previous Occupation`,
     placeholder: "e.g., Former Teacher, Retired Doctor, etc.",
   },
 };
@@ -68,9 +68,16 @@ const aadharInput = id("aadhar");
 const aadharLabel = id("aadhar-label");
 const aadharField = id("aadhar-field");
 
-let phone = id("phone");
-let email = id("email");
-let course = id("course");
+// const pfNameInput = id("parent-first-name");
+// const pmNameInput = id("parent-middle-name");
+// const plNameInput = id("parent-last-name");
+
+// const parentOccupationInput = id("parent-occupation");
+
+const contactNoInput = id("contact-no");
+const emailInput = id("email");
+const parentContactNoInput = id("parent-contact-no");
+// let course = id("course");
 
 let form = id("form");
 let errorMsg = classes("error");
@@ -110,7 +117,7 @@ empStatusInput.addEventListener("change", () => {
   clearInput(occupationInput);
 
   if (occupationDetailsMap[selectedValue]) {
-    occupationLabel.textContent = occupationDetailsMap[selectedValue].label;
+    occupationLabel.innerHTML = occupationDetailsMap[selectedValue].label;
     occupationInput.placeholder =
       occupationDetailsMap[selectedValue].placeholder;
     occupationInput.required = !["homemaker", "retired"].includes(
@@ -138,6 +145,29 @@ aadharInput.addEventListener("focusout", () => {
   check(aadharInput, 9, "Please upload your aadhar-card!");
 });
 
+// pfNameInput.addEventListener("blur", () =>
+//   check(pfNameInput, 10, "Parent's First-Name cannot be blank!")
+// );
+// pmNameInput.addEventListener("blur", () =>
+//   check(pmNameInput, 11, "Parent's Middle-Name cannot be blank!")
+// );
+// plNameInput.addEventListener("blur", () =>
+//   check(plNameInput, 12, "Parent's Last-Name cannot be blank!")
+// );
+// parentOccupationInput.addEventListener("blur", () =>
+//   check(parentOccupationInput, 13, "Parent's Occupation cannot be blank!")
+// );
+
+contactNoInput.addEventListener("blur", () =>
+  check(contactNoInput, 10, "Mobile Number cannot be blank!")
+);
+emailInput.addEventListener("blur", () =>
+  check(emailInput, 11, "Email cannot be blank!")
+);
+parentContactNoInput.addEventListener("blur", () =>
+  check(parentContactNoInput, 12, "Parent's Mobile Number cannot be blank!")
+);
+
 form.addEventListener("submit", (e) => {
   errorCount = 0;
 
@@ -153,6 +183,15 @@ form.addEventListener("submit", (e) => {
   }
   check(photoInput, 8, "Please upload your passport-photo!");
   check(aadharInput, 9, "Please upload your aadhar-card!");
+
+  // check(pfNameInput, 10, "Parent's First-Name cannot be blank!");
+  // check(pmNameInput, 11, "Parent's Middle-Name cannot be blank!");
+  // check(plNameInput, 12, "Parent's Last-Name cannot be blank!");
+  // check(parentOccupationInput, 13, "Parent's Occupation cannot be blank!");
+
+  check(contactNoInput, 10, "Mobile Number cannot be blank!");
+  check(emailInput, 11, "Email cannot be blank!");
+  check(parentContactNoInput, 12, "Parent's Mobile Number cannot be blank!");
 
   // check(phone, 1, "Phone number cannot be blank!");
   // check(email, 2, "Email cannot be blank!");
@@ -222,7 +261,10 @@ let check = (id, serial, message) => {
       case 0:
       case 1:
       case 2:
-        response = validateName(id);
+      // case 10:
+      // case 11:
+      // case 12:
+        response = validateName(id, serial);
         break;
       case 3:
         response = validateAge(id);
@@ -237,6 +279,7 @@ let check = (id, serial, message) => {
         response = validateEmpStatus(id);
         break;
       case 7:
+      case 13:
         response = validateOccupation(id);
         break;
       case 8:
@@ -245,10 +288,13 @@ let check = (id, serial, message) => {
       case 9:
         response = validateAadharCard(id);
         break;
-      // response = validatePhoneNo(id);
-      // break;
-      // response = validateEmail(id);
-      // break;
+      case 14:
+      case 16:
+        response = validateMobileNo(id);
+        break;
+      case 15:
+        response = validateEmail(id);
+        break;
       default:
         response = true;
         break;
@@ -256,24 +302,8 @@ let check = (id, serial, message) => {
 
     if (response == true) {
       showNoError(id, serial);
-
-      if (serial === 8) {
-        photoLabel.innerText = `${id.files[0].name}`;
-        photoLabel.classList.remove(`file-upload-text`);
-      } else if (serial === 9) {
-        aadharLabel.innerText = `${id.files[0].name}`;
-        aadharLabel.classList.remove(`file-upload-text`);
-      }
     } else {
       showError(id, serial, response);
-
-      if (serial === 8) {
-        photoLabel.innerText = `Upload your passport-sized photo (png/jpeg/jpg)`;
-        photoLabel.classList.add(`file-upload-text`);
-      } else if (serial === 9) {
-        aadharLabel.innerText = `Upload your passport-sized photo (png/jpeg/jpg)`;
-        aadharLabel.classList.add(`file-upload-text`);
-      }
     }
   }
 };
@@ -348,18 +378,24 @@ function showNoError(id, serial) {
   id.classList.add("border-font-color-green");
 }
 
-function validateName(id) {
+function validateName(id, serial) {
   const valueWithoutSpaces = id.value.replace(/\s/g, "");
 
   if (valueWithoutSpaces.length < 2) {
     let nameStr = "Name";
 
-    if (id == 0) {
+    if (serial === 0) {
       nameStr = "First-Name";
-    } else if (id == 1) {
+    } else if (serial === 1) {
       nameStr = "Middle-Name";
-    } else if (id == 2) {
+    } else if (serial === 2) {
       nameStr = "Last-Name";
+    } else if (serial === 10) {
+      nameStr = "Parent's First-Name";
+    } else if (serial === 11) {
+      nameStr = "Parent's Middle-Name";
+    } else if (serial === 12) {
+      nameStr = "Parent's Last-Name";
     }
 
     return `${nameStr} must be atleast 2 characters long!`;
@@ -464,11 +500,11 @@ function validateAadharCard(id) {
   return true;
 }
 
-function validatePhoneNo(id) {
+function validateMobileNo(id) {
   var phoneno = /^(6|7|8|9)\d{9}$/;
 
   if (!id.value.match(phoneno)) {
-    return "Please enter a valid contact number!";
+    return "Please enter a valid mobile number!";
   } else {
     return true;
   }
