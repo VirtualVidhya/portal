@@ -106,6 +106,9 @@ empStatusInput.addEventListener("blur", () =>
 empStatusInput.addEventListener("change", () => {
   const selectedValue = empStatusInput.value;
 
+  clearError(occupationInput, 7);
+  clearInput(occupationInput);
+
   if (occupationDetailsMap[selectedValue]) {
     occupationLabel.textContent = occupationDetailsMap[selectedValue].label;
     occupationInput.placeholder =
@@ -123,7 +126,7 @@ empStatusInput.addEventListener("change", () => {
   } else {
     occupationField.style.display = "none";
     occupationInput.required = false;
-    occupationInput.value = ""; // Reset input when hidden
+    // occupationInput.value = ""; // Reset input when hidden
   }
 });
 
@@ -275,6 +278,24 @@ let check = (id, serial, message) => {
   }
 };
 
+function clearInput(id) {
+  id.value = "";
+}
+
+function clearError(id, serial) {
+  if (serial === 8) {
+    id = photoField;
+  } else if (serial === 9) {
+    id = aadharField;
+  }
+
+  errorMsg[serial].innerHTML = "";
+
+  id.classList.remove("border-2");
+  id.classList.remove("border-font-color-green");
+  id.classList.remove("border-font-color-red-dark");
+}
+
 function showError(id, serial, msg) {
   if (serial === 8) {
     id = photoField;
@@ -286,7 +307,7 @@ function showError(id, serial, msg) {
 
   errorCount++;
 
-  id.classList.remove("border-font-color-sec");
+  id.classList.remove("border-font-color-green");
 
   if (!id.classList.contains("border-2")) {
     id.classList.add("border-2");
