@@ -594,6 +594,14 @@
     @apply font-semibold text-base md:text-lg mb-1;
   }
 
+  .form-sublabel {
+    @apply font-normal text-sm mb-1;
+  }
+
+  .form-req-label {
+    @apply text-font-color-red-dark;
+  }
+
   input[type="date"]::-webkit-datetime-edit-day-field,
   input[type="date"]::-webkit-datetime-edit-month-field,
   input[type="date"]::-webkit-datetime-edit-year-field,
