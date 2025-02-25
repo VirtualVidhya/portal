@@ -107,6 +107,7 @@ const metadata = {
               id="age"
               name="age"
               class="form-fieldbox"
+              inputmode="numeric"
               type="number"
               placeholder="Enter your age"
             />
@@ -338,14 +339,17 @@ const metadata = {
 
           <div class="flex flex-col w-4/5">
             <label for="contact-no" class="form-label"
-              >Mobile Number <span class="form-req-label">*</span><br /><span class="text-base font-normal"
-              >(If you're a school student without a mobile phone, enter your parent/guardian's number.)</span
-            ></label
+              >Mobile Number <span class="form-req-label">*</span><br /><span
+                class="text-base font-normal"
+                >(If you're a school student without a mobile phone, enter your
+                parent/guardian's number.)</span
+              ></label
             >
             <input
               id="contact-no"
               name="contact-no"
               class="form-fieldbox"
+              inputmode="numeric"
               type="tel"
               placeholder="Enter your contact number"
             />
@@ -356,9 +360,11 @@ const metadata = {
 
           <div class="flex flex-col w-4/5">
             <label for="email" class="form-label"
-              >Email ID <span class="form-req-label">*</span><br /><span class="text-base font-normal"
-              >(If you're a school student without an email, enter your parent/guardian's email id.)</span
-            ></label
+              >Email ID <span class="form-req-label">*</span><br /><span
+                class="text-base font-normal"
+                >(If you're a school student without an email, enter your
+                parent/guardian's email id.)</span
+              ></label
             >
             <input
               id="email"
@@ -374,16 +380,16 @@ const metadata = {
 
           <div class="flex flex-col w-4/5">
             <label for="parent-contact-no" class="form-label"
-              >Emergency Contact Number<span
-                class="form-req-label">*</span
-              ><br /><span class="text-base font-normal"
-                >(Give your parent/guardian/spouse's mobile number here.)</span
+              >Emergency Contact Number <span class="form-req-label">*</span><br
+              /><span class="text-base font-normal"
+                >(Provide your parent/guardian/spouse's mobile number.)</span
               ></label
             >
             <input
               id="parent-contact-no"
               name="parentcontact-no"
               class="form-fieldbox"
+              inputmode="numeric"
               type="tel"
               placeholder="Enter your parent's contact number"
             />
@@ -399,56 +405,112 @@ const metadata = {
 
             <div class="flex flex-col gap-[6px]">
               <div class="w-full">
-                <label class="form-sublabel">Apt, Suite etc. info</label>
+                <label for="curr-add-line1" class="form-sublabel"
+                  >Apt, Suite etc. info</label
+                >
                 <input
                   id="curr-add-line1"
                   name="curr-add-line1"
                   class="form-fieldbox"
                   type="text"
                   placeholder="Enter your apt, suite etc. info"
+                  maxlength="100"
                 />
                 <div class="error text-font-color-red-dark"></div>
               </div>
               <div class="w-full">
-                <label class="form-sublabel">Street</label>
+                <label for="curr-add-line2" class="form-sublabel">Street</label>
                 <input
                   id="curr-add-line2"
                   name="curr-add-line2"
                   class="form-fieldbox"
                   type="text"
                   placeholder="Enter your street address"
+                  maxlength="100"
                 />
                 <div class="error text-font-color-red-dark"></div>
               </div>
               <div class="w-full">
-                <label class="form-sublabel">City</label>
+                <label for="curr-city" class="form-sublabel">City</label>
                 <input
                   id="curr-city"
                   name="curr-city"
                   class="form-fieldbox"
                   type="text"
                   placeholder="Enter your city"
+                  title="City name should contain only letters and spaces."
+                  maxlength="50"
+                  pattern="^[A-Za-z\s]+$"
                 />
                 <div class="error text-font-color-red-dark"></div>
               </div>
               <div class="w-full">
-                <label class="form-sublabel">State</label>
-                <input
+                <label for="curr-state" class="form-sublabel">State</label>
+                <!-- <input
                   id="curr-state"
                   name="curr-state"
                   class="form-fieldbox"
                   type="text"
                   placeholder="Enter your state"
-                />
+                /> -->
+                <select
+                  id="curr-state"
+                  name="curr-state"
+                  class="form-fieldbox"
+                  required
+                >
+                  <option value="" selected disabled>Select your state</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Himachal Pradesh">Himachal Pradesh</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Manipur">Manipur</option>
+                  <option value="Meghalaya">Meghalaya</option>
+                  <option value="Mizoram">Mizoram</option>
+                  <option value="Nagaland">Nagaland</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Sikkim">Sikkim</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Tripura">Tripura</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="West Bengal">West Bengal</option>
+                  <option value="Andaman and Nicobar Islands"
+                    >Andaman and Nicobar Islands</option
+                  >
+                  <option value="Chandigarh">Chandigarh</option>
+                  <option value="Dadra and Nagar Haveli and Daman and Diu"
+                    >Dadra and Nagar Haveli and Daman and Diu</option
+                  >
+                  <option value="Delhi">Delhi</option>
+                  <option value="Ladakh">Ladakh</option>
+                  <option value="Lakshadweep">Lakshadweep</option>
+                  <option value="Puducherry">Puducherry</option>
+                </select>
                 <div class="error text-font-color-red-dark"></div>
               </div>
               <div class="w-full">
-                <label class="form-sublabel">PIN Code</label>
+                <label for="curr-pincode" class="form-sublabel">PIN Code</label>
                 <input
                   id="curr-pincode"
                   name="curr-pincode"
                   class="form-fieldbox"
+                  inputmode="numeric"
                   type="number"
+                  pattern="^\d{6}$"
                   placeholder="Enter your pin-code"
                 />
                 <div class="error text-font-color-red-dark"></div>
@@ -460,7 +522,12 @@ const metadata = {
           </div>
 
           <div class="flex flex-col w-4/5">
-            <label class="form-label">Permanent Address</label>
+            <label class="form-label"
+              >Permanent Address<br />
+              <span class="text-base font-normal"
+                >(Leave blank if same as current address.)</span
+              ></label
+            >
 
             <div class="flex flex-col gap-[6px]">
               <div class="w-full">
@@ -498,13 +565,60 @@ const metadata = {
               </div>
               <div class="w-full">
                 <label class="form-sublabel">State</label>
-                <input
+                <!-- <input
                   id="per-state"
                   name="per-state"
                   class="form-fieldbox"
                   type="text"
                   placeholder="Enter your state"
-                />
+                /> -->
+                <select
+                  id="per-state"
+                  name="per-state"
+                  class="form-fieldbox"
+                  required
+                >
+                  <option value="" selected disabled>Select your state</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Himachal Pradesh">Himachal Pradesh</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Manipur">Manipur</option>
+                  <option value="Meghalaya">Meghalaya</option>
+                  <option value="Mizoram">Mizoram</option>
+                  <option value="Nagaland">Nagaland</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Sikkim">Sikkim</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Tripura">Tripura</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="West Bengal">West Bengal</option>
+                  <option value="Andaman and Nicobar Islands"
+                    >Andaman and Nicobar Islands</option
+                  >
+                  <option value="Chandigarh">Chandigarh</option>
+                  <option value="Dadra and Nagar Haveli and Daman and Diu"
+                    >Dadra and Nagar Haveli and Daman and Diu</option
+                  >
+                  <option value="Delhi">Delhi</option>
+                  <option value="Ladakh">Ladakh</option>
+                  <option value="Lakshadweep">Lakshadweep</option>
+                  <option value="Puducherry">Puducherry</option>
+                </select>
                 <div class="error text-font-color-red-dark"></div>
               </div>
               <div class="w-full">
@@ -922,7 +1036,10 @@ const metadata = {
                 class="text-base font-normal">(For initial fees amount)</span
               >
             </label>
-            <div class="flex flex-col justify-center gap-[6px]" id="payment-modes">
+            <div
+              class="flex flex-col justify-center gap-[6px]"
+              id="payment-modes"
+            >
               <label class="flex items-center gap-1 cursor-pointer">
                 <input
                   type="radio"

@@ -77,6 +77,19 @@ const aadharField = id("aadhar-field");
 const contactNoInput = id("contact-no");
 const emailInput = id("email");
 const parentContactNoInput = id("parent-contact-no");
+
+const currAddLine1Input = id("curr-add-line1");
+const currAddLine2Input = id("curr-add-line2");
+const currCityInput = id("curr-city");
+const currStateInput = id("curr-state");
+const currPinInput = id("curr-pincode");
+
+const perAddLine1Input = id("per-add-line1");
+const perAddLine2Input = id("per-add-line2");
+const perCityInput = id("per-city");
+const perStateInput = id("per-state");
+const perPinInput = id("per-pincode");
+
 // let course = id("course");
 
 let form = id("form");
@@ -167,6 +180,36 @@ emailInput.addEventListener("blur", () =>
 parentContactNoInput.addEventListener("blur", () =>
   check(parentContactNoInput, 12, "Parent's Mobile Number cannot be blank!")
 );
+currAddLine1Input.addEventListener("blur", () =>
+  check(currAddLine1Input, 13, "Apt, Suite Info cannot be blank!")
+);
+currAddLine2Input.addEventListener("blur", () =>
+  check(currAddLine2Input, 14, "Street Address cannot be blank!")
+);
+currCityInput.addEventListener("blur", () =>
+  check(currCityInput, 15, "City cannot be blank!")
+);
+currStateInput.addEventListener("blur", () =>
+  check(currStateInput, 16, "State cannot be blank!")
+);
+currPinInput.addEventListener("blur", () =>
+  check(currPinInput, 17, "PIN Code cannot be blank!")
+);
+perAddLine1Input.addEventListener("blur", () =>
+  check(perAddLine1Input, 18, "Apt, Suite Info cannot be blank!")
+);
+perAddLine2Input.addEventListener("blur", () =>
+  check(perAddLine2Input, 19, "Street Address cannot be blank!")
+);
+perCityInput.addEventListener("blur", () =>
+  check(perCityInput, 20, "City cannot be blank!")
+);
+perStateInput.addEventListener("blur", () =>
+  check(perStateInput, 21, "State cannot be blank!")
+);
+perPinInput.addEventListener("blur", () =>
+  check(perPinInput, 22, "PIN Code cannot be blank!")
+);
 
 form.addEventListener("submit", (e) => {
   errorCount = 0;
@@ -192,6 +235,18 @@ form.addEventListener("submit", (e) => {
   check(contactNoInput, 10, "Mobile Number cannot be blank!");
   check(emailInput, 11, "Email cannot be blank!");
   check(parentContactNoInput, 12, "Parent's Mobile Number cannot be blank!");
+
+  check(currAddLine1Input, 13, "Apt, Suite Info cannot be blank!");
+  check(currCityInput, 14, "Street Address cannot be blank!");
+  check(currAddLine2Input, 15, "Street Address cannot be blank!");
+  check(currStateInput, 16, "State cannot be blank!");
+  check(currPinInput, 17, "PIN Code cannot be blank!");
+
+  check(perAddLine1Input, 18, "Apt, Suite Info cannot be blank!");
+  check(perAddLine2Input, 19, "Street Address cannot be blank!");
+  check(perCityInput, 20, "City cannot be blank!");
+  check(perStateInput, 21, "State cannot be blank!");
+  check(perPinInput, 22, "PIN Code cannot be blank!");
 
   // check(phone, 1, "Phone number cannot be blank!");
   // check(email, 2, "Email cannot be blank!");
@@ -228,7 +283,7 @@ let check = (id, serial, message) => {
     }
 
     if (response == true) {
-      showNoError(id, serial);
+      showValidInputIndication(id, serial);
 
       if (serial === 8) {
         photoLabel.innerText = `${id.files[0].name}`;
@@ -238,7 +293,7 @@ let check = (id, serial, message) => {
         aadharLabel.classList.remove(`file-upload-text`);
       }
     } else {
-      showError(id, serial, response);
+      showInvalidInputIndication(id, serial, response);
 
       if (serial === 8) {
         photoLabel.innerText = `Upload your passport-sized photo (png/jpeg/jpg)`;
@@ -253,7 +308,12 @@ let check = (id, serial, message) => {
   }
 
   if (id.value.trim() === "") {
-    showError(id, serial, message);
+    if (18 <= serial && serial <= 22) {
+      clearError(id, serial);
+      return;
+    }
+
+    showInvalidInputIndication(id, serial, message);
   } else {
     let response;
 
@@ -261,9 +321,9 @@ let check = (id, serial, message) => {
       case 0:
       case 1:
       case 2:
-      // case 10:
-      // case 11:
-      // case 12:
+        // case 10:
+        // case 11:
+        // case 12:
         response = validateName(id, serial);
         break;
       case 3:
@@ -279,7 +339,6 @@ let check = (id, serial, message) => {
         response = validateEmpStatus(id);
         break;
       case 7:
-      case 13:
         response = validateOccupation(id);
         break;
       case 8:
@@ -288,12 +347,30 @@ let check = (id, serial, message) => {
       case 9:
         response = validateAadharCard(id);
         break;
-      case 14:
-      case 16:
+      case 10:
+      case 12:
         response = validateMobileNo(id);
         break;
-      case 15:
+      case 11:
         response = validateEmail(id);
+        break;
+      case 13:
+      case 14:
+      case 18:
+      case 19:
+        response = validateAddLine(id);
+        break;
+      case 15:
+      case 20:
+        response = validateCity(id);
+        break;
+      case 16:
+      case 21:
+        response = validateState(id);
+        break;
+      case 17:
+      case 22:
+        response = validatePin(id);
         break;
       default:
         response = true;
@@ -301,9 +378,9 @@ let check = (id, serial, message) => {
     }
 
     if (response == true) {
-      showNoError(id, serial);
+      showValidInputIndication(id, serial);
     } else {
-      showError(id, serial, response);
+      showInvalidInputIndication(id, serial, response);
     }
   }
 };
@@ -326,7 +403,7 @@ function clearError(id, serial) {
   id.classList.remove("border-font-color-red-dark");
 }
 
-function showError(id, serial, msg) {
+function showInvalidInputIndication(id, serial, msg) {
   if (serial === 8) {
     id = photoField;
   } else if (serial === 9) {
@@ -353,7 +430,7 @@ function showError(id, serial, msg) {
   id.classList.add("border-font-color-red-dark");
 }
 
-function showNoError(id, serial) {
+function showValidInputIndication(id, serial) {
   if (serial === 8) {
     id = photoField;
   } else if (serial === 9) {
@@ -515,6 +592,43 @@ function validateEmail(id) {
 
   if (!reg.test(id.value)) {
     return "Please enter a valid email address!";
+  } else {
+    return true;
+  }
+}
+
+function validateAddLine(id) {
+  // const valueWithoutSpaces = id.value.replace(/\s/g, "");
+
+  if (id.value.length > 100) {
+    if (id === "currAddLine1Input") {
+      return "Apt/Suite info cannot exceed 100 characters.";
+    } else if (id === "currAddLine2Input") {
+      return "Street address cannot exceed 100 characters.";
+    }
+  }
+  return true;
+}
+
+function validateCity(id) {
+  const cityRegex = /^[A-Za-z\s]+$/;
+
+  if (!cityRegex.test(id.value.trim())) {
+    return "City name can only contain letters and spaces!";
+  } else {
+    return true;
+  }
+}
+
+function validateState(id) {
+  return id.value ? true : "Please select your state!";
+}
+
+function validatePin(id) {
+  const pinRegex = /^[1-9][0-9]{5}$/;
+
+  if (!pinRegex.test(id.value.trim())) {
+    return "Please enter a valid indian pincode!";
   } else {
     return true;
   }
