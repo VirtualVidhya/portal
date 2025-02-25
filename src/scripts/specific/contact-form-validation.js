@@ -90,7 +90,14 @@ const perCityInput = id("per-city");
 const perStateInput = id("per-state");
 const perPinInput = id("per-pincode");
 
-// let course = id("course");
+const courseInput = id("course");
+const academicQualInput = id("academic-qual");
+// compProficiency
+// relevantSkills
+// prevTraining
+
+const hearAboutInput = id("reference");
+const tncInput = id("t&c");
 
 let form = id("form");
 let errorMsg = classes("error");
@@ -119,10 +126,15 @@ dobInput.addEventListener("blur", () =>
 genderInput.addEventListener("blur", () =>
   check(genderInput, 5, "Please select your gender!")
 );
+// genderInput.addEventListener("invalid", function (e) {
+//   e.preventDefault();
+// });
 empStatusInput.addEventListener("blur", () =>
   check(empStatusInput, 6, "Please select your employment status!")
 );
-
+// empStatusInput.addEventListener("invalid", function (e) {
+//   e.preventDefault();
+// });
 empStatusInput.addEventListener("change", () => {
   const selectedValue = empStatusInput.value;
 
@@ -153,7 +165,6 @@ empStatusInput.addEventListener("change", () => {
 photoInput.addEventListener("focusout", () => {
   check(photoInput, 8, "Please upload your passport-photo!");
 });
-
 aadharInput.addEventListener("focusout", () => {
   check(aadharInput, 9, "Please upload your aadhar-card!");
 });
@@ -192,6 +203,9 @@ currCityInput.addEventListener("blur", () =>
 currStateInput.addEventListener("blur", () =>
   check(currStateInput, 16, "State cannot be blank!")
 );
+// currStateInput.addEventListener("invalid", function (e) {
+//   e.preventDefault();
+// });
 currPinInput.addEventListener("blur", () =>
   check(currPinInput, 17, "PIN Code cannot be blank!")
 );
@@ -207,12 +221,31 @@ perCityInput.addEventListener("blur", () =>
 perStateInput.addEventListener("blur", () =>
   check(perStateInput, 21, "State cannot be blank!")
 );
+// perStateInput.addEventListener("invalid", function (e) {
+//   e.preventDefault();
+// });
 perPinInput.addEventListener("blur", () =>
   check(perPinInput, 22, "PIN Code cannot be blank!")
 );
 
+courseInput.addEventListener("blur", () =>
+  check(courseInput, 23, "Course Name cannot be blank!")
+);
+academicQualInput.addEventListener("blur", () =>
+  check(academicQualInput, 24, "Academic Qualification cannot be blank!")
+);
+
+hearAboutInput.addEventListener("blur", () =>
+  check(hearAboutInput, 28, "This field cannot be blank!")
+);
+
 form.addEventListener("submit", (e) => {
   errorCount = 0;
+
+  if (fNameInput.validity.valueMissing) {
+    console.log("missing");
+    fNameInput.setCustomValidity("");
+  }
 
   check(fNameInput, 0, "First-Name cannot be blank!");
   check(mNameInput, 1, "Middle-Name cannot be blank!");
@@ -248,9 +281,11 @@ form.addEventListener("submit", (e) => {
   check(perStateInput, 21, "State cannot be blank!");
   check(perPinInput, 22, "PIN Code cannot be blank!");
 
-  // check(phone, 1, "Phone number cannot be blank!");
-  // check(email, 2, "Email cannot be blank!");
-  // check(course, 3, "Course cannot be blank!");
+  check(courseInput, 23, "Course Name cannot be blank!");
+  check(academicQualInput, 24, "Academic Qualification cannot be blank!");
+
+  check(hearAboutInput, 28, "This field cannot be blank!");
+  check(tncInput, 29, "");
 
   if (errorCount > 0) {
     e.preventDefault();
@@ -371,6 +406,18 @@ let check = (id, serial, message) => {
       case 17:
       case 22:
         response = validatePin(id);
+        break;
+      case 23:
+        response = validateCourse(id);
+        break;
+      case 24:
+        response = validateAcademicQualification(id);
+        break;
+      case 28:
+        response = validateHearAboutInfo(id);
+        break;
+      case 29:
+        response = validateTnc(id);
         break;
       default:
         response = true;
@@ -629,6 +676,33 @@ function validatePin(id) {
 
   if (!pinRegex.test(id.value.trim())) {
     return "Please enter a valid indian pincode!";
+  } else {
+    return true;
+  }
+}
+
+function validateCourse(id) {
+  const list = document.getElementById("course-list");
+  const options = Array.from(list.options).map((opt) => opt.value);
+
+  if (!options.includes(id.value)) {
+    return "Please select a valid course from the list!";
+  } else {
+    return true;
+  }
+}
+
+function validateAcademicQualification(id) {
+  return id.value ? true : "Please enter your academic qualification!";
+}
+
+function validateHearAboutInfo(id) {
+  return id.value ? true : "Please fill up this field!";
+}
+
+function validateTnc(id) {
+  if (!id.checked) {
+    return "You must accept the terms & conditions to submit an application!";
   } else {
     return true;
   }
