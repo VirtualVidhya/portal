@@ -46,7 +46,9 @@ const metadata = {
         name="contact"
         method="POST"
         id="form"
+        action="_blank"
         autocomplete="off"
+        novalidate
         class="flex flex-col items-center justify-center gap-20 mx-auto py-10 md:py-20 border-solid border-2 border-b-6 rounded-xl bg-navbar-color-pri"
       >
         <fieldset class="form-fieldset">
@@ -66,6 +68,7 @@ const metadata = {
                   class="form-fieldbox"
                   type="text"
                   placeholder="Enter your first name"
+                  required
                 />
                 <div class="error text-font-color-red-dark"></div>
               </div>
@@ -110,6 +113,7 @@ const metadata = {
               inputmode="numeric"
               type="number"
               placeholder="Enter your age"
+              required
             />
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
@@ -126,6 +130,7 @@ const metadata = {
               class="form-fieldbox"
               type="date"
               placeholder="Enter your date of birth"
+              required
             />
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
@@ -179,7 +184,6 @@ const metadata = {
                 <option value="homemaker">Homemaker</option>
                 <option value="retired">Retired</option>
               </select>
-
               <FormArrow />
             </div>
 
@@ -242,6 +246,7 @@ const metadata = {
                 class="w-full bg-color-transparent opacity-0"
                 type="file"
                 accept="image/png, image/jpeg, image/jpg"
+                required
               />
             </div>
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
@@ -269,6 +274,7 @@ const metadata = {
                 class="w-full bg-color-transparent opacity-0"
                 type="file"
                 accept=".pdf"
+                required
               />
             </div>
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
@@ -352,6 +358,7 @@ const metadata = {
               inputmode="numeric"
               type="tel"
               placeholder="Enter your contact number"
+              required
             />
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
@@ -372,6 +379,7 @@ const metadata = {
               class="form-fieldbox"
               type="text"
               placeholder="Enter your email address"
+              required
             />
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
@@ -392,6 +400,7 @@ const metadata = {
               inputmode="numeric"
               type="tel"
               placeholder="Enter your parent's contact number"
+              required
             />
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
@@ -444,20 +453,16 @@ const metadata = {
                 />
                 <div class="error text-font-color-red-dark"></div>
               </div>
-              <div class="w-full">
+              <div class="w-full relative">
                 <label for="curr-state" class="form-sublabel">State</label>
-                <!-- <input
-                  id="curr-state"
-                  name="curr-state"
-                  class="form-fieldbox"
-                  type="text"
-                  placeholder="Enter your state"
-                /> -->
                 <select
                   id="curr-state"
                   name="curr-state"
                   class="form-fieldbox"
                   required
+                  oninvalid="this.setCustomValidity('')"
+                  oninput="this.setCustomValidity('')"
+                  aria-required="false"
                 >
                   <option value="" selected disabled>Select your state</option>
                   <option value="Andhra Pradesh">Andhra Pradesh</option>
@@ -500,6 +505,8 @@ const metadata = {
                   <option value="Lakshadweep">Lakshadweep</option>
                   <option value="Puducherry">Puducherry</option>
                 </select>
+                <FormArrow />
+
                 <div class="error text-font-color-red-dark"></div>
               </div>
               <div class="w-full">
@@ -563,7 +570,7 @@ const metadata = {
                 />
                 <div class="error text-font-color-red-dark"></div>
               </div>
-              <div class="w-full">
+              <div class="w-full relative">
                 <label class="form-sublabel">State</label>
                 <!-- <input
                   id="per-state"
@@ -577,6 +584,9 @@ const metadata = {
                   name="per-state"
                   class="form-fieldbox"
                   required
+                  oninvalid="this.setCustomValidity('')"
+                  oninput="this.setCustomValidity('')"
+                  aria-required="false"
                 >
                   <option value="" selected disabled>Select your state</option>
                   <option value="Andhra Pradesh">Andhra Pradesh</option>
@@ -619,6 +629,8 @@ const metadata = {
                   <option value="Lakshadweep">Lakshadweep</option>
                   <option value="Puducherry">Puducherry</option>
                 </select>
+                <FormArrow />
+
                 <div class="error text-font-color-red-dark"></div>
               </div>
               <div class="w-full">
@@ -663,6 +675,7 @@ const metadata = {
                 type="text"
                 placeholder="Enter your course name"
                 list="course-list"
+                required
               />
               <FormArrow />
               <datalist id="course-list">
@@ -729,12 +742,96 @@ const metadata = {
                 type="text"
                 placeholder="Enter your academic qualification"
                 list="academic-qual-list"
+                required
               />
               <FormArrow />
               <datalist id="academic-qual-list">
-                <option value="Primary Schooling">Primary Schooling</option>
-                <option value="High-school">High-school</option>
-                <option value="BCA">BCA</option>
+                <option value="Primary Schooling (Class 1-5)"
+                  >Primary Schooling (Class 1-5)</option
+                >
+                <option value="Middle School (Class 6-8)"
+                  >Middle School (Class 6-8)</option
+                >
+                <option value="High School (Class 9-10)"
+                  >High School (Class 9-10)</option
+                >
+                <option value="Higher Secondary School (Class 11-12)"
+                  >Higher Secondary School (Class 11-12)</option
+                >
+
+                <option value="Bachelor of Arts (BA)"
+                  >Bachelor of Arts (BA)</option
+                >
+                <option value="Bachelor of Science (BSc)"
+                  >Bachelor of Science (BSc)</option
+                >
+                <option value="Bachelor of Commerce (BCom)"
+                  >Bachelor of Commerce (BCom)</option
+                >
+                <option value="Bachelor of Computer Applications (BCA)"
+                  >Bachelor of Computer Applications (BCA)</option
+                >
+                <option value="Bachelor of Business Administration (BBA)"
+                  >Bachelor of Business Administration (BBA)</option
+                >
+                <option
+                  value="Bachelor of Technology (BTech) / Bachelor of Engineering (BE)"
+                  >Bachelor of Technology (BTech) / Bachelor of Engineering (BE)</option
+                >
+                <option
+                  value="Bachelor of Medicine and Bachelor of Surgery (MBBS)"
+                  >Bachelor of Medicine and Bachelor of Surgery (MBBS)</option
+                >
+                <option value="Bachelor of Education (BEd)"
+                  >Bachelor of Education (BEd)</option
+                >
+                <option value="Bachelor of Pharmacy (BPharm)"
+                  >Bachelor of Pharmacy (BPharm)</option
+                >
+                <option value="Bachelor of Fine Arts (BFA)"
+                  >Bachelor of Fine Arts (BFA)</option
+                >
+                <option value="Bachelor of Law (LLB)"
+                  >Bachelor of Law (LLB)</option
+                >
+
+                <option value="Master of Arts (MA)">Master of Arts (MA)</option>
+                <option value="Master of Science (MSc)"
+                  >Master of Science (MSc)</option
+                >
+                <option value="Master of Commerce (MCom)"
+                  >Master of Commerce (MCom)</option
+                >
+                <option value="Master of Computer Applications (MCA)"
+                  >Master of Computer Applications (MCA)</option
+                >
+                <option value="Master of Business Administration (MBA)"
+                  >Master of Business Administration (MBA)</option
+                >
+                <option value="Master of Education (MEd)"
+                  >Master of Education (MEd)</option
+                >
+                <option
+                  value="Master of Technology (MTech) / Master of Engineering (ME)"
+                  >Master of Technology (MTech) / Master of Engineering (ME)</option
+                >
+                <option value="Master of Pharmacy (MPharm)"
+                  >Master of Pharmacy (MPharm)</option
+                >
+                <option value="Master of Fine Arts (MFA)"
+                  >Master of Fine Arts (MFA)</option
+                >
+
+                <option value="Doctor of Philosophy (PhD)"
+                  >Doctor of Philosophy (PhD)</option
+                >
+                <option value="Doctor of Medicine (MD)"
+                  >Doctor of Medicine (MD)</option
+                >
+                <option value="Diploma in Engineering (Polytechnic)"
+                  >Diploma in Engineering (Polytechnic)</option
+                >
+                <option value="Diploma in Nursing">Diploma in Nursing</option>
               </datalist>
             </div>
 
@@ -745,15 +842,41 @@ const metadata = {
 
           <div class="flex flex-col w-4/5">
             <label for="comp-proficiency" class="form-label"
-              >Computer Proficiency</label
+              >Computer Proficiency<br /><span class="text-base font-normal"
+                >(Select all that apply.)</span
+              ></label
             >
-            <input
+            <!-- <input
               id="comp-proficiency"
               name="comp-proficiency"
               class="form-fieldbox"
               type="text"
               placeholder="Enter your computer efficiency level"
-            />
+            /> -->
+
+            <div class="flex flex-col gap-[6px]" id="comp-proficiency">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="computer"
+                  value="computer"
+                  class="w-4 h-4"
+                />
+                Can operate computer, navigate within an OS (Windows, Linux, MacOS
+                etc.) and manage files
+              </label>
+
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="internet"
+                  value="internet"
+                  class="w-4 h-4"
+                />
+                Can browse the Internet and use online tools
+              </label>
+            </div>
+
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
             <div class="error text-font-color-red-dark"></div>
@@ -768,7 +891,7 @@ const metadata = {
               name="rel-skills"
               class="form-fieldbox"
               type="text"
-              placeholder="Enter the skills you've which are relevant to your course"
+              placeholder="Enter your skills which are relevant to the course"
             />
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
@@ -777,14 +900,14 @@ const metadata = {
 
           <div class="flex flex-col w-4/5">
             <label for="prev-training" class="form-label"
-              >Prev. Training related to the similar course</label
+              >Previous Training related to the similar course</label
             >
             <input
               id="prev-training"
               name="prev-training"
               class="form-fieldbox"
               type="text"
-              placeholder="Enter the details about any previous training you've had related to the similar course"
+              placeholder="Enter the details about any previous training/practice you've had related to the similar course"
             />
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
@@ -793,139 +916,6 @@ const metadata = {
         </fieldset>
 
         <!-- <fieldset class="form-fieldset">
-          <legend class="app-form-legend">Payment Details</legend>
-
-          <div class="relative flex flex-col w-4/5">
-            <label for="course" class="form-label">Course Name *</label>
-            <input
-              id="course"
-              name="course"
-              class="form-fieldbox no-datalist-arrow"
-              type="text"
-              placeholder="Enter your course name"
-              list="course-list"
-            />
-            <FormArrow />
-            <datalist id="course-list">
-              <option value="Graphics Design">Graphics Design</option>
-              <option value="Video Editing">Video Editing</option>
-              <option value="Digital Textile Design">
-                Digital Textile Design
-              </option>
-              <option value="Interior Design">Interior Design</option>
-              <option value="UI/UX Design">UI/UX Design</option>
-              <option value="Jewellery Design">Jewellery Design</option>
-              <option value="Adobe Photoshop">Adobe Photoshop</option>
-              <option value="Adobe Illustrator">Adobe Illustrator</option>
-              <option value="Adobe After Effects">Adobe After Effects</option>
-              <option value="Adobe Premier Pro">Adobe Premier Pro</option>
-              <option value="Corel Draw">Corel Draw</option>
-              <option value="Figma">Figma</option>
-
-              <option value="Game Development">Game Development</option>
-              <option value="Full-stack Web-Development">
-                Full-stack Web-Development
-              </option>
-              <option value="Front-end Web-Development">
-                Front-end Web-Development
-              </option>
-              <option value="Back-end Web-Development">
-                Back-end Web-Development
-              </option>
-              <option value="Fundamentals of Computer Application">
-                Fundamentals of Computer Application
-              </option>
-              <option value="C++ Programming">C++ Programming</option>
-              <option value="C Programming">C Programming</option>
-              <option value="Python Programming">Python Programming</option>
-              <option value="Java Programming">Java Programming</option>
-
-              <option value="Scratch Programming">Scratch Programming</option>
-              <option value="MS Office">MS Office</option>
-
-              <option value="Desktop Publishing (DTP)">
-                Desktop Publishing (DTP)
-              </option>
-              <option value="Accounting">Accounting</option>
-              <option value="Digital Marketing">Digital Marketing</option>
-              <option value="Advance Excel">Advance Excel</option>
-            </datalist>
-            <div class="error text-font-color-red-dark"></div>
-          </div>
-
-          <div class="relative flex flex-col w-4/5">
-            <label for="academic-qual" class="form-label">Academic Qualification</label>
-            <input
-              id="academic-qual"
-              name="academic-qual"
-              class="form-fieldbox no-datalist-arrow"
-              type="text"
-              placeholder="Enter your academic qualification"
-              list="academic-qual-list"
-            />
-            <FormArrow />
-            <datalist id="academic-qual-list">
-              <option value="Primary Schooling">Primary Schooling</option>
-              <option value="High-school">High-school</option>
-              <option value="BCA">BCA</option>
-            </datalist>
-            <div class="error text-font-color-red-dark"></div>
-          </div>
-
-          <div class="flex flex-col w-4/5">
-            <label for="comp-proficiency" class="form-label">Computer Proficiency</label>
-            <input
-              id="comp-proficiency"
-              name="comp-proficiency"
-              class="form-fieldbox"
-              type="text"
-              placeholder="Enter your computer efficiency level"
-            />
-            <div class="error text-font-color-red-dark"></div>
-          </div>
-
-          <div class="flex flex-col w-4/5">
-            <label for="rel-skills" class="form-label">Skills Relevant to the Course</label>
-            <input
-              id="rel-skills"
-              name="rel-skills"
-              class="form-fieldbox"
-              type="text"
-              placeholder="Enter the skills you've which are relevant to your course"
-            />
-            <div class="error text-font-color-red-dark"></div>
-          </div>
-
-          <div class="flex flex-col w-4/5">
-            <label for="prev-training" class="form-label">Prev. Training related to the similar course</label>
-            <input
-              id="prev-training"
-              name="prev-training"
-              class="form-fieldbox"
-              type="text"
-              placeholder="Enter the details about any previous training you've had related to the similar course"
-            />
-            <div class="error text-font-color-red-dark"></div>
-          </div>
-
-          <div class="flex flex-col w-4/5">
-            <label for="" class="form-label">Successful Payment Proof *</label>
-            <label for="payment-ss" class="form-fieldbox file-upload-text"
-              >Upload the screenshot of a successful payment with bank & transaction details clearly visible (png/jpeg/jpg)</label
-            >
-            <input
-              id="payment-ss"
-              name="payment-ss"
-              class="hidden"
-              type="file"
-              accept="image/png, image/jpeg, image/jpg"
-              placeholder="Upload the screenshot of a successful payment with bank & transaction details clearly visible (png/jpeg/jpg)"
-            />
-            <div class="error text-font-color-red-dark"></div>
-          </div>
-        </fieldset> -->
-
-        <fieldset class="form-fieldset">
           <legend class="app-form-legend">Agreement Details</legend>
 
           <div class="flex flex-col w-4/5">
@@ -939,7 +929,8 @@ const metadata = {
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  name="documents"
+                  id="passport-photo-doc"
+                  name="passport-photo-doc"
                   value="passport-photo-doc"
                   class="w-4 h-4"
                 />
@@ -949,27 +940,19 @@ const metadata = {
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  name="documents"
+                  id="identity-proof-doc"
+                  name="identity-proof-doc"
                   value="identity-proof-doc"
                   class="w-4 h-4"
                 />
                 Identity Proof
               </label>
 
-              <!-- <label class="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  name="documents"
-                  value="address-proof-doc"
-                  class="w-4 h-4"
-                />
-                Address Proof
-              </label> -->
-
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  name="documents"
+                  id="academic-certificates-doc"
+                  name="academic-certificates-doc"
                   value="academic-certificates-doc"
                   class="w-4 h-4"
                 />
@@ -977,57 +960,31 @@ const metadata = {
               </label>
             </div>
 
-            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
-            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
             <div class="error text-font-color-red-dark"></div>
           </div>
 
           <div class="flex flex-col w-4/5">
-            <label for="t&c" class="form-label"
-              >Have you read the terms & conditions carefully? <span
-                class="form-req-label">*</span
-              ><br />
-              <span class="text-base font-normal"
-                >(Read them <a
+            <label class="form-label"
+              >T&C <span class="form-req-label"> *</span></label
+            >
+            <label for="t&c" class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="t&c" value="t&c" class="w-4 h-4" required />
+              <p>
+                I've read and accept the <a
                   href="https://www.vvidhya.com/terms-&-conditions/"
-                  class="font-semibold link-interaction-effect"
+                  class="font-semibold link-interaction-effect underline underline-offset-4"
                   target="_blank"
                   rel="noopener noreferrer"
-                  title="Terms & Conditions">here</a
-                >. By submitting your application, you agree to abide by the
-                rules & regulations.)</span
-              >
+                  title="Terms & Conditions">terms & conditions</a
+                >.
+              </p>
             </label>
-            <div class="flex items-center gap-4" id="t&c">
-              <label class="flex items-center gap-1 cursor-pointer">
-                <input
-                  type="radio"
-                  name="read-tnc"
-                  value="yes"
-                  class="w-4 h-4"
-                  required
-                />
-                Yes
-              </label>
 
-              <label class="flex items-center gap-1 cursor-pointer">
-                <input
-                  type="radio"
-                  name="read-tnc"
-                  value="no"
-                  class="w-4 h-4"
-                />
-                No
-              </label>
-            </div>
-
-            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
-            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
             <div class="error text-font-color-red-dark"></div>
           </div>
-        </fieldset>
+        </fieldset> -->
 
-        <fieldset class="form-fieldset">
+        <!-- <fieldset class="form-fieldset">
           <legend class="app-form-legend">Payment Details</legend>
 
           <div class="flex flex-col w-4/5">
@@ -1076,7 +1033,6 @@ const metadata = {
                   name="read-tnc"
                   value="yes"
                   class="w-4 h-4"
-                  required
                 />
                 Cash
               </label>
@@ -1102,11 +1058,9 @@ const metadata = {
               </label>
             </div>
 
-            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
-            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
             <div class="error text-font-color-red-dark"></div>
           </div>
-        </fieldset>
+        </fieldset> -->
 
         <fieldset class="form-fieldset">
           <legend class="app-form-legend">Extra Details</legend>
@@ -1127,6 +1081,35 @@ const metadata = {
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
             <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5">
+            <label class="form-label"
+              >T&C <span class="form-req-label"> *</span></label
+            >
+            <label for="t&c" class="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                id="t&c"
+                name="t&c"
+                value="t&c"
+                class="w-4 h-4"
+                required
+              />
+              <p>
+                I've read and accept the <a
+                  href="https://www.vvidhya.com/terms-&-conditions/"
+                  class="font-semibold link-interaction-effect underline underline-offset-4"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Terms & Conditions">terms & conditions</a
+                >.
+              </p>
+            </label>
+
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="mt-2 error text-font-color-red-dark"></div>
           </div>
         </fieldset>
 
