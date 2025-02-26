@@ -1,6 +1,11 @@
 let id = (id) => document.getElementById(id);
-
 let classes = (classes) => document.getElementsByClassName(classes);
+
+const form = id("form");
+const successMsg = id("form-success-msg");
+// let errorMsg = classes("error");
+// let successIcon = classes("success-icon");
+// let failureIcon = classes("failure-icon");
 
 const fNameInput = id("first-name");
 const mNameInput = id("middle-name");
@@ -9,22 +14,55 @@ const lNameInput = id("last-name");
 const ageInput = id("age");
 
 const dobInput = id("dob");
-function setDobAttributes() {
-  const today = new Date();
-  const minYear = today.getFullYear() - 120; // Minimum age: 120 years
-  const maxYear = today.getFullYear() - 6 - 1; // Maximum age: 6 years
-
-  dobInput.setAttribute("min", `${minYear}-01-01`);
-  dobInput.setAttribute("max", `${maxYear}-12-31`);
-}
-setDobAttributes();
+const monthDobInput = id("month-dob");
+const dayDobInput = id("day-dob");
+const yearDobInput = id("year-dob");
 
 const genderInput = id("gender");
 const empStatusInput = id("employment-status");
 
-const occupationField = document.getElementById("occupation-field");
-const occupationInput = document.getElementById("occupation");
-const occupationLabel = document.getElementById("occupation-label");
+const occupationField = id("occupation-field");
+const occupationInput = id("occupation");
+const occupationLabel = id("occupation-label");
+
+const photoInput = id("photo");
+const photoLabel = id("photo-label");
+const photoField = id("photo-field");
+
+const aadharInput = id("aadhar");
+const aadharLabel = id("aadhar-label");
+const aadharField = id("aadhar-field");
+
+// const pfNameInput = id("parent-first-name");
+// const pmNameInput = id("parent-middle-name");
+// const plNameInput = id("parent-last-name");
+// const parentOccupationInput = id("parent-occupation");
+
+const contactNoInput = id("contact-no");
+const emailInput = id("email");
+const parentContactNoInput = id("parent-contact-no");
+
+const currAddLine1Input = id("curr-add-line1");
+const currAddLine2Input = id("curr-add-line2");
+const currCityInput = id("curr-city");
+const currStateInput = id("curr-state");
+const currPinInput = id("curr-pincode");
+
+const perAddLine1Input = id("per-add-line1");
+const perAddLine2Input = id("per-add-line2");
+const perCityInput = id("per-city");
+const perStateInput = id("per-state");
+const perPinInput = id("per-pincode");
+
+const courseInput = id("course");
+const academicQualInput = id("academic-qual");
+// compProficiency
+// relevantSkills
+// prevTraining
+
+const hearAboutInput = id("reference");
+const tncInput = id("t&c");
+
 const occupationDetailsMap = {
   "school-student": {
     label: `Standard and School Name <span class="form-req-label">*</span>`,
@@ -60,85 +98,198 @@ const occupationDetailsMap = {
   },
 };
 
-const photoInput = id("photo");
-const photoLabel = id("photo-label");
-const photoField = id("photo-field");
+// function setDobAttributes() {
+//   const today = new Date();
+//   const minYear = today.getFullYear() - 120; // Minimum age: 120 years
+//   const maxYear = today.getFullYear() - 6 - 1; // Maximum age: 6 years
 
-const aadharInput = id("aadhar");
-const aadharLabel = id("aadhar-label");
-const aadharField = id("aadhar-field");
+//   dobInput.setAttribute("min", `${minYear}-01-01`);
+//   dobInput.setAttribute("max", `${maxYear}-12-31`);
+// }
+// setDobAttributes();
 
-// const pfNameInput = id("parent-first-name");
-// const pmNameInput = id("parent-middle-name");
-// const plNameInput = id("parent-last-name");
+const inputConfig = [
+  {
+    element: fNameInput,
+    changeEvent: "blur",
+    blankErrMsg: "First-Name cannot be blank!",
+  },
+  {
+    element: mNameInput,
+    changeEvent: "blur",
+    blankErrMsg: "Middle Name cannot be blank!",
+  },
+  {
+    element: lNameInput,
+    changeEvent: "blur",
+    blankErrMsg: "Last-Name cannot be blank!",
+  },
 
-// const parentOccupationInput = id("parent-occupation");
+  {
+    element: ageInput,
+    changeEvent: "blur",
+    blankErrMsg: "Age cannot be blank!",
+  },
 
-const contactNoInput = id("contact-no");
-const emailInput = id("email");
-const parentContactNoInput = id("parent-contact-no");
+  {
+    element: monthDobInput,
+    changeEvent: "blur",
+    blankErrMsg: "",
+  },
+  {
+    element: dayDobInput,
+    changeEvent: "blur",
+    blankErrMsg: "",
+  },
+  {
+    element: yearDobInput,
+    changeEvent: "blur",
+    blankErrMsg: "",
+  },
 
-const currAddLine1Input = id("curr-add-line1");
-const currAddLine2Input = id("curr-add-line2");
-const currCityInput = id("curr-city");
-const currStateInput = id("curr-state");
-const currPinInput = id("curr-pincode");
+  {
+    element: genderInput,
+    changeEvent: "blur",
+    blankErrMsg: "Please select your gender!",
+  },
+  {
+    element: empStatusInput,
+    changeEvent: "blur",
+    blankErrMsg: "Please select your employment status!",
+  },
+  {
+    element: occupationInput,
+    changeEvent: "blur",
+    blankErrMsg: "This field cannot be blank!",
+    errMsg: "This field cannot be blank!",
+  },
 
-const perAddLine1Input = id("per-add-line1");
-const perAddLine2Input = id("per-add-line2");
-const perCityInput = id("per-city");
-const perStateInput = id("per-state");
-const perPinInput = id("per-pincode");
+  {
+    element: photoInput,
+    changeEvent: "focusout",
+    blankErrMsg: "Please upload your passport-photo!",
+  },
+  {
+    element: aadharInput,
+    changeEvent: "focusout",
+    blankErrMsg: "Please upload your aadhar-card!",
+  },
 
-const courseInput = id("course");
-const academicQualInput = id("academic-qual");
-// compProficiency
-// relevantSkills
-// prevTraining
+  {
+    element: contactNoInput,
+    changeEvent: "blur",
+    blankErrMsg: "Mobile Number cannot be blank!",
+  },
+  {
+    element: emailInput,
+    changeEvent: "blur",
+    blankErrMsg: "Email cannot be blank!",
+  },
+  {
+    element: parentContactNoInput,
+    changeEvent: "blur",
+    blankErrMsg: "Parent's Mobile Number cannot be blank!",
+  },
 
-const hearAboutInput = id("reference");
-const tncInput = id("t&c");
+  {
+    element: currAddLine1Input,
+    changeEvent: "blur",
+    blankErrMsg: "Apt, Suite Info cannot be blank!",
+  },
+  {
+    element: currAddLine2Input,
+    changeEvent: "blur",
+    blankErrMsg: "Street Address cannot be blank!",
+  },
+  {
+    element: currCityInput,
+    changeEvent: "blur",
+    blankErrMsg: "City cannot be blank!",
+  },
+  {
+    element: currStateInput,
+    changeEvent: "blur",
+    blankErrMsg: "State cannot be blank!",
+  },
+  {
+    element: currPinInput,
+    changeEvent: "blur",
+    blankErrMsg: "PIN Code cannot be blank!",
+  },
 
-let form = id("form");
-let errorMsg = classes("error");
-let successMsg = id("form-success-msg");
-//let successIcon = classes("success-icon");
-//let failureIcon = classes("failure-icon");
+  {
+    element: perAddLine1Input,
+    changeEvent: "blur",
+    blankErrMsg: "Apt, Suite Info cannot be blank!",
+  },
+  {
+    element: perAddLine2Input,
+    changeEvent: "blur",
+    blankErrMsg: "Street Address cannot be blank!",
+  },
+  {
+    element: perCityInput,
+    changeEvent: "blur",
+    blankErrMsg: "City cannot be blank!",
+  },
+  {
+    element: perStateInput,
+    changeEvent: "blur",
+    blankErrMsg: "State cannot be blank!",
+  },
+  {
+    element: perPinInput,
+    changeEvent: "blur",
+    blankErrMsg: "PIN Code cannot be blank!",
+  },
 
-let errorCount = 0;
+  {
+    element: courseInput,
+    changeEvent: "blur",
+    blankErrMsg: "Please select your course!",
+  },
+  {
+    element: academicQualInput,
+    changeEvent: "blur",
+    blankErrMsg: "Academic Qualification cannot be blank!",
+  },
 
-// Add blur event listeners
-fNameInput.addEventListener("blur", () =>
-  check(fNameInput, 0, "First-Name cannot be blank!")
-);
-mNameInput.addEventListener("blur", () =>
-  check(mNameInput, 1, "Middle-Name cannot be blank!")
-);
-lNameInput.addEventListener("blur", () =>
-  check(lNameInput, 2, "Last-Name cannot be blank!")
-);
-ageInput.addEventListener("blur", () =>
-  check(ageInput, 3, "Age cannot be blank!")
-);
-dobInput.addEventListener("blur", () =>
-  check(dobInput, 4, "DOB cannot be blank!")
-);
-genderInput.addEventListener("blur", () =>
-  check(genderInput, 5, "Please select your gender!")
-);
-// genderInput.addEventListener("invalid", function (e) {
-//   e.preventDefault();
-// });
-empStatusInput.addEventListener("blur", () =>
-  check(empStatusInput, 6, "Please select your employment status!")
-);
-// empStatusInput.addEventListener("invalid", function (e) {
-//   e.preventDefault();
-// });
+  {
+    element: hearAboutInput,
+    changeEvent: "blur",
+    blankErrMsg: "This field cannot be blank!",
+  },
+  {
+    element: tncInput,
+    changeEvent: "change",
+    blankErrMsg:
+      "You must accept the terms & conditions to submit an application!",
+  },
+];
+
+inputConfig.forEach((item) => {
+  if (item.element == occupationInput || item.element == tncInput) return;
+  else if (
+    item.element == monthDobInput ||
+    item.element == dayDobInput ||
+    item.element == yearDobInput
+  ) {
+    item.element.addEventListener(item.changeEvent, () => {
+      check(dobInput, item.blankErrMsg);
+    });
+
+    return;
+  }
+
+  item.element.addEventListener(item.changeEvent, () => {
+    check(item.element, item.blankErrMsg);
+  });
+});
+
 empStatusInput.addEventListener("change", () => {
   const selectedValue = empStatusInput.value;
 
-  clearError(occupationInput, 7);
+  clearError(occupationInput);
   clearInput(occupationInput);
 
   if (occupationDetailsMap[selectedValue]) {
@@ -152,7 +303,7 @@ empStatusInput.addEventListener("change", () => {
 
     if (occupationInput.required) {
       occupationInput.addEventListener("blur", () => {
-        check(occupationInput, 7, "This field cannot be blank!");
+        check(occupationInput, "This field cannot be blank!");
       });
     }
   } else {
@@ -162,130 +313,29 @@ empStatusInput.addEventListener("change", () => {
   }
 });
 
-photoInput.addEventListener("focusout", () => {
-  check(photoInput, 8, "Please upload your passport-photo!");
-});
-aadharInput.addEventListener("focusout", () => {
-  check(aadharInput, 9, "Please upload your aadhar-card!");
-});
-
-// pfNameInput.addEventListener("blur", () =>
-//   check(pfNameInput, 10, "Parent's First-Name cannot be blank!")
-// );
-// pmNameInput.addEventListener("blur", () =>
-//   check(pmNameInput, 11, "Parent's Middle-Name cannot be blank!")
-// );
-// plNameInput.addEventListener("blur", () =>
-//   check(plNameInput, 12, "Parent's Last-Name cannot be blank!")
-// );
-// parentOccupationInput.addEventListener("blur", () =>
-//   check(parentOccupationInput, 13, "Parent's Occupation cannot be blank!")
-// );
-
-contactNoInput.addEventListener("blur", () =>
-  check(contactNoInput, 10, "Mobile Number cannot be blank!")
-);
-emailInput.addEventListener("blur", () =>
-  check(emailInput, 11, "Email cannot be blank!")
-);
-parentContactNoInput.addEventListener("blur", () =>
-  check(parentContactNoInput, 12, "Parent's Mobile Number cannot be blank!")
-);
-currAddLine1Input.addEventListener("blur", () =>
-  check(currAddLine1Input, 13, "Apt, Suite Info cannot be blank!")
-);
-currAddLine2Input.addEventListener("blur", () =>
-  check(currAddLine2Input, 14, "Street Address cannot be blank!")
-);
-currCityInput.addEventListener("blur", () =>
-  check(currCityInput, 15, "City cannot be blank!")
-);
-currStateInput.addEventListener("blur", () =>
-  check(currStateInput, 16, "State cannot be blank!")
-);
-// currStateInput.addEventListener("invalid", function (e) {
-//   e.preventDefault();
-// });
-currPinInput.addEventListener("blur", () =>
-  check(currPinInput, 17, "PIN Code cannot be blank!")
-);
-perAddLine1Input.addEventListener("blur", () =>
-  check(perAddLine1Input, 18, "Apt, Suite Info cannot be blank!")
-);
-perAddLine2Input.addEventListener("blur", () =>
-  check(perAddLine2Input, 19, "Street Address cannot be blank!")
-);
-perCityInput.addEventListener("blur", () =>
-  check(perCityInput, 20, "City cannot be blank!")
-);
-perStateInput.addEventListener("blur", () =>
-  check(perStateInput, 21, "State cannot be blank!")
-);
-// perStateInput.addEventListener("invalid", function (e) {
-//   e.preventDefault();
-// });
-perPinInput.addEventListener("blur", () =>
-  check(perPinInput, 22, "PIN Code cannot be blank!")
-);
-
-courseInput.addEventListener("blur", () =>
-  check(courseInput, 23, "Course Name cannot be blank!")
-);
-academicQualInput.addEventListener("blur", () =>
-  check(academicQualInput, 24, "Academic Qualification cannot be blank!")
-);
-
-hearAboutInput.addEventListener("blur", () =>
-  check(hearAboutInput, 28, "This field cannot be blank!")
-);
+let errorCount = 0;
 
 form.addEventListener("submit", (e) => {
   errorCount = 0;
 
-  if (fNameInput.validity.valueMissing) {
-    console.log("missing");
-    fNameInput.setCustomValidity("");
-  }
+  inputConfig.forEach((item) => {
+    if (item.element == occupationInput) {
+      if (occupationInput.required) {
+        check(occupationInput, "This field cannot be blank!");
+      }
 
-  check(fNameInput, 0, "First-Name cannot be blank!");
-  check(mNameInput, 1, "Middle-Name cannot be blank!");
-  check(lNameInput, 2, "Last-Name cannot be blank!");
-  check(ageInput, 3, "Age cannot be blank!");
-  check(dobInput, 4, "DOB cannot be blank!");
-  check(genderInput, 5, "Please select your gender!");
-  check(empStatusInput, 6, "Please select your employment status!");
-  if (occupationInput.required) {
-    check(occupationInput, 7, "This field cannot be blank!");
-  }
-  check(photoInput, 8, "Please upload your passport-photo!");
-  check(aadharInput, 9, "Please upload your aadhar-card!");
+      return;
+    } else if (
+      item.element == monthDobInput ||
+      item.element == dayDobInput ||
+      item.element == yearDobInput
+    ) {
+      check(dobInput, item.blankErrMsg);
+      return;
+    }
 
-  // check(pfNameInput, 10, "Parent's First-Name cannot be blank!");
-  // check(pmNameInput, 11, "Parent's Middle-Name cannot be blank!");
-  // check(plNameInput, 12, "Parent's Last-Name cannot be blank!");
-  // check(parentOccupationInput, 13, "Parent's Occupation cannot be blank!");
-
-  check(contactNoInput, 10, "Mobile Number cannot be blank!");
-  check(emailInput, 11, "Email cannot be blank!");
-  check(parentContactNoInput, 12, "Parent's Mobile Number cannot be blank!");
-
-  check(currAddLine1Input, 13, "Apt, Suite Info cannot be blank!");
-  check(currCityInput, 14, "Street Address cannot be blank!");
-  check(currAddLine2Input, 15, "Street Address cannot be blank!");
-  check(currStateInput, 16, "State cannot be blank!");
-  check(currPinInput, 17, "PIN Code cannot be blank!");
-
-  check(perAddLine1Input, 18, "Apt, Suite Info cannot be blank!");
-  check(perAddLine2Input, 19, "Street Address cannot be blank!");
-  check(perCityInput, 20, "City cannot be blank!");
-  check(perStateInput, 21, "State cannot be blank!");
-  check(perPinInput, 22, "PIN Code cannot be blank!");
-
-  check(courseInput, 23, "Course Name cannot be blank!");
-  check(academicQualInput, 24, "Academic Qualification cannot be blank!");
-
-  check(hearAboutInput, 28, "This field cannot be blank!");
-  check(tncInput, 29, "");
+    check(item.element, item.blankErrMsg);
+  });
 
   if (errorCount > 0) {
     e.preventDefault();
@@ -301,123 +351,125 @@ function onSuccessfulSubmission() {
   successMsg.classList.add("flex");
 }
 
-let check = (id, serial, message) => {
-  if (serial === 8 && serial === 9) {
+let check = (element, errMsg) => {
+  if (element === photoInput) {
     let response;
 
-    switch (serial) {
-      case 8:
-        response = validatePassportPhoto(id);
-        break;
-      case 9:
-        response = validateAadharCard(id);
-        break;
-      default:
-        response = true;
-        break;
-    }
+    response = validateAadharCard(element);
 
     if (response == true) {
-      showValidInputIndication(id, serial);
+      showValidInputIndication(element);
 
-      if (serial === 8) {
-        photoLabel.innerText = `${id.files[0].name}`;
-        photoLabel.classList.remove(`file-upload-text`);
-      } else if (serial === 9) {
-        aadharLabel.innerText = `${id.files[0].name}`;
-        aadharLabel.classList.remove(`file-upload-text`);
-      }
+      photoLabel.innerText = `${element.files[0].name}`;
+      photoLabel.classList.remove(`file-upload-text`);
     } else {
-      showInvalidInputIndication(id, serial, response);
+      showInvalidInputIndication(element, response);
 
-      if (serial === 8) {
-        photoLabel.innerText = `Upload your passport-sized photo (png/jpeg/jpg)`;
-        photoLabel.classList.add(`file-upload-text`);
-      } else if (serial === 9) {
-        aadharLabel.innerText = `Upload your passport-sized photo (png/jpeg/jpg)`;
-        aadharLabel.classList.add(`file-upload-text`);
-      }
+      photoLabel.innerText = `Upload your passport-sized photo (png/jpeg/jpg)`;
+      photoLabel.classList.add(`file-upload-text`);
+    }
+
+    return;
+  } else if (element === aadharInput) {
+    let response;
+
+    response = validateAadharCard(element);
+
+    if (response == true) {
+      showValidInputIndication(element);
+
+      aadharLabel.innerText = `${element.files[0].name}`;
+      aadharLabel.classList.remove(`file-upload-text`);
+    } else {
+      showInvalidInputIndication(element, response);
+
+      aadharLabel.innerText = `Upload your scanned copy of aadhar card (pdf)`;
+      aadharLabel.classList.add(`file-upload-text`);
+    }
+
+    return;
+  } else if (element === dobInput) {
+    let response = validateDOB(element);
+
+    if (response == true) {
+      showValidInputIndication(element);
+    } else {
+      showInvalidInputIndication(element, response);
     }
 
     return;
   }
 
-  if (id.value.trim() === "") {
-    if (18 <= serial && serial <= 22) {
-      clearError(id, serial);
+  if (element.value.trim() === "") {
+    if (
+      element === perAddLine1Input ||
+      element === perAddLine2Input ||
+      element === perCityInput ||
+      element === perStateInput ||
+      element === perPinInput
+    ) {
+      clearError(element);
       return;
     }
 
-    showInvalidInputIndication(id, serial, message);
+    showInvalidInputIndication(element, errMsg);
   } else {
     let response;
 
-    switch (serial) {
-      case 0:
-      case 1:
-      case 2:
-        // case 10:
-        // case 11:
-        // case 12:
-        response = validateName(id, serial);
+    switch (element) {
+      case fNameInput:
+      case mNameInput:
+      case lNameInput:
+        response = validateName(element);
         break;
-      case 3:
-        response = validateAge(id);
+      case ageInput:
+        response = validateAge(element);
         break;
-      case 4:
-        response = validateDOB(id);
+      case genderInput:
+        response = validateGender(element);
         break;
-      case 5:
-        response = validateGender(id);
+      case empStatusInput:
+        response = validateEmpStatus(element);
         break;
-      case 6:
-        response = validateEmpStatus(id);
+      case occupationInput:
+        response = validateOccupation(element);
         break;
-      case 7:
-        response = validateOccupation(id);
+      case contactNoInput:
+      case parentContactNoInput:
+        response = validateMobileNo(element);
         break;
-      case 8:
-        response = validatePassportPhoto(id);
+      case emailInput:
+        response = validateEmail(element);
         break;
-      case 9:
-        response = validateAadharCard(id);
+      case currAddLine1Input:
+      case currAddLine2Input:
+      case perAddLine1Input:
+      case perAddLine2Input:
+        response = validateAddLine(element);
         break;
-      case 10:
-      case 12:
-        response = validateMobileNo(id);
+      case currCityInput:
+      case perCityInput:
+        response = validateCity(element);
         break;
-      case 11:
-        response = validateEmail(id);
+      case currStateInput:
+      case perStateInput:
+        response = validateState(element);
         break;
-      case 13:
-      case 14:
-      case 18:
-      case 19:
-        response = validateAddLine(id);
+      case currPinInput:
+      case perStateInput:
+        response = validatePin(element);
         break;
-      case 15:
-      case 20:
-        response = validateCity(id);
+      case courseInput:
+        response = validateCourse(element);
         break;
-      case 16:
-      case 21:
-        response = validateState(id);
+      case academicQualInput:
+        response = validateAcademicQualification(element);
         break;
-      case 17:
-      case 22:
-        response = validatePin(id);
+      case hearAboutInput:
+        response = validateHearAboutInfo(element);
         break;
-      case 23:
-        response = validateCourse(id);
-        break;
-      case 24:
-        response = validateAcademicQualification(id);
-        break;
-      case 28:
-        response = validateHearAboutInfo(id);
-        break;
-      case 29:
-        response = validateTnc(id);
+      case tncInput:
+        response = validateTnc(element);
         break;
       default:
         response = true;
@@ -425,9 +477,9 @@ let check = (id, serial, message) => {
     }
 
     if (response == true) {
-      showValidInputIndication(id, serial);
+      showValidInputIndication(element);
     } else {
-      showInvalidInputIndication(id, serial, response);
+      showInvalidInputIndication(element, response);
     }
   }
 };
@@ -436,30 +488,48 @@ function clearInput(id) {
   id.value = "";
 }
 
-function clearError(id, serial) {
-  if (serial === 8) {
+function clearError(id) {
+  if (id === photoInput) {
     id = photoField;
-  } else if (serial === 9) {
+  } else if (id === aadharInput) {
     id = aadharField;
   }
 
-  errorMsg[serial].innerHTML = "";
+  const errorDiv = id.closest(".form-field").querySelector(".error");
+  errorDiv.innerText = "";
 
   id.classList.remove("border-2");
   id.classList.remove("border-font-color-green");
   id.classList.remove("border-font-color-red-dark");
 }
 
-function showInvalidInputIndication(id, serial, msg) {
-  if (serial === 8) {
+function showInvalidInputIndication(id, msg) {
+  if (id === photoInput) {
     id = photoField;
-  } else if (serial === 9) {
+  } else if (id === aadharInput) {
     id = aadharField;
   }
 
-  errorMsg[serial].innerHTML = msg;
+  const errorDiv = id.closest(".form-field").querySelector(".error");
+  errorDiv.innerText = msg;
 
   errorCount++;
+
+  if (id === dobInput) {
+    let fields = [monthDobInput, dayDobInput, yearDobInput];
+
+    for (let i = 0; i < fields.length; i++) {
+      fields[i].classList.remove("border-font-color-green");
+
+      if (!fields[i].classList.contains("border-2")) {
+        fields[i].classList.add("border-2");
+      }
+
+      fields[i].classList.add("border-font-color-red-dark");
+    }
+
+    return;
+  }
 
   id.classList.remove("border-font-color-green");
 
@@ -467,24 +537,34 @@ function showInvalidInputIndication(id, serial, msg) {
     id.classList.add("border-2");
   }
 
-  // id.classList.add("outline-2");
-  // id.classList.add("outline-font-color-red-dark");
-
-  // if (!id.classList.contains("rounded-md")) {
-  //   id.classList.add("rounded-md");
-  // }
-
   id.classList.add("border-font-color-red-dark");
 }
 
-function showValidInputIndication(id, serial) {
-  if (serial === 8) {
+function showValidInputIndication(id) {
+  if (id === photoInput) {
     id = photoField;
-  } else if (serial === 9) {
+  } else if (id === aadharInput) {
     id = aadharField;
   }
 
-  errorMsg[serial].innerHTML = "";
+  const errorDiv = id.closest(".form-field").querySelector(".error");
+  errorDiv.innerText = "";
+
+  if (id === dobInput) {
+    let fields = [monthDobInput, dayDobInput, yearDobInput];
+
+    for (let i = 0; i < fields.length; i++) {
+      fields[i].classList.remove("border-font-color-red-dark");
+
+      if (!fields[i].classList.contains("border-2")) {
+        fields[i].classList.add("border-2");
+      }
+
+      fields[i].classList.add("border-font-color-green");
+    }
+
+    return;
+  }
 
   id.classList.remove("border-font-color-red-dark");
 
@@ -492,34 +572,21 @@ function showValidInputIndication(id, serial) {
     id.classList.add("border-2");
   }
 
-  // id.classList.remove("outline-2");
-  // id.classList.remove("outline-font-color-red-dark");
-
-  // if (!id.classList.contains("rounded-md")) {
-  //   id.classList.add("rounded-md");
-  // }
-
   id.classList.add("border-font-color-green");
 }
 
-function validateName(id, serial) {
+function validateName(id) {
   const valueWithoutSpaces = id.value.replace(/\s/g, "");
 
   if (valueWithoutSpaces.length < 2) {
     let nameStr = "Name";
 
-    if (serial === 0) {
+    if (id === fNameInput) {
       nameStr = "First-Name";
-    } else if (serial === 1) {
+    } else if (id === mNameInput) {
       nameStr = "Middle-Name";
-    } else if (serial === 2) {
+    } else if (id === lNameInput) {
       nameStr = "Last-Name";
-    } else if (serial === 10) {
-      nameStr = "Parent's First-Name";
-    } else if (serial === 11) {
-      nameStr = "Parent's Middle-Name";
-    } else if (serial === 12) {
-      nameStr = "Parent's Last-Name";
     }
 
     return `${nameStr} must be atleast 2 characters long!`;
@@ -537,24 +604,44 @@ function validateAge(id) {
 }
 
 function validateDOB(id) {
-  const dob = new Date(id.value); // Convert input to Date
+  console.log("validateDOB called");
+
+  const month = monthDobInput.value;
+  const date = dayDobInput.value;
+  const year = yearDobInput.value;
+
+  console.log(month, date, year);
+
+  if (!month || !date || !year) {
+    return "Please fill in all date of birth fields!";
+  }
+
+  const monthNumber = new Date(`${month} 1, 2000`).getMonth();
+
+  const dob = new Date(year, monthNumber, date);
   const today = new Date();
 
-  // Check if valid date
-  if (isNaN(dob.getTime())) {
+  console.log(dob, today);
+
+  if (
+    isNaN(dob.getTime()) ||
+    dob.getDate() != date ||
+    dob.getMonth() != monthNumber
+  ) {
     return "Please enter a valid date of birth!";
   }
 
-  // Calculate age
   const age = today.getFullYear() - dob.getFullYear();
   const monthDiff = today.getMonth() - dob.getMonth();
   const dayDiff = today.getDate() - dob.getDate();
 
-  // Adjust age if birth date hasn't occurred yet this year
+  console.log(age, monthDiff, dayDiff);
+
   const adjustedAge =
     age - (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? 1 : 0);
 
-  // Validate age range
+  console.log(adjustedAge);
+
   if (adjustedAge < 6 || adjustedAge > 120) {
     return "Age must be between 6 and 120 years!";
   }
@@ -586,13 +673,11 @@ function validatePassportPhoto(id) {
     return "Please upload your passport-photo!";
   }
 
-  // Validate file type
   const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
   if (!allowedTypes.includes(file.type)) {
     return "Invalid file type. Only PNG, JPEG, and JPG formats are allowed.";
   }
 
-  // Validate file size (optional, e.g., max 2MB)
   const maxSizeInMB = 2;
   if (file.size > maxSizeInMB * 1024 * 1024) {
     return `File size exceeds ${maxSizeInMB}MB. Please upload a smaller file.`;
@@ -608,14 +693,12 @@ function validateAadharCard(id) {
     return "Please upload your aadhar-card!";
   }
 
-  // Validate file type
   const allowedTypes = ["application/pdf"];
   console.log(file.type);
   if (!allowedTypes.includes(file.type)) {
     return "Invalid file type. Only PDF format is allowed.";
   }
 
-  // Validate file size (optional, e.g., max 2MB)
   const maxSizeInMB = 2;
   if (file.size > maxSizeInMB * 1024 * 1024) {
     return `File size exceeds ${maxSizeInMB}MB. Please upload a smaller file.`;
@@ -645,8 +728,6 @@ function validateEmail(id) {
 }
 
 function validateAddLine(id) {
-  // const valueWithoutSpaces = id.value.replace(/\s/g, "");
-
   if (id.value.length > 100) {
     if (id === "currAddLine1Input") {
       return "Apt/Suite info cannot exceed 100 characters.";

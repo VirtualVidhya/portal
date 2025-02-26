@@ -595,7 +595,7 @@
   }
 
   .form-sublabel {
-    @apply font-normal text-sm mb-1;
+    @apply font-normal text-sm;
   }
 
   .form-req-label {
