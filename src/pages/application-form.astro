@@ -60,7 +60,7 @@ const metadata = {
             >
 
             <div class="flex flex-col gap-3">
-              <div class="w-full">
+              <div class="w-full form-field">
                 <label class="form-sublabel">First Name</label>
                 <input
                   id="first-name"
@@ -73,7 +73,7 @@ const metadata = {
                 <div class="error text-font-color-red-dark"></div>
               </div>
 
-              <div class="w-full">
+              <div class="w-full form-field">
                 <label class="form-sublabel">Middle Name</label>
                 <input
                   id="middle-name"
@@ -85,7 +85,7 @@ const metadata = {
                 <div class="error text-font-color-red-dark"></div>
               </div>
 
-              <div class="w-full">
+              <div class="w-full form-field">
                 <label class="form-sublabel">Last Name</label>
                 <input
                   id="last-name"
@@ -102,7 +102,7 @@ const metadata = {
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="age" class="form-label"
               >Age <span class="form-req-label">*</span></label
             >
@@ -120,24 +120,86 @@ const metadata = {
             <div class="error text-font-color-red-dark"></div>
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="dob" class="form-label"
               >Date of Birth <span class="form-req-label">*</span></label
             >
-            <input
+
+            <div class="flex flex-row gap-4" id="dob">
+              <div class="flex flex-col w-1/3">
+                <label for="age" class="form-sublabel">Month</label>
+
+                <div class="relative">
+                  <select
+                    id="month-dob"
+                    name="month-dob"
+                    class="form-fieldbox"
+                    required
+                  >
+                    <option value="" selected disabled>Select month</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                  </select>
+                  <FormArrow topMargin={8 / 25} />
+                </div>
+
+                <!-- <div class="error text-font-color-red-dark"></div> -->
+              </div>
+
+              <div class="flex flex-col w-1/3">
+                <label for="age" class="form-sublabel">Day</label>
+                <input
+                  id="day-dob"
+                  name="day-dob"
+                  class="form-fieldbox"
+                  inputmode="numeric"
+                  type="number"
+                  placeholder="Enter date"
+                  required
+                />
+
+                <!-- <div class="error text-font-color-red-dark"></div> -->
+              </div>
+
+              <div class="flex flex-col w-1/3">
+                <label for="age" class="form-sublabel">Year</label>
+                <input
+                  id="year-dob"
+                  name="year-dob"
+                  class="form-fieldbox"
+                  inputmode="numeric"
+                  type="number"
+                  placeholder="Enter year"
+                  required
+                />
+
+                <!-- <div class="error text-font-color-red-dark"></div> -->
+              </div>
+            </div>
+
+            <!-- <input
               id="dob"
               name="dob"
               class="form-fieldbox"
               type="date"
-              placeholder="Enter your date of birth"
               required
-            />
+            /> -->
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
             <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
-            <div class="error text-font-color-red-dark"></div>
+            <div class="mt-1 error text-font-color-red-dark"></div>
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="gender" class="form-label"
               >Gender <span class="form-req-label">*</span></label
             >
@@ -148,7 +210,7 @@ const metadata = {
                 <option value="male">Male</option>
                 <option value="other">Other</option>
               </select>
-              <FormArrow />
+              <FormArrow topMargin={8 / 25} />
             </div>
 
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
@@ -156,7 +218,7 @@ const metadata = {
             <div class="error text-font-color-red-dark"></div>
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="employment-status" class="form-label"
               >Employment Status <span class="form-req-label">*</span></label
             >
@@ -184,7 +246,7 @@ const metadata = {
                 <option value="homemaker">Homemaker</option>
                 <option value="retired">Retired</option>
               </select>
-              <FormArrow />
+              <FormArrow topMargin={8 / 25} />
             </div>
 
             <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
@@ -193,7 +255,7 @@ const metadata = {
           </div>
 
           <div
-            class="flex flex-col w-4/5"
+            class="flex flex-col w-4/5 form-field"
             id="occupation-field"
             style="display: none;"
           >
@@ -226,7 +288,7 @@ const metadata = {
             <!-- <div class="error text-font-color-red-dark"></div> -->
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label class="form-label"
               >Passport Photo <span class="form-req-label">*</span><br /><span
                 class="text-base font-normal"
@@ -254,7 +316,7 @@ const metadata = {
             <div class="error text-font-color-red-dark"></div>
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label class="form-label"
               >Aadhar Card <span class="form-req-label">*</span><br /><span
                 class="text-base font-normal"
@@ -343,7 +405,7 @@ const metadata = {
         <fieldset class="form-fieldset">
           <legend class="app-form-legend">Contact Details</legend>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="contact-no" class="form-label"
               >Mobile Number <span class="form-req-label">*</span><br /><span
                 class="text-base font-normal"
@@ -365,7 +427,7 @@ const metadata = {
             <div class="error text-font-color-red-dark"></div>
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="email" class="form-label"
               >Email ID <span class="form-req-label">*</span><br /><span
                 class="text-base font-normal"
@@ -386,7 +448,7 @@ const metadata = {
             <div class="error text-font-color-red-dark"></div>
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="parent-contact-no" class="form-label"
               >Emergency Contact Number <span class="form-req-label">*</span><br
               /><span class="text-base font-normal"
@@ -413,7 +475,7 @@ const metadata = {
             >
 
             <div class="flex flex-col gap-[6px]">
-              <div class="w-full">
+              <div class="w-full form-field">
                 <label for="curr-add-line1" class="form-sublabel"
                   >Apt, Suite etc. info</label
                 >
@@ -427,7 +489,8 @@ const metadata = {
                 />
                 <div class="error text-font-color-red-dark"></div>
               </div>
-              <div class="w-full">
+
+              <div class="w-full form-field">
                 <label for="curr-add-line2" class="form-sublabel">Street</label>
                 <input
                   id="curr-add-line2"
@@ -439,7 +502,8 @@ const metadata = {
                 />
                 <div class="error text-font-color-red-dark"></div>
               </div>
-              <div class="w-full">
+
+              <div class="w-full form-field">
                 <label for="curr-city" class="form-sublabel">City</label>
                 <input
                   id="curr-city"
@@ -453,7 +517,8 @@ const metadata = {
                 />
                 <div class="error text-font-color-red-dark"></div>
               </div>
-              <div class="w-full">
+
+              <div class="w-full form-field">
                 <label for="curr-state" class="form-sublabel">State</label>
 
                 <div class="relative">
@@ -463,7 +528,8 @@ const metadata = {
                     class="form-fieldbox"
                     required
                   >
-                    <option value="" selected disabled>Select your state</option>
+                    <option value="" selected disabled>Select your state</option
+                    >
                     <option value="Andhra Pradesh">Andhra Pradesh</option>
                     <option value="Arunachal Pradesh">Arunachal Pradesh</option>
                     <option value="Assam">Assam</option>
@@ -504,12 +570,13 @@ const metadata = {
                     <option value="Lakshadweep">Lakshadweep</option>
                     <option value="Puducherry">Puducherry</option>
                   </select>
-                  <FormArrow />
+                  <FormArrow topMargin={8 / 25} />
                 </div>
 
                 <div class="error text-font-color-red-dark"></div>
               </div>
-              <div class="w-full">
+
+              <div class="w-full form-field">
                 <label for="curr-pincode" class="form-sublabel">PIN Code</label>
                 <input
                   id="curr-pincode"
@@ -537,7 +604,7 @@ const metadata = {
             >
 
             <div class="flex flex-col gap-[6px]">
-              <div class="w-full">
+              <div class="w-full form-field">
                 <label class="form-sublabel">Apt, Suite etc. info</label>
                 <input
                   id="per-add-line1"
@@ -548,7 +615,8 @@ const metadata = {
                 />
                 <div class="error text-font-color-red-dark"></div>
               </div>
-              <div class="w-full">
+
+              <div class="w-full form-field">
                 <label class="form-sublabel">Street</label>
                 <input
                   id="per-add-line2"
@@ -559,7 +627,8 @@ const metadata = {
                 />
                 <div class="error text-font-color-red-dark"></div>
               </div>
-              <div class="w-full">
+
+              <div class="w-full form-field">
                 <label class="form-sublabel">City</label>
                 <input
                   id="per-city"
@@ -570,7 +639,8 @@ const metadata = {
                 />
                 <div class="error text-font-color-red-dark"></div>
               </div>
-              <div class="w-full">
+
+              <div class="w-full form-field">
                 <label class="form-sublabel">State</label>
 
                 <div class="relative">
@@ -580,7 +650,8 @@ const metadata = {
                     class="form-fieldbox"
                     required
                   >
-                    <option value="" selected disabled>Select your state</option>
+                    <option value="" selected disabled>Select your state</option
+                    >
                     <option value="Andhra Pradesh">Andhra Pradesh</option>
                     <option value="Arunachal Pradesh">Arunachal Pradesh</option>
                     <option value="Assam">Assam</option>
@@ -621,12 +692,13 @@ const metadata = {
                     <option value="Lakshadweep">Lakshadweep</option>
                     <option value="Puducherry">Puducherry</option>
                   </select>
-                  <FormArrow />
+                  <FormArrow topMargin={8 / 25} />
                 </div>
 
                 <div class="error text-font-color-red-dark"></div>
               </div>
-              <div class="w-full">
+
+              <div class="w-full form-field">
                 <label class="form-sublabel">PIN Code</label>
                 <input
                   id="per-pincode"
@@ -656,7 +728,7 @@ const metadata = {
         <fieldset class="form-fieldset">
           <legend class="app-form-legend">Course Details</legend>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="course" class="form-label"
               >Course Name <span class="form-req-label">*</span></label
             >
@@ -670,7 +742,7 @@ const metadata = {
                 list="course-list"
                 required
               />
-              <FormArrow />
+              <FormArrow topMargin={8 / 25} />
               <datalist id="course-list">
                 <option value="Graphics Design">Graphics Design</option>
                 <option value="Video Editing">Video Editing</option>
@@ -722,7 +794,7 @@ const metadata = {
             <div class="error text-font-color-red-dark"></div>
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="academic-qual" class="form-label"
               >Academic Qualification <span class="form-req-label">*</span
               ></label
@@ -737,7 +809,7 @@ const metadata = {
                 list="academic-qual-list"
                 required
               />
-              <FormArrow />
+              <FormArrow topMargin={8 / 25} />
               <datalist id="academic-qual-list">
                 <option value="Primary Schooling (Class 1-5)"
                   >Primary Schooling (Class 1-5)</option
@@ -833,7 +905,7 @@ const metadata = {
             <div class="error text-font-color-red-dark"></div>
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="comp-proficiency" class="form-label"
               >Computer Proficiency<br /><span class="text-base font-normal"
                 >(Select all that apply.)</span
@@ -875,7 +947,7 @@ const metadata = {
             <div class="error text-font-color-red-dark"></div>
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="rel-skills" class="form-label"
               >Skills Relevant to the Course</label
             >
@@ -891,7 +963,7 @@ const metadata = {
             <div class="error text-font-color-red-dark"></div>
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="prev-training" class="form-label"
               >Previous Training related to the similar course</label
             >
@@ -1058,7 +1130,7 @@ const metadata = {
         <fieldset class="form-fieldset">
           <legend class="app-form-legend">Extra Details</legend>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label for="reference" class="form-label"
               >How did you hear about us? <span class="form-req-label">*</span
               ></label
@@ -1076,7 +1148,7 @@ const metadata = {
             <div class="error text-font-color-red-dark"></div>
           </div>
 
-          <div class="flex flex-col w-4/5">
+          <div class="flex flex-col w-4/5 form-field">
             <label class="form-label"
               >T&C <span class="form-req-label"> *</span></label
             >
