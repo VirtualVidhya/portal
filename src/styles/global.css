@@ -587,7 +587,7 @@
   }
 
   .app-form-legend {
-    @apply text-center text-font-color-green text-xl md:text-3xl font-extrabold mb-4 md:mb-6;
+    @apply w-full flex justify-center items-center text-font-color-green text-xl md:text-3xl font-extrabold mb-4 md:mb-6;
   }
 
   .form-label {
