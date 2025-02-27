@@ -166,12 +166,12 @@ const inputConfig = [
 
   {
     element: photoInput,
-    changeEvent: "focusout",
+    changeEvent: "blur",
     blankErrMsg: "Please upload your passport-photo!",
   },
   {
     element: aadharInput,
-    changeEvent: "focusout",
+    changeEvent: "blur",
     blankErrMsg: "Please upload your aadhar-card!",
   },
 
@@ -355,7 +355,7 @@ let check = (element, errMsg) => {
   if (element === photoInput) {
     let response;
 
-    response = validateAadharCard(element);
+    response = validatePassportPhoto(element);
 
     if (response == true) {
       showValidInputIndication(element);
