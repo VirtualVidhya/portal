@@ -38,9 +38,9 @@ const metadata = {
       <form
         name="contact"
         method="POST"
-        action="/api/submit-app-form"
         id="form"
-        action="_blank"
+        action="/api/submit-app-form"
+        enctype="multipart/form-data"
         autocomplete="off"
         novalidate
         class="flex flex-col items-center justify-center gap-20 mx-auto py-10 md:py-20 border-solid border-2 border-b-6 rounded-xl bg-navbar-color-pri"
@@ -284,11 +284,19 @@ const metadata = {
 
           <div class="flex flex-col w-4/5 form-field">
             <label class="form-label"
-              >Passport Photo <span class="form-req-label">*</span><br /><span
+              >Passport Photo <span class="form-req-label">*</span>
+              <!-- <br /><span
                 class="text-base font-normal"
                 >(Allowed File Types: png/jpeg/jpg & File Size Limit: 500KB)</span
-              ></label
-            >
+              > -->
+              <br />
+              <ul
+                class="form-file-info text-base font-normal inline-flex gap-x-8 pl-3 md:pl-0 list-outside md:list-inside flex-wrap"
+              >
+                <li>Allowed File Types: png/jpeg/jpg</li>
+                <li>File Size Limit: 500KB</li>
+              </ul>
+            </label>
             <div class="relative form-fieldbox" id="photo-field">
               <label
                 id="photo-label"
@@ -311,11 +319,19 @@ const metadata = {
 
           <div class="flex flex-col w-4/5 form-field">
             <label class="form-label"
-              >Aadhar Card <span class="form-req-label">*</span><br /><span
+              >Aadhar Card <span class="form-req-label">*</span>
+              <!-- <br /><span
                 class="text-base font-normal"
                 >(Allowed File Types: pdf & File Size Limit: 1MB)</span
-              ></label
-            >
+              > -->
+              <br />
+              <ul
+                class="form-file-info text-base font-normal inline-flex gap-x-8 pl-3 md:pl-0 list-outside md:list-inside flex-wrap"
+              >
+                <li>Allowed File Types: pdf</li>
+                <li>File Size Limit: 1MB</li>
+              </ul>
+            </label>
             <div class="relative form-fieldbox" id="aadhar-field">
               <label
                 id="aadhar-label"
@@ -1204,7 +1220,7 @@ const metadata = {
         Thank you!
       </h2>
       <p class="text-lg text-center">
-        Your response has been submitted successfully.
+        Your application has been submitted successfully.
       </p>
       <p class="font-bold text-center">Our team will contact you soon.</p>
     </div>

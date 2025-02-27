@@ -569,7 +569,7 @@
 
   .form-submit-btn {
     /* @apply transition-all text-font-color-white bg-font-color-green px-6 py-3 font-bold rounded-md hover:text-font-color-pri focus:text-font-color-pri active:text-font-color-pri; */
-    @apply transition-all text-font-color-white bg-font-color-green px-6 py-3 font-bold rounded-md hover:text-font-color-pri active:text-font-color-pri;
+    @apply transition-all cursor-pointer text-font-color-white bg-font-color-green px-6 py-3 font-bold rounded-md hover:text-font-color-pri active:text-font-color-pri;
   }
 
   .form-submit-btn.touch {
@@ -649,5 +649,9 @@
 
   input[type="file"]::file-selector-button {
     @apply w-full;
+  }
+
+  .form-file-info {
+    list-style-type: "• ";
   }
 }
