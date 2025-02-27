@@ -699,9 +699,9 @@ function validatePassportPhoto(id) {
     return "Invalid file type. Only PNG, JPEG, and JPG formats are allowed.";
   }
 
-  const maxSizeInMB = 2;
-  if (file.size > maxSizeInMB * 1024 * 1024) {
-    return `File size exceeds ${maxSizeInMB}MB. Please upload a smaller file.`;
+  const maxSizeInKB = 500;
+  if (file.size > maxSizeInKB * 1024) {
+    return `File size exceeds ${maxSizeInKB}KB. Please upload a smaller file.`;
   }
 
   return true;
@@ -720,7 +720,7 @@ function validateAadharCard(id) {
     return "Invalid file type. Only PDF format is allowed.";
   }
 
-  const maxSizeInMB = 2;
+  const maxSizeInMB = 1;
   if (file.size > maxSizeInMB * 1024 * 1024) {
     return `File size exceeds ${maxSizeInMB}MB. Please upload a smaller file.`;
   }
