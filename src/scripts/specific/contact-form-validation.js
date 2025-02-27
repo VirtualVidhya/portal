@@ -279,6 +279,16 @@ inputConfig.forEach((item) => {
     });
 
     return;
+  } else if (item.element == photoInput || item.element == aadharInput) {
+    item.element.addEventListener(item.changeEvent, () => {
+      check(item.element, item.blankErrMsg);
+    });
+
+    item.element.addEventListener("change", () => {
+      check(item.element, item.blankErrMsg);
+    });
+
+    return;
   }
 
   item.element.addEventListener(item.changeEvent, () => {
@@ -323,7 +333,6 @@ form.addEventListener("submit", (e) => {
       if (occupationInput.required) {
         check(occupationInput, "This field cannot be blank!");
       }
-
       return;
     } else if (
       item.element == monthDobInput ||
@@ -353,9 +362,12 @@ function onSuccessfulSubmission() {
 
 let check = (element, errMsg) => {
   if (element === photoInput) {
+    console.log("checking for photoInput");
     let response;
 
     response = validatePassportPhoto(element);
+
+    console.log("photoInput response: ", response);
 
     if (response == true) {
       showValidInputIndication(element);
@@ -368,6 +380,8 @@ let check = (element, errMsg) => {
       photoLabel.innerText = `Upload your passport-sized photo (png/jpeg/jpg)`;
       photoLabel.classList.add(`file-upload-text`);
     }
+
+    console.log("Updated photoLabel: ", photoLabel.innerText);
 
     return;
   } else if (element === aadharInput) {
@@ -506,6 +520,7 @@ function clearError(id) {
 function showInvalidInputIndication(id, msg) {
   if (id === photoInput) {
     id = photoField;
+    console.log("showing error for photoInput");
   } else if (id === aadharInput) {
     id = aadharField;
   }
@@ -538,11 +553,14 @@ function showInvalidInputIndication(id, msg) {
   }
 
   id.classList.add("border-font-color-red-dark");
+
+  console.log(id.classList);
 }
 
 function showValidInputIndication(id) {
   if (id === photoInput) {
     id = photoField;
+    console.log("showing success for photoInput");
   } else if (id === aadharInput) {
     id = aadharField;
   }
@@ -573,6 +591,8 @@ function showValidInputIndication(id) {
   }
 
   id.classList.add("border-font-color-green");
+
+  console.log(id.classList);
 }
 
 function validateName(id) {
