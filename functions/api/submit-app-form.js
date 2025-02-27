@@ -7,6 +7,8 @@ async function storeInSupabase(env, formData) {
   const supabaseUrl = env.SUPABASE_URL;
   const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY;
 
+  console.log(supabaseUrl, supabaseKey);
+
   const response = await fetch(`${supabaseUrl}/rest/v1/applications`, {
     method: "POST",
     headers: {
@@ -51,6 +53,7 @@ async function storeInSupabase(env, formData) {
   });
 
   if (!response.ok) {
+    console.log("Failed Response");
     console.error("Supabase Insert Error:", await response.text());
     throw new Error("Failed to store inquiry in Supabase");
   }
@@ -89,7 +92,7 @@ export async function onRequestPost(context) {
       }
     }
 
-    // console.log("Form Data:", output);
+    console.log("Form Data:", output);
 
     const honeypot = output.address;
 
