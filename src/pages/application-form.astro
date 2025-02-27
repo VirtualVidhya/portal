@@ -35,16 +35,10 @@ const metadata = {
         Application Form
       </h2>
 
-      <!-- <form
-        name="contact"
-        method="POST"
-        id="form"
-        action="/api/submit-contact-form"
-        class="flex flex-col items-center justify-center gap-20 mx-auto py-10 md:py-20 border-solid border-2 border-b-6 rounded-xl bg-navbar-color-pri"
-      > -->
       <form
         name="contact"
         method="POST"
+        action="/api/submit-app-form"
         id="form"
         action="_blank"
         autocomplete="off"
@@ -127,6 +121,21 @@ const metadata = {
 
             <div class="flex flex-row gap-4" id="dob">
               <div class="flex flex-col w-1/3">
+                <label for="age" class="form-sublabel">Day</label>
+                <input
+                  id="day-dob"
+                  name="day-dob"
+                  class="form-fieldbox"
+                  inputmode="numeric"
+                  type="number"
+                  placeholder="Enter day"
+                  required
+                />
+
+                <!-- <div class="error text-font-color-red-dark"></div> -->
+              </div>
+
+              <div class="flex flex-col w-1/3">
                 <label for="age" class="form-sublabel">Month</label>
 
                 <div class="relative">
@@ -152,21 +161,6 @@ const metadata = {
                   </select>
                   <FormArrow topMargin={8 / 25} />
                 </div>
-
-                <!-- <div class="error text-font-color-red-dark"></div> -->
-              </div>
-
-              <div class="flex flex-col w-1/3">
-                <label for="age" class="form-sublabel">Day</label>
-                <input
-                  id="day-dob"
-                  name="day-dob"
-                  class="form-fieldbox"
-                  inputmode="numeric"
-                  type="number"
-                  placeholder="Enter day"
-                  required
-                />
 
                 <!-- <div class="error text-font-color-red-dark"></div> -->
               </div>
@@ -292,7 +286,7 @@ const metadata = {
             <label class="form-label"
               >Passport Photo <span class="form-req-label">*</span><br /><span
                 class="text-base font-normal"
-                >(Allowed File Types: png/jpeg/jpg & File Size Limit: 500kb)</span
+                >(Allowed File Types: png/jpeg/jpg & File Size Limit: 500KB)</span
               ></label
             >
             <div class="relative form-fieldbox" id="photo-field">
@@ -319,7 +313,7 @@ const metadata = {
             <label class="form-label"
               >Aadhar Card <span class="form-req-label">*</span><br /><span
                 class="text-base font-normal"
-                >(Allowed File Types: pdf & File Size Limit: 1mb)</span
+                >(Allowed File Types: pdf & File Size Limit: 1MB)</span
               ></label
             >
             <div class="relative form-fieldbox" id="aadhar-field">
