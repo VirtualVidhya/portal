@@ -362,12 +362,12 @@ function onSuccessfulSubmission() {
 
 let check = (element, errMsg) => {
   if (element === photoInput) {
-    console.log("checking for photoInput");
+    // console.log("checking for photoInput");
     let response;
 
     response = validatePassportPhoto(element);
 
-    console.log("photoInput response: ", response);
+    // console.log("photoInput response: ", response);
 
     if (response == true) {
       showValidInputIndication(element);
@@ -381,7 +381,7 @@ let check = (element, errMsg) => {
       photoLabel.classList.add(`file-upload-text`);
     }
 
-    console.log("Updated photoLabel: ", photoLabel.innerText);
+    // console.log("Updated photoLabel: ", photoLabel.innerText);
 
     return;
   } else if (element === aadharInput) {
@@ -520,7 +520,7 @@ function clearError(id) {
 function showInvalidInputIndication(id, msg) {
   if (id === photoInput) {
     id = photoField;
-    console.log("showing error for photoInput");
+    // console.log("showing error for photoInput");
   } else if (id === aadharInput) {
     id = aadharField;
   }
@@ -554,13 +554,13 @@ function showInvalidInputIndication(id, msg) {
 
   id.classList.add("border-font-color-red-dark");
 
-  console.log(id.classList);
+  // console.log(id.classList);
 }
 
 function showValidInputIndication(id) {
   if (id === photoInput) {
     id = photoField;
-    console.log("showing success for photoInput");
+    // console.log("showing success for photoInput");
   } else if (id === aadharInput) {
     id = aadharField;
   }
@@ -592,7 +592,7 @@ function showValidInputIndication(id) {
 
   id.classList.add("border-font-color-green");
 
-  console.log(id.classList);
+  // console.log(id.classList);
 }
 
 function validateName(id) {
@@ -624,43 +624,44 @@ function validateAge(id) {
 }
 
 function validateDOB(id) {
-  console.log("validateDOB called");
+  // console.log("validateDOB called");
 
   const month = monthDobInput.value;
-  const date = dayDobInput.value;
-  const year = yearDobInput.value;
+  const day = parseInt(dayDobInput.value, 10);
+  const year = parseInt(yearDobInput.value, 10);
 
-  console.log(month, date, year);
+  // console.log(month, date, year);
 
-  if (!month || !date || !year) {
+  if (!month || !day || !year) {
     return "Please fill in all date of birth fields!";
   }
 
   const monthNumber = new Date(`${month} 1, 2000`).getMonth();
 
-  const dob = new Date(year, monthNumber, date);
-  const today = new Date();
+  const dob = new Date(year, monthNumber, day);
 
-  console.log(dob, today);
+  // console.log(dob, today);
 
   if (
     isNaN(dob.getTime()) ||
-    dob.getDate() != date ||
-    dob.getMonth() != monthNumber
+    dob.getFullYear() !== year ||
+    dob.getMonth() !== monthNumber ||
+    dob.getDate() !== day
   ) {
     return "Please enter a valid date of birth!";
   }
 
+  const today = new Date();
   const age = today.getFullYear() - dob.getFullYear();
   const monthDiff = today.getMonth() - dob.getMonth();
   const dayDiff = today.getDate() - dob.getDate();
 
-  console.log(age, monthDiff, dayDiff);
+  // console.log(age, monthDiff, dayDiff);
 
   const adjustedAge =
     age - (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? 1 : 0);
 
-  console.log(adjustedAge);
+  // console.log(adjustedAge);
 
   if (adjustedAge < 6 || adjustedAge > 120) {
     return "Age must be between 6 and 120 years!";
@@ -714,7 +715,7 @@ function validateAadharCard(id) {
   }
 
   const allowedTypes = ["application/pdf"];
-  console.log(file.type);
+  // console.log(file.type);
   if (!allowedTypes.includes(file.type)) {
     return "Invalid file type. Only PDF format is allowed.";
   }
