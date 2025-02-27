@@ -21,7 +21,9 @@ async function storeInSupabase(env, formData) {
       // phone: formData.phone,
       // course: formData.course,
       // message: formData.message,
-      full_name: `${formData["first-name"]} ${formData["middle-name"] || ""} ${formData["last-name"]}`,
+      full_name: `${formData["first-name"]} ${formData["middle-name"] || ""} ${
+        formData["last-name"]
+      }`,
       age: parseInt(formData.age, 10),
       dob: `${formData["year-dob"]}-${formData["month-dob"]}-${formData["day-dob"]}`,
       gender: formData.gender,
@@ -109,6 +111,11 @@ export async function onRequestPost(context) {
 
     // Store the form-data in Supabase database
     await storeInSupabase(context.env, output);
+
+    return Response.redirect(
+      "https://portal.vvidhya.com/application-form/",
+      303
+    );
 
     // let englishChars = (
     //   output.message.match(/[a-zA-Z0-9.,&%()\[\]{}?!'"\s]/g) || []
