@@ -93,7 +93,8 @@ export async function onRequestPost(context) {
       for (let [key, value] of input.entries()) {
         // Handle File Inputs Separately
         if (value instanceof File) {
-          output[key] = await uploadFileToSupabase(value, key, context.env);
+          // output[key] = await uploadFileToSupabase(value, key, context.env);
+          output[key] = "uploaded file";
         } else {
           output[key] = value;
         }
@@ -183,6 +184,6 @@ export async function onRequestPost(context) {
     // }
   } catch (err) {
     console.error("Error:", err);
-    return new Response("Error parsing JSON content", { status: 400 });
+    return new Response(`Errror: ${err.message}`, { status: 400 });
   }
 }
