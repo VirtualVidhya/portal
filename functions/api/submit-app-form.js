@@ -16,57 +16,13 @@ async function storeInDatabase(env, formData) {
     throw new Error("Supabase URL or Key is missing");
   }
 
-  // const response = await fetch(`${supabaseUrl}/rest/v1/applications`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     apikey: supabaseKey,
-  //     Authorization: `Bearer ${supabaseKey}`,
-  //     Prefer: "return=minimal", // Faster response
-  //   },
-  //   body: JSON.stringify({
-  //     full_name: `${formData["first-name"]} ${formData["middle-name"] || ""} ${
-  //       formData["last-name"]
-  //     }`,
-  //     age: parseInt(formData.age, 10),
-  //     dob: `${formData["year-dob"]}-${formData["month-dob"]}-${formData["day-dob"]}`,
-  //     gender: formData.gender,
-  //     employment_status: formData["employment-status"],
-  //     occupation: formData.occupation || null,
-  //     // photo_url: formData.photo_url,
-  //     // aadhar_url: formData.aadhar_url,
-
-  //     contact_no: formData["contact-no"],
-  //     email: formData.email,
-  //     parent_contact_no: formData["parent-contact-no"],
-  //     curr_address: `${formData["curr-add-line1"]}, ${formData["curr-add-line2"]}, ${formData["curr-city"]}, ${formData["curr-state"]}, ${formData["curr-pincode"]}`,
-  //     per_address: formData["per-add-line1"]
-  //       ? `${formData["per-add-line1"]}, ${formData["per-add-line2"]}, ${formData["per-city"]}, ${formData["per-state"]}, ${formData["per-pincode"]}`
-  //       : null,
-
-  //     course: formData.course,
-  //     academic_qual: formData["academic-qual"],
-  //     skills: formData["rel-skills"] || null,
-  //     previous_training: formData["prev-training"] || null,
-
-  //     reference: formData.reference || null,
-  //     status: "submitted", // Default status
-  //   }),
-  // });
-
-  // if (!response.ok) {
-  //   console.log("Failed Response");
-  //   console.error("Supabase Insert Error:", await response.text());
-  //   throw new Error("Failed to store inquiry in Supabase");
-  // }
-
   const requestBody = {
     full_name: `${formData["first-name"]} ${formData["middle-name"] || ""} ${
       formData["last-name"]
     }`,
     age: parseInt(formData.age, 10),
-    dob: `${formData["year-dob"]}-${formData["month-dob"]}-${formData["day-dob"]}`,
-    gender: formData.gender,
+    dob: `${formData["day-dob"]}/${formData["month-dob"]}/${formData["year-dob"]}`,
+    gender: formData.gender.toLowerCase(),
     employment_status: formData["employment-status"],
     occupation: formData.occupation || null,
     contact_no: formData["contact-no"],
@@ -100,12 +56,12 @@ async function storeInDatabase(env, formData) {
     body: JSON.stringify(requestBody),
   });
 
-  const responseText = await response.text(); // Get full response for debugging
+  const responseText = await response.text();
   console.log("Supabase Response Status:", response.status);
   console.log("Supabase Response Body:", responseText);
 
   if (!response.ok) {
-    throw new Error(`Supabase Error: ${responseText}`);
+    throw new Error(`Failed to store application in database`);
   }
 }
 
@@ -162,15 +118,6 @@ export async function onRequestPost(context) {
     } else {
       throw new Error("Unsupported Content-Type");
     }
-
-    // for (let [key, value] of input) {
-    //   let tmp = output[key];
-    //   if (tmp === undefined) {
-    //     output[key] = value;
-    //   } else {
-    //     output[key] = [].concat(tmp, value);
-    //   }
-    // }
 
     // console.log("Form Data:", output);
 
