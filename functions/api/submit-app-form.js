@@ -133,7 +133,7 @@ export async function onRequestPost(context) {
       for (let [key, value] of input.entries()) {
         // Handle File Inputs Separately
         if (value instanceof File) {
-          fileUrl = await uploadFileToDrive(value, value.name, context.env);
+          let fileUrl = await uploadFileToDrive(value, value.name, context.env);
           // output[key] = await uploadFileToSupabase(value, key, context.env);
           output[key] = fileUrl;
         } else {
