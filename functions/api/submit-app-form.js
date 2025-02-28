@@ -13,8 +13,12 @@ async function uploadFileToDrive(file, fileName, env) {
 
   await mega.ready; // Ensure login is successful
 
-  const uploadStream = mega.upload({ name: fileName });
-  uploadStream.end(await file.arrayBuffer()); // Convert file to buffer & upload
+  // Convert file to buffer
+  const fileBuffer = await file.arrayBuffer();
+  const fileSize = fileBuffer.byteLength; // Get file size
+
+  const uploadStream = mega.upload({ name: fileName, size: fileSize }); // Specify file size
+  uploadStream.end(Buffer.from(fileBuffer)); // Upload the file buffer
 
   return new Promise((resolve, reject) => {
     uploadStream.on("complete", (file) => {
