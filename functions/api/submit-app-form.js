@@ -7,11 +7,87 @@ async function storeInDatabase(env, formData) {
   const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY;
 
   console.log("Supabase URL:", supabaseUrl);
-  console.log("Supabase Key (Hidden for Security):", supabaseKey ? "Present" : "Missing");
+  console.log(
+    "Supabase Key (Hidden for Security):",
+    supabaseKey ? "Present" : "Missing"
+  );
 
   if (supabaseUrl === undefined || supabaseKey === undefined) {
     throw new Error("Supabase URL or Key is missing");
   }
+
+  // const response = await fetch(`${supabaseUrl}/rest/v1/applications`, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     apikey: supabaseKey,
+  //     Authorization: `Bearer ${supabaseKey}`,
+  //     Prefer: "return=minimal", // Faster response
+  //   },
+  //   body: JSON.stringify({
+  //     full_name: `${formData["first-name"]} ${formData["middle-name"] || ""} ${
+  //       formData["last-name"]
+  //     }`,
+  //     age: parseInt(formData.age, 10),
+  //     dob: `${formData["year-dob"]}-${formData["month-dob"]}-${formData["day-dob"]}`,
+  //     gender: formData.gender,
+  //     employment_status: formData["employment-status"],
+  //     occupation: formData.occupation || null,
+  //     // photo_url: formData.photo_url,
+  //     // aadhar_url: formData.aadhar_url,
+
+  //     contact_no: formData["contact-no"],
+  //     email: formData.email,
+  //     parent_contact_no: formData["parent-contact-no"],
+  //     curr_address: `${formData["curr-add-line1"]}, ${formData["curr-add-line2"]}, ${formData["curr-city"]}, ${formData["curr-state"]}, ${formData["curr-pincode"]}`,
+  //     per_address: formData["per-add-line1"]
+  //       ? `${formData["per-add-line1"]}, ${formData["per-add-line2"]}, ${formData["per-city"]}, ${formData["per-state"]}, ${formData["per-pincode"]}`
+  //       : null,
+
+  //     course: formData.course,
+  //     academic_qual: formData["academic-qual"],
+  //     skills: formData["rel-skills"] || null,
+  //     previous_training: formData["prev-training"] || null,
+
+  //     reference: formData.reference || null,
+  //     status: "submitted", // Default status
+  //   }),
+  // });
+
+  // if (!response.ok) {
+  //   console.log("Failed Response");
+  //   console.error("Supabase Insert Error:", await response.text());
+  //   throw new Error("Failed to store inquiry in Supabase");
+  // }
+
+  const requestBody = {
+    full_name: `${formData["first-name"]} ${formData["middle-name"] || ""} ${
+      formData["last-name"]
+    }`,
+    age: parseInt(formData.age, 10),
+    dob: `${formData["year-dob"]}-${formData["month-dob"]}-${formData["day-dob"]}`,
+    gender: formData.gender,
+    employment_status: formData["employment-status"],
+    occupation: formData.occupation || null,
+    contact_no: formData["contact-no"],
+    email: formData.email,
+    parent_contact_no: formData["parent-contact-no"],
+    curr_address: `${formData["curr-add-line1"]}, ${formData["curr-add-line2"]}, ${formData["curr-city"]}, ${formData["curr-state"]}, ${formData["curr-pincode"]}`,
+    per_address: formData["per-add-line1"]
+      ? `${formData["per-add-line1"]}, ${formData["per-add-line2"]}, ${formData["per-city"]}, ${formData["per-state"]}, ${formData["per-pincode"]}`
+      : null,
+    course: formData.course,
+    academic_qual: formData["academic-qual"],
+    skills: formData["rel-skills"] || null,
+    previous_training: formData["prev-training"] || null,
+    reference: formData.reference || null,
+    status: "submitted",
+  };
+
+  console.log(
+    "Request Body Sent to Supabase:",
+    JSON.stringify(requestBody, null, 2)
+  );
 
   const response = await fetch(`${supabaseUrl}/rest/v1/applications`, {
     method: "POST",
@@ -19,47 +95,17 @@ async function storeInDatabase(env, formData) {
       "Content-Type": "application/json",
       apikey: supabaseKey,
       Authorization: `Bearer ${supabaseKey}`,
-      Prefer: "return=minimal", // Faster response
+      Prefer: "return=minimal",
     },
-    body: JSON.stringify({
-      // name: formData.name,
-      // email: formData.email,
-      // phone: formData.phone,
-      // course: formData.course,
-      // message: formData.message,
-      full_name: `${formData["first-name"]} ${formData["middle-name"] || ""} ${
-        formData["last-name"]
-      }`,
-      age: parseInt(formData.age, 10),
-      dob: `${formData["year-dob"]}-${formData["month-dob"]}-${formData["day-dob"]}`,
-      gender: formData.gender,
-      employment_status: formData["employment-status"],
-      occupation: formData.occupation || null,
-      // photo_url: formData.photo_url,
-      // aadhar_url: formData.aadhar_url,
-
-      contact_no: formData["contact-no"],
-      email: formData.email,
-      parent_contact_no: formData["parent-contact-no"],
-      curr_address: `${formData["curr-add-line1"]}, ${formData["curr-add-line2"]}, ${formData["curr-city"]}, ${formData["curr-state"]}, ${formData["curr-pincode"]}`,
-      per_address: formData["per-add-line1"]
-        ? `${formData["per-add-line1"]}, ${formData["per-add-line2"]}, ${formData["per-city"]}, ${formData["per-state"]}, ${formData["per-pincode"]}`
-        : null,
-
-      course: formData.course,
-      academic_qual: formData["academic-qual"],
-      skills: formData["rel-skills"] || null,
-      previous_training: formData["prev-training"] || null,
-
-      reference: formData.reference || null,
-      status: "submitted", // Default status
-    }),
+    body: JSON.stringify(requestBody),
   });
 
+  const responseText = await response.text(); // Get full response for debugging
+  console.log("Supabase Response Status:", response.status);
+  console.log("Supabase Response Body:", responseText);
+
   if (!response.ok) {
-    console.log("Failed Response");
-    console.error("Supabase Insert Error:", await response.text());
-    throw new Error("Failed to store inquiry in Supabase");
+    throw new Error(`Supabase Error: ${responseText}`);
   }
 }
 
