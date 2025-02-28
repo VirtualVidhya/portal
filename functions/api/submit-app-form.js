@@ -75,8 +75,9 @@ async function storeInSupabase(env, formData) {
 
 export async function onRequestPost(context) {
   try {
-    // console.log("Request Method:", context.request.method);
-    // console.log("Request Headers:", context.request.headers);
+    console.log("Request Method:", context.request.method);
+    console.log("Request Headers:", context.request.headers);
+    console.log("Form data: ", context.request.formData());
 
     let input = await context.request.formData();
 
