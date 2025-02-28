@@ -650,4 +650,8 @@
   input[type="file"]::file-selector-button {
     @apply w-full;
   }
+
+  .form-file-info {
+    list-style-type: "• ";
+  }
 }

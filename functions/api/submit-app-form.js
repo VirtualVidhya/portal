@@ -3,6 +3,11 @@
 // import { Resend } from "resend";
 import { Storage } from "megajs";
 
+function capitalizeFirstLetter(name) {
+  if (!name) return "Unknown";
+  return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+}
+
 async function uploadFileToDrive(file, fileName, env) {
   console.log(`Uploading ${fileName} to MEGA...`);
 
@@ -48,9 +53,7 @@ async function storeInDatabase(env, formData) {
   }
 
   const requestBody = {
-    full_name: `${formData["first-name"]} ${formData["middle-name"] || ""} ${
-      formData["last-name"]
-    }`,
+    full_name: `${capitalizeFirstLetter(formData["first-name"])} ${capitalizeFirstLetter(formData["middle-name"]) || ""} ${capitalizeFirstLetter(formData["last-name"])}`,
     age: parseInt(formData.age, 10),
     dob: `${formData["day-dob"]}-${formData["month-dob"]}-${formData["year-dob"]}`,
     gender: formData.gender.toLowerCase(),
@@ -77,10 +80,7 @@ async function storeInDatabase(env, formData) {
     status: "submitted",
   };
 
-  console.log(
-    "Request Body Sent to Supabase:",
-    JSON.stringify(requestBody, null, 2)
-  );
+  console.log("Request Body Sent to Supabase:", JSON.stringify(requestBody, null, 2));
 
   const response = await fetch(`${supabaseUrl}/rest/v1/applications`, {
     method: "POST",
@@ -125,7 +125,7 @@ export async function onRequestPost(context) {
 
     const contentType = context.request.headers.get("content-type") || "";
 
-    // Parse FormData to JSON
+    // Parse FormData
     // NOTE: Allows multiple values per key
     if (contentType.includes("multipart/form-data")) {
       // Correctly Parse Multipart Form Data
@@ -133,8 +133,22 @@ export async function onRequestPost(context) {
       for (let [key, value] of input.entries()) {
         // Handle File Inputs Separately
         if (value instanceof File) {
-          let fileUrl = await uploadFileToDrive(value, value.name, context.env);
-          // output[key] = await uploadFileToSupabase(value, key, context.env);
+          // Extract first name & last name and format them
+          const firstName = capitalizeFirstLetter(output["first-name"]);
+          const lastName = capitalizeFirstLetter(output["last-name"]);
+
+          // Define new file names based on input field name
+          let fileName = value.name; // Default to original name
+
+          if (key === "photo") {
+            fileName = `${firstName}${lastName}_PassportPhoto.${value.name.split(".").pop()}`;
+          } else if (key === "aadhar-card") {
+            fileName = `${firstName}${lastName}_AadharCard.${value.name.split(".").pop()}`;
+          }
+
+          console.log(`Renaming ${value.name} to ${fileName} before upload.`);
+
+          let fileUrl = await uploadFileToDrive(value, fileName, context.env);
           output[key] = fileUrl;
         } else {
           output[key] = value;
