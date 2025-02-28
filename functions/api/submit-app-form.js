@@ -1,6 +1,33 @@
 // POST /api/submit-app-form
 
 // import { Resend } from "resend";
+import { Storage } from "megajs";
+
+async function uploadFileToDrive(file, fileName, env) {
+  console.log(`Uploading ${fileName} to MEGA...`);
+
+  const mega = new Storage({
+    email: env.MEGA_EMAIL,
+    password: env.MEGA_PASSWORD,
+  });
+
+  await mega.ready; // Ensure login is successful
+
+  const uploadStream = mega.upload({ name: fileName });
+  uploadStream.end(await file.arrayBuffer()); // Convert file to buffer & upload
+
+  return new Promise((resolve, reject) => {
+    uploadStream.on("complete", (file) => {
+      console.log(`File uploaded: ${file.name}`);
+      resolve(file.downloadLink); // Get shareable MEGA URL
+    });
+
+    uploadStream.on("error", (err) => {
+      console.error("MEGA Upload Error:", err);
+      reject(err);
+    });
+  });
+}
 
 async function storeInDatabase(env, formData) {
   const supabaseUrl = env.SUPABASE_URL;
@@ -21,10 +48,13 @@ async function storeInDatabase(env, formData) {
       formData["last-name"]
     }`,
     age: parseInt(formData.age, 10),
-    dob: `${formData["day-dob"]}/${formData["month-dob"]}/${formData["year-dob"]}`,
+    dob: `${formData["day-dob"]}-${formData["month-dob"]}-${formData["year-dob"]}`,
     gender: formData.gender.toLowerCase(),
     employment_status: formData["employment-status"],
     occupation: formData.occupation || null,
+    photo_url: formData.photo || null,
+    aadhar_url: formData["aadhar-card"] || null,
+
     contact_no: formData["contact-no"],
     email: formData.email,
     parent_contact_no: formData["parent-contact-no"],
@@ -32,11 +62,14 @@ async function storeInDatabase(env, formData) {
     per_address: formData["per-add-line1"]
       ? `${formData["per-add-line1"]}, ${formData["per-add-line2"]}, ${formData["per-city"]}, ${formData["per-state"]}, ${formData["per-pincode"]}`
       : null,
+
     course: formData.course,
     academic_qual: formData["academic-qual"],
     skills: formData["rel-skills"] || null,
     previous_training: formData["prev-training"] || null,
+
     reference: formData.reference || null,
+
     status: "submitted",
   };
 
@@ -83,24 +116,22 @@ export async function onRequestPost(context) {
   try {
     // console.log("Request Method:", context.request.method);
     // console.log("Request Headers:", context.request.headers);
-    // console.log("Form data: ", context.request.formData());
 
-    // let input = await context.request.formData();
-
-    // Convert FormData to JSON
-    // NOTE: Allows multiple values per key
     let output = {};
 
     const contentType = context.request.headers.get("content-type") || "";
 
+    // Parse FormData to JSON
+    // NOTE: Allows multiple values per key
     if (contentType.includes("multipart/form-data")) {
       // Correctly Parse Multipart Form Data
       let input = await context.request.formData();
       for (let [key, value] of input.entries()) {
         // Handle File Inputs Separately
         if (value instanceof File) {
+          fileUrl = await uploadFileToDrive(value, value.name, context.env);
           // output[key] = await uploadFileToSupabase(value, key, context.env);
-          output[key] = "uploaded file";
+          output[key] = fileUrl;
         } else {
           output[key] = value;
         }
