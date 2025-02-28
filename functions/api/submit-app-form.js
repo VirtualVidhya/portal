@@ -18,6 +18,10 @@ async function uploadFileToDrive(file, fileName, env) {
 
   await mega.ready; // Ensure login is successful
 
+  console.log(`Used Storage: ${mega.space.used} bytes`);
+  console.log(`Available Storage: ${mega.space.total - mega.space.used} bytes`);
+  console.log(`Available Bandwidth: ${mega.quota.free} bytes`);
+
   // Convert file to buffer
   const fileBuffer = new Uint8Array(await file.arrayBuffer());
   const fileSize = fileBuffer.length; // Get file size
@@ -53,7 +57,9 @@ async function storeInDatabase(env, formData) {
   }
 
   const requestBody = {
-    full_name: `${capitalizeFirstLetter(formData["first-name"])} ${capitalizeFirstLetter(formData["middle-name"]) || ""} ${capitalizeFirstLetter(formData["last-name"])}`,
+    full_name: `${capitalizeFirstLetter(formData["first-name"])} ${
+      capitalizeFirstLetter(formData["middle-name"]) || ""
+    } ${capitalizeFirstLetter(formData["last-name"])}`,
     age: parseInt(formData.age, 10),
     dob: `${formData["day-dob"]}-${formData["month-dob"]}-${formData["year-dob"]}`,
     gender: formData.gender.toLowerCase(),
@@ -80,7 +86,10 @@ async function storeInDatabase(env, formData) {
     status: "submitted",
   };
 
-  console.log("Request Body Sent to Supabase:", JSON.stringify(requestBody, null, 2));
+  console.log(
+    "Request Body Sent to Supabase:",
+    JSON.stringify(requestBody, null, 2)
+  );
 
   const response = await fetch(`${supabaseUrl}/rest/v1/applications`, {
     method: "POST",
@@ -141,9 +150,13 @@ export async function onRequestPost(context) {
           let fileName = value.name; // Default to original name
 
           if (key === "photo") {
-            fileName = `${firstName}${lastName}_PassportPhoto.${value.name.split(".").pop()}`;
+            fileName = `${firstName}${lastName}_PassportPhoto.${value.name
+              .split(".")
+              .pop()}`;
           } else if (key === "aadhar-card") {
-            fileName = `${firstName}${lastName}_AadharCard.${value.name.split(".").pop()}`;
+            fileName = `${firstName}${lastName}_AadharCard.${value.name
+              .split(".")
+              .pop()}`;
           }
 
           console.log(`Renaming ${value.name} to ${fileName} before upload.`);
