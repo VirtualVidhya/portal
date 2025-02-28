@@ -2,12 +2,16 @@
 
 // import { Resend } from "resend";
 
-// Function to store data in Supabase
-async function storeInSupabase(env, formData) {
+async function storeInDatabase(env, formData) {
   const supabaseUrl = env.SUPABASE_URL;
   const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY;
 
-  // console.log(supabaseUrl, supabaseKey);
+  console.log("Supabase URL:", supabaseUrl);
+  console.log("Supabase Key (Hidden for Security):", supabaseKey ? "Present" : "Missing");
+
+  if (supabaseUrl === undefined || supabaseKey === undefined) {
+    throw new Error("Supabase URL or Key is missing");
+  }
 
   const response = await fetch(`${supabaseUrl}/rest/v1/applications`, {
     method: "POST",
@@ -143,7 +147,7 @@ export async function onRequestPost(context) {
     // }
 
     // Store the form-data in Supabase database
-    await storeInSupabase(context.env, output);
+    await storeInDatabase(context.env, output);
 
     return Response.redirect(
       "https://portal.vvidhya.com/application-form/",
