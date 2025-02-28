@@ -7,7 +7,7 @@ async function storeInSupabase(env, formData) {
   const supabaseUrl = env.SUPABASE_URL;
   const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY;
 
-  console.log(supabaseUrl, supabaseKey);
+  // console.log(supabaseUrl, supabaseKey);
 
   const response = await fetch(`${supabaseUrl}/rest/v1/applications`, {
     method: "POST",
@@ -75,25 +75,53 @@ async function storeInSupabase(env, formData) {
 
 export async function onRequestPost(context) {
   try {
-    console.log("Request Method:", context.request.method);
-    console.log("Request Headers:", context.request.headers);
-    console.log("Form data: ", context.request.formData());
+    // console.log("Request Method:", context.request.method);
+    // console.log("Request Headers:", context.request.headers);
+    // console.log("Form data: ", context.request.formData());
 
-    let input = await context.request.formData();
+    // let input = await context.request.formData();
 
     // Convert FormData to JSON
     // NOTE: Allows multiple values per key
     let output = {};
-    for (let [key, value] of input) {
-      let tmp = output[key];
-      if (tmp === undefined) {
-        output[key] = value;
-      } else {
-        output[key] = [].concat(tmp, value);
+
+    const contentType = context.request.headers.get("content-type") || "";
+
+    if (contentType.includes("multipart/form-data")) {
+      // Correctly Parse Multipart Form Data
+      let input = await context.request.formData();
+      for (let [key, value] of input.entries()) {
+        // Handle File Inputs Separately
+        if (value instanceof File) {
+          output[key] = await uploadFileToSupabase(value, key, context.env);
+        } else {
+          output[key] = value;
+        }
       }
+    } else if (contentType.includes("application/json")) {
+      // Handle JSON Requests Properly
+      output = await context.request.json();
+    } else if (contentType.includes("application/x-www-form-urlencoded")) {
+      // Parse URL-Encoded Form Data
+      let inputText = await context.request.text();
+      let params = new URLSearchParams(inputText);
+      for (let [key, value] of params) {
+        output[key] = value;
+      }
+    } else {
+      throw new Error("Unsupported Content-Type");
     }
 
-    console.log("Form Data:", output);
+    // for (let [key, value] of input) {
+    //   let tmp = output[key];
+    //   if (tmp === undefined) {
+    //     output[key] = value;
+    //   } else {
+    //     output[key] = [].concat(tmp, value);
+    //   }
+    // }
+
+    // console.log("Form Data:", output);
 
     const honeypot = output.address;
 
