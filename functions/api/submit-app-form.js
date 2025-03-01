@@ -18,7 +18,7 @@ async function getAccessToken(env) {
   };
 
   const iat = Math.floor(Date.now() / 1000);
-  const exp = iat + 3600; // 1 hour expiration
+  const exp = iat + 3600; // Token valid for 1 hour
 
   const jwtPayload = {
     iss: env.GOOGLE_DRIVE_CLIENT_EMAIL,
@@ -28,16 +28,25 @@ async function getAccessToken(env) {
     iat,
   };
 
-  // ✅ Properly format the private key
+  // ✅ Fix private key formatting (Replace escaped newlines `\\n` with actual newlines `\n`)
   const formattedPrivateKey = env.GOOGLE_DRIVE_PRIVATE_KEY.replace(
     /\\n/g,
     "\n"
   );
 
-  // ✅ Import the private key correctly
+  // ✅ Correct JWT signing using WebCrypto API
+  const keyData = {
+    kty: "RSA",
+    alg: "RS256",
+    use: "sig",
+    key_ops: ["sign"],
+    ext: true,
+    d: formattedPrivateKey, // Use the properly formatted private key
+  };
+
   const key = await crypto.subtle.importKey(
-    "pkcs8",
-    new TextEncoder().encode(formattedPrivateKey),
+    "jwk",
+    keyData,
     { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
     false,
     ["sign"]
@@ -59,7 +68,7 @@ async function getAccessToken(env) {
 
   const jwt = `${encodedHeader}.${encodedPayload}.${encodedSignature}`;
 
-  // Fetch Access Token
+  // 🔹 Fetch Access Token from Google OAuth API
   const response = await fetch(tokenEndpoint, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -67,6 +76,10 @@ async function getAccessToken(env) {
   });
 
   const json = await response.json();
+  if (!json.access_token)
+    throw new Error("Failed to generate Google OAuth token");
+
+  console.log("✅ Google Access Token Retrieved");
   return json.access_token;
 }
 
