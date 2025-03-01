@@ -9,78 +9,172 @@ function capitalizeFirstLetter(name) {
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-async function getAccessToken(env) {
-  const tokenEndpoint = "https://oauth2.googleapis.com/token";
+// async function getAccessToken(env) {
+//   const tokenEndpoint = "https://oauth2.googleapis.com/token";
 
-  const jwtHeader = {
-    alg: "RS256",
-    typ: "JWT",
-  };
+//   const jwtHeader = {
+//     alg: "RS256",
+//     typ: "JWT",
+//   };
 
-  const iat = Math.floor(Date.now() / 1000);
-  const exp = iat + 3600; // Token valid for 1 hour
+//   const iat = Math.floor(Date.now() / 1000);
+//   const exp = iat + 3600; // Token valid for 1 hour
 
-  const jwtPayload = {
-    iss: env.GOOGLE_DRIVE_CLIENT_EMAIL,
-    scope: "https://www.googleapis.com/auth/drive.file",
-    aud: tokenEndpoint,
-    exp,
-    iat,
-  };
+//   const jwtPayload = {
+//     iss: env.GOOGLE_DRIVE_CLIENT_EMAIL,
+//     scope: "https://www.googleapis.com/auth/drive.file",
+//     aud: tokenEndpoint,
+//     exp,
+//     iat,
+//   };
 
-  // ✅ Fix private key formatting (Replace escaped newlines `\\n` with actual newlines `\n`)
-  const formattedPrivateKey = env.GOOGLE_DRIVE_PRIVATE_KEY.replace(
-    /\\n/g,
-    "\n"
-  );
+//   // ✅ Fix private key formatting (Replace escaped newlines `\\n` with actual newlines `\n`)
+//   const formattedPrivateKey = env.GOOGLE_DRIVE_PRIVATE_KEY.replace(
+//     /\\n/g,
+//     "\n"
+//   );
 
-  // ✅ Correct JWT signing using WebCrypto API
-  const keyData = {
-    kty: "RSA",
-    alg: "RS256",
-    use: "sig",
-    key_ops: ["sign"],
-    ext: true,
-    d: formattedPrivateKey, // Use the properly formatted private key
-  };
+//   // ✅ Correct JWT signing using WebCrypto API
+//   const keyData = {
+//     kty: "RSA",
+//     alg: "RS256",
+//     use: "sig",
+//     key_ops: ["sign"],
+//     ext: true,
+//     d: formattedPrivateKey, // Use the properly formatted private key
+//   };
 
-  const key = await crypto.subtle.importKey(
-    "jwk",
-    keyData,
-    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
+//   const key = await crypto.subtle.importKey(
+//     "jwk",
+//     keyData,
+//     { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+//     false,
+//     ["sign"]
+//   );
 
-  const encoder = new TextEncoder();
-  const encodedHeader = btoa(JSON.stringify(jwtHeader));
-  const encodedPayload = btoa(JSON.stringify(jwtPayload));
+//   const encoder = new TextEncoder();
+//   const encodedHeader = btoa(JSON.stringify(jwtHeader));
+//   const encodedPayload = btoa(JSON.stringify(jwtPayload));
 
-  const signature = await crypto.subtle.sign(
-    "RSASSA-PKCS1-v1_5",
-    key,
-    encoder.encode(`${encodedHeader}.${encodedPayload}`)
-  );
+//   const signature = await crypto.subtle.sign(
+//     "RSASSA-PKCS1-v1_5",
+//     key,
+//     encoder.encode(`${encodedHeader}.${encodedPayload}`)
+//   );
 
-  const encodedSignature = btoa(
-    String.fromCharCode(...new Uint8Array(signature))
-  );
+//   const encodedSignature = btoa(
+//     String.fromCharCode(...new Uint8Array(signature))
+//   );
 
-  const jwt = `${encodedHeader}.${encodedPayload}.${encodedSignature}`;
+//   const jwt = `${encodedHeader}.${encodedPayload}.${encodedSignature}`;
 
-  // 🔹 Fetch Access Token from Google OAuth API
-  const response = await fetch(tokenEndpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
-  });
+//   // 🔹 Fetch Access Token from Google OAuth API
+//   const response = await fetch(tokenEndpoint, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/x-www-form-urlencoded" },
+//     body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
+//   });
 
-  const json = await response.json();
-  if (!json.access_token)
-    throw new Error("Failed to generate Google OAuth token");
+//   const json = await response.json();
+//   if (!json.access_token)
+//     throw new Error("Failed to generate Google OAuth token");
 
-  console.log("✅ Google Access Token Retrieved");
-  return json.access_token;
+//   console.log("✅ Google Access Token Retrieved");
+//   return json.access_token;
+// }
+
+/**
+ * Get a Google auth token given service user credentials. This function
+ * is a very slightly modified version of the one found at
+ * https://community.cloudflare.com/t/example-google-oauth-2-0-for-service-accounts-using-cf-worker/258220
+ *
+ * @param {string} user   the service user identity, typically of the
+ *   form [user]@[project].iam.gserviceaccount.com
+ * @param {string} key    the private key corresponding to user
+ * @param {string} scope  the scopes to request for this token, a
+ *   listing of available scopes is provided at
+ *   https://developers.google.com/identity/protocols/oauth2/scopes
+ * @returns a valid Google auth token for the provided service user and scope or undefined
+ */
+async function getAccessToken(env, user, key, scope) {
+  function objectToBase64url(object) {
+    return arrayBufferToBase64Url(
+      new TextEncoder().encode(JSON.stringify(object))
+    );
+  }
+  function arrayBufferToBase64Url(buffer) {
+    return btoa(String.fromCharCode(...new Uint8Array(buffer)))
+      .replace(/=/g, "")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_");
+  }
+  function str2ab(str) {
+    const buf = new ArrayBuffer(str.length);
+    const bufView = new Uint8Array(buf);
+    for (let i = 0, strLen = str.length; i < strLen; i++) {
+      bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
+  }
+  async function sign(content, signingKey) {
+    const buf = str2ab(content);
+    const plainKey = signingKey
+      .replace("-----BEGIN PRIVATE KEY-----", "")
+      .replace("-----END PRIVATE KEY-----", "")
+      .replace(/(\r\n|\n|\r)/gm, "");
+    const binaryKey = str2ab(atob(plainKey));
+    const signer = await crypto.subtle.importKey(
+      "pkcs8",
+      binaryKey,
+      {
+        name: "RSASSA-PKCS1-V1_5",
+        hash: { name: "SHA-256" },
+      },
+      false,
+      ["sign"]
+    );
+    const binarySignature = await crypto.subtle.sign(
+      { name: "RSASSA-PKCS1-V1_5" },
+      signer,
+      buf
+    );
+    return arrayBufferToBase64Url(binarySignature);
+  }
+
+  const jwtHeader = objectToBase64url({ alg: "RS256", typ: "JWT" });
+  try {
+    const assertiontime = Math.round(Date.now() / 1000);
+    const expirytime = assertiontime + 3600;
+    const claimset = objectToBase64url({
+      iss: env.GOOGLE_DRIVE_CLIENT_EMAIL,
+      scope: "https://www.googleapis.com/auth/drive.file",
+      aud: "https://oauth2.googleapis.com/token",
+      exp: expirytime,
+      iat: assertiontime,
+    });
+
+    const jwtUnsigned = jwtHeader + "." + claimset;
+    const signedJwt =
+      jwtUnsigned +
+      "." +
+      (await sign(jwtUnsigned, env.GOOGLE_DRIVE_PRIVATE_KEY));
+    const body =
+      "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=" +
+      signedJwt;
+    const response = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Cache-Control": "no-cache",
+        Host: "oauth2.googleapis.com",
+      },
+      body: body,
+    });
+    const oauth = await response.json();
+    return oauth.access_token;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 async function uploadFileToDatabase(file, fileName, env) {
