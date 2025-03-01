@@ -8,39 +8,106 @@ function capitalizeFirstLetter(name) {
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-async function uploadFileToDrive(file, fileName, env) {
-  console.log(`Uploading ${fileName} to MEGA...`);
-
+// Helper function to attempt file upload
+async function attemptMegaUpload(file, fileName, credentials) {
   const mega = new Storage({
-    email: env.MEGA_EMAIL,
-    password: env.MEGA_PASSWORD,
+    email: credentials.email,
+    password: credentials.password,
   });
 
   await mega.ready; // Ensure login is successful
 
+  console.log(`Using MEGA Account: ${credentials.email}`);
   console.log(`Used Storage: ${mega.space.used} bytes`);
   console.log(`Available Storage: ${mega.space.total - mega.space.used} bytes`);
   console.log(`Available Bandwidth: ${mega.quota.free} bytes`);
 
   // Convert file to buffer
   const fileBuffer = new Uint8Array(await file.arrayBuffer());
-  const fileSize = fileBuffer.length; // Get file size
+  const fileSize = fileBuffer.length;
 
-  const uploadStream = mega.upload({ name: fileName, size: fileSize }); // Specify file size
-  uploadStream.end(fileBuffer); // Upload the file buffer
+  const uploadStream = mega.upload({ name: fileName, size: fileSize });
+  uploadStream.end(fileBuffer);
 
   return new Promise((resolve, reject) => {
     uploadStream.on("complete", (file) => {
-      console.log(`File uploaded: ${file.name}`);
-      resolve(file.downloadLink); // Get shareable MEGA URL
+      console.log(`File uploaded successfully: ${file.name}`);
+      resolve(file.downloadLink);
     });
 
     uploadStream.on("error", (err) => {
-      console.error("MEGA Upload Error:", err);
+      console.error("File Upload Error:", err);
       reject(err);
     });
   });
 }
+
+async function uploadFileToDrive(file, fileName, env) {
+  console.log(`Uploading ${fileName} to MEGA...`);
+
+  const primaryCredentials = {
+    email: env.MEGA_EMAIL,
+    password: env.MEGA_PASSWORD,
+  };
+
+  const backupCredentials = {
+    email: env.MEGA_BACKUP_EMAIL,
+    password: env.MEGA_BACKUP_PASSWORD,
+  };
+
+  // Try uploading with primary account
+  try {
+    return await attemptMegaUpload(file, fileName, primaryCredentials);
+  } catch (error) {
+    console.error("Primary account file upload failed:", error.message);
+
+    // Try uploading with backup account
+    console.log("Switching to backup account...");
+    try {
+      return await attemptMegaUpload(file, fileName, backupCredentials);
+    } catch (backupError) {
+      console.error(
+        "Backup account file upload also failed:",
+        backupError.message
+      );
+      throw new Error("Both primary and backup account file uploads failed.");
+    }
+  }
+}
+
+// async function uploadFileToDrive(file, fileName, env) {
+//   console.log(`Uploading ${fileName} to MEGA...`);
+
+//   const mega = new Storage({
+//     email: env.MEGA_EMAIL,
+//     password: env.MEGA_PASSWORD,
+//   });
+
+//   await mega.ready; // Ensure login is successful
+
+//   console.log(`Used Storage: ${mega.space.used} bytes`);
+//   console.log(`Available Storage: ${mega.space.total - mega.space.used} bytes`);
+//   console.log(`Available Bandwidth: ${mega.quota.free} bytes`);
+
+//   // Convert file to buffer
+//   const fileBuffer = new Uint8Array(await file.arrayBuffer());
+//   const fileSize = fileBuffer.length; // Get file size
+
+//   const uploadStream = mega.upload({ name: fileName, size: fileSize }); // Specify file size
+//   uploadStream.end(fileBuffer); // Upload the file buffer
+
+//   return new Promise((resolve, reject) => {
+//     uploadStream.on("complete", (file) => {
+//       console.log(`File uploaded: ${file.name}`);
+//       resolve(file.downloadLink); // Get shareable MEGA URL
+//     });
+
+//     uploadStream.on("error", (err) => {
+//       console.error("MEGA Upload Error:", err);
+//       reject(err);
+//     });
+//   });
+// }
 
 async function storeInDatabase(env, formData) {
   const supabaseUrl = env.SUPABASE_URL;
