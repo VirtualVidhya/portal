@@ -9,44 +9,143 @@ function capitalizeFirstLetter(name) {
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-async function getFileDatabaseAuth(env) {
-  const credentials = JSON.parse(env.GOOGLE_DRIVE_SERVICE_ACCOUNT);
+async function getAccessToken(env) {
+  const tokenEndpoint = "https://oauth2.googleapis.com/token";
 
-  const auth = new google.auth.GoogleAuth({
-    credentials,
-    scopes: ["https://www.googleapis.com/auth/drive.file"],
+  const jwtHeader = {
+    alg: "RS256",
+    typ: "JWT",
+  };
+
+  const iat = Math.floor(Date.now() / 1000);
+  const exp = iat + 3600; // 1 hour expiration
+
+  const jwtPayload = {
+    iss: env.GOOGLE_DRIVE_CLIENT_EMAIL,
+    scope: "https://www.googleapis.com/auth/drive.file",
+    aud: tokenEndpoint,
+    exp,
+    iat,
+  };
+
+  // Encode JWT
+  const encoder = new TextEncoder();
+  const encodedHeader = btoa(JSON.stringify(jwtHeader));
+  const encodedPayload = btoa(JSON.stringify(jwtPayload));
+
+  // Sign JWT with Private Key
+  const privateKey = env.GOOGLE_DRIVE_PRIVATE_KEY.replace(/\\n/g, "\n"); // Fix newlines
+  const key = await crypto.subtle.importKey(
+    "pkcs8",
+    encoder.encode(privateKey),
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const signature = await crypto.subtle.sign(
+    "RSASSA-PKCS1-v1_5",
+    key,
+    encoder.encode(encodedHeader + "." + encodedPayload)
+  );
+  const encodedSignature = btoa(
+    String.fromCharCode(...new Uint8Array(signature))
+  );
+
+  const jwt = `${encodedHeader}.${encodedPayload}.${encodedSignature}`;
+
+  // Fetch Access Token
+  const response = await fetch(tokenEndpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
   });
 
-  return auth.getClient();
+  const json = await response.json();
+  return json.access_token;
 }
 
-export async function uploadFileToDatabase(file, fileName, env) {
-  console.log(`Uploading ${fileName} to Database...`);
+async function uploadFileToDatabase(file, fileName, env) {
+  console.log(`Uploading ${fileName} to Google Drive...`);
 
-  const authClient = await getFileDatabaseAuth(env);
-  const drive = google.drive({ version: "v3", auth: authClient });
-
-  const fileMetadata = {
+  const accessToken = await getAccessToken(env);
+  const metadata = {
     name: fileName,
-    parents: [env.GOOGLE_DRIVE_FOLDER_ID], // Upload inside the shared folder
+    parents: [env.GOOGLE_DRIVE_FOLDER_ID], // Upload inside shared folder
   };
 
-  const media = {
-    mimeType: file.type,
-    body: file.stream(),
-  };
+  const boundary = "-------314159265358979323846";
+  const delimiter = `\r\n--${boundary}\r\n`;
+  const closeDelimiter = `\r\n--${boundary}--`;
 
-  const response = await drive.files.create({
-    resource: fileMetadata,
-    media: media,
-    fields: "id, webViewLink, webContentLink",
-  });
+  const fileBuffer = new Uint8Array(await file.arrayBuffer());
 
-  if (!response.data.id) throw new Error("File Upload Failed");
+  const multipartRequestBody =
+    delimiter +
+    "Content-Type: application/json\r\n\r\n" +
+    JSON.stringify(metadata) +
+    delimiter +
+    "Content-Type: application/octet-stream\r\n\r\n" +
+    new TextDecoder().decode(fileBuffer) +
+    closeDelimiter;
 
-  console.log("File uploaded successfully:", response.data.webViewLink);
-  return response.data.webViewLink; // Return the file's viewable link
+  const response = await fetch(
+    "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": `multipart/related; boundary=${boundary}`,
+      },
+      body: multipartRequestBody,
+    }
+  );
+
+  const jsonResponse = await response.json();
+  console.log("File Uploaded:", jsonResponse);
+
+  if (!jsonResponse.id) throw new Error("Google Drive Upload Failed");
+
+  return `https://drive.google.com/uc?id=${jsonResponse.id}`;
 }
+
+// async function getFileDatabaseAuth(env) {
+//   const credentials = JSON.parse(env.GOOGLE_DRIVE_SERVICE_ACCOUNT);
+
+//   const auth = new google.auth.GoogleAuth({
+//     credentials,
+//     scopes: ["https://www.googleapis.com/auth/drive.file"],
+//   });
+
+//   return auth.getClient();
+// }
+
+// export async function uploadFileToDatabase(file, fileName, env) {
+//   console.log(`Uploading ${fileName} to Database...`);
+
+//   const authClient = await getFileDatabaseAuth(env);
+//   const drive = google.drive({ version: "v3", auth: authClient });
+
+//   const fileMetadata = {
+//     name: fileName,
+//     parents: [env.GOOGLE_DRIVE_FOLDER_ID], // Upload inside the shared folder
+//   };
+
+//   const media = {
+//     mimeType: file.type,
+//     body: file.stream(),
+//   };
+
+//   const response = await drive.files.create({
+//     resource: fileMetadata,
+//     media: media,
+//     fields: "id, webViewLink, webContentLink",
+//   });
+
+//   if (!response.data.id) throw new Error("File Upload Failed");
+
+//   console.log("File uploaded successfully:", response.data.webViewLink);
+//   return response.data.webViewLink; // Return the file's viewable link
+// }
 
 // async function uploadFileToDrive(file, fileName, env) {
 //   console.log(`Uploading ${fileName} to MEGA...`);
@@ -105,8 +204,8 @@ async function storeInDatabase(env, formData) {
     gender: formData.gender.toLowerCase(),
     employment_status: formData["employment-status"],
     occupation: formData.occupation || null,
-    // photo_url: formData.photo || null,
-    // aadhar_url: formData["aadhar-card"] || null,
+    photo_url: formData.photo || null,
+    aadhar_url: formData["aadhar-card"] || null,
 
     contact_no: formData["contact-no"],
     email: formData.email,
