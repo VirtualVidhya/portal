@@ -28,25 +28,31 @@ async function getAccessToken(env) {
     iat,
   };
 
-  // Encode JWT
-  const encoder = new TextEncoder();
-  const encodedHeader = btoa(JSON.stringify(jwtHeader));
-  const encodedPayload = btoa(JSON.stringify(jwtPayload));
+  // ✅ Properly format the private key
+  const formattedPrivateKey = env.GOOGLE_DRIVE_PRIVATE_KEY.replace(
+    /\\n/g,
+    "\n"
+  );
 
-  // Sign JWT with Private Key
-  const privateKey = env.GOOGLE_DRIVE_PRIVATE_KEY.replace(/\\n/g, "\n"); // Fix newlines
+  // ✅ Import the private key correctly
   const key = await crypto.subtle.importKey(
     "pkcs8",
-    encoder.encode(privateKey),
+    new TextEncoder().encode(formattedPrivateKey),
     { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
     false,
     ["sign"]
   );
+
+  const encoder = new TextEncoder();
+  const encodedHeader = btoa(JSON.stringify(jwtHeader));
+  const encodedPayload = btoa(JSON.stringify(jwtPayload));
+
   const signature = await crypto.subtle.sign(
     "RSASSA-PKCS1-v1_5",
     key,
-    encoder.encode(encodedHeader + "." + encodedPayload)
+    encoder.encode(`${encodedHeader}.${encodedPayload}`)
   );
+
   const encodedSignature = btoa(
     String.fromCharCode(...new Uint8Array(signature))
   );
