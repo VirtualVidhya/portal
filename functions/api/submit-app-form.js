@@ -4,10 +4,10 @@
 // import { Storage } from "megajs";
 // import { google } from "googleapis";
 
-// function capitalizeFirstLetter(name) {
-//   if (!name) return "Unknown";
-//   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-// }
+function capitalizeFirstLetter(name) {
+  if (!name) return "Unknown";
+  return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+}
 
 // async function uploadFileToMega(file, fileName, env) {
 //   console.log(`Uploading ${fileName} to MEGA...`);
