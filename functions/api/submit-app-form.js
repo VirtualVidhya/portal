@@ -181,6 +181,28 @@ function capitalizeFirstLetter(name) {
 //   }
 // }
 
+function objectToBase64url(object) {
+  return arrayBufferToBase64Url(
+    new TextEncoder().encode(JSON.stringify(object))
+  );
+}
+
+function arrayBufferToBase64Url(buffer) {
+  return btoa(String.fromCharCode(...new Uint8Array(buffer)))
+    .replace(/=/g, "")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_");
+}
+
+function str2ab(str) {
+  const buf = new ArrayBuffer(str.length);
+  const bufView = new Uint8Array(buf);
+  for (let i = 0, strLen = str.length; i < strLen; i++) {
+    bufView[i] = str.charCodeAt(i);
+  }
+  return buf;
+}
+
 async function sign(content, signingKey) {
   const buf = str2ab(content);
 
