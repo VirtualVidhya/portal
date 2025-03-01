@@ -96,94 +96,181 @@ function capitalizeFirstLetter(name) {
  *   https://developers.google.com/identity/protocols/oauth2/scopes
  * @returns a valid Google auth token for the provided service user and scope or undefined
  */
-async function getAccessToken(env, user, key, scope) {
-  function objectToBase64url(object) {
-    return arrayBufferToBase64Url(
-      new TextEncoder().encode(JSON.stringify(object))
-    );
-  }
-  function arrayBufferToBase64Url(buffer) {
-    return btoa(String.fromCharCode(...new Uint8Array(buffer)))
-      .replace(/=/g, "")
-      .replace(/\+/g, "-")
-      .replace(/\//g, "_");
-  }
-  function str2ab(str) {
-    const buf = new ArrayBuffer(str.length);
-    const bufView = new Uint8Array(buf);
-    for (let i = 0, strLen = str.length; i < strLen; i++) {
-      bufView[i] = str.charCodeAt(i);
-    }
-    return buf;
-  }
-  async function sign(content, signingKey) {
-    const buf = str2ab(content);
-    const plainKey = signingKey
-      .replace("-----BEGIN PRIVATE KEY-----", "")
-      .replace("-----END PRIVATE KEY-----", "")
-      .replace(/(\r\n|\n|\r)/gm, "");
-    const binaryKey = str2ab(atob(plainKey));
-    const signer = await crypto.subtle.importKey(
-      "pkcs8",
-      binaryKey,
-      {
-        name: "RSASSA-PKCS1-V1_5",
-        hash: { name: "SHA-256" },
-      },
-      false,
-      ["sign"]
-    );
-    const binarySignature = await crypto.subtle.sign(
-      { name: "RSASSA-PKCS1-V1_5" },
-      signer,
-      buf
-    );
-    return arrayBufferToBase64Url(binarySignature);
+// async function getAccessToken(env, user, key, scope) {
+
+//   function objectToBase64url(object) {
+//     return arrayBufferToBase64Url(
+//       new TextEncoder().encode(JSON.stringify(object))
+//     );
+//   }
+
+//   function arrayBufferToBase64Url(buffer) {
+//     return btoa(String.fromCharCode(...new Uint8Array(buffer)))
+//       .replace(/=/g, "")
+//       .replace(/\+/g, "-")
+//       .replace(/\//g, "_");
+//   }
+
+//   function str2ab(str) {
+//     const buf = new ArrayBuffer(str.length);
+//     const bufView = new Uint8Array(buf);
+//     for (let i = 0, strLen = str.length; i < strLen; i++) {
+//       bufView[i] = str.charCodeAt(i);
+//     }
+//     return buf;
+//   }
+
+//   async function sign(content, signingKey) {
+//     const buf = str2ab(content);
+//     const plainKey = signingKey
+//       .replace("-----BEGIN PRIVATE KEY-----", "")
+//       .replace("-----END PRIVATE KEY-----", "")
+//       .replace(/(\r\n|\n|\r)/gm, "");
+//     const binaryKey = str2ab(atob(plainKey));
+//     const signer = await crypto.subtle.importKey(
+//       "pkcs8",
+//       binaryKey,
+//       {
+//         name: "RSASSA-PKCS1-V1_5",
+//         hash: { name: "SHA-256" },
+//       },
+//       false,
+//       ["sign"]
+//     );
+//     const binarySignature = await crypto.subtle.sign(
+//       { name: "RSASSA-PKCS1-V1_5" },
+//       signer,
+//       buf
+//     );
+//     return arrayBufferToBase64Url(binarySignature);
+//   }
+
+//   const jwtHeader = objectToBase64url({ alg: "RS256", typ: "JWT" });
+//   try {
+//     const assertiontime = Math.round(Date.now() / 1000);
+//     const expirytime = assertiontime + 3600;
+//     const claimset = objectToBase64url({
+//       iss: env.GOOGLE_DRIVE_CLIENT_EMAIL,
+//       scope: "https://www.googleapis.com/auth/drive.file",
+//       aud: "https://oauth2.googleapis.com/token",
+//       exp: expirytime,
+//       iat: assertiontime,
+//     });
+
+//     const jwtUnsigned = jwtHeader + "." + claimset;
+//     const signedJwt =
+//       jwtUnsigned +
+//       "." +
+//       (await sign(jwtUnsigned, env.GOOGLE_DRIVE_PRIVATE_KEY));
+//     const body =
+//       "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=" +
+//       signedJwt;
+//     const response = await fetch("https://oauth2.googleapis.com/token", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/x-www-form-urlencoded",
+//         "Cache-Control": "no-cache",
+//         Host: "oauth2.googleapis.com",
+//       },
+//       body: body,
+//     });
+//     const oauth = await response.json();
+//     return oauth.access_token;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
+
+async function sign(content, signingKey) {
+  const buf = str2ab(content);
+
+  // ✅ Fix: Properly format private key (replace `\\n` with actual `\n`)
+  const formattedKey = signingKey.replace(/\\n/g, "\n");
+
+  const plainKey = formattedKey
+    .replace("-----BEGIN PRIVATE KEY-----", "")
+    .replace("-----END PRIVATE KEY-----", "")
+    .replace(/(\r\n|\n|\r)/gm, "");
+
+  // ✅ Fix: Decode using `Uint8Array.from()`
+  const binaryKey = Uint8Array.from(atob(plainKey), (c) =>
+    c.charCodeAt(0)
+  ).buffer;
+
+  const signer = await crypto.subtle.importKey(
+    "pkcs8",
+    binaryKey,
+    {
+      name: "RSASSA-PKCS1-V1_5",
+      hash: { name: "SHA-256" },
+    },
+    false,
+    ["sign"]
+  );
+
+  const binarySignature = await crypto.subtle.sign(
+    { name: "RSASSA-PKCS1-V1_5" },
+    signer,
+    buf
+  );
+
+  return arrayBufferToBase64Url(binarySignature);
+}
+
+async function getAccessToken(env) {
+  const tokenEndpoint = "https://oauth2.googleapis.com/token";
+
+  const assertionTime = Math.floor(Date.now() / 1000);
+  const expiryTime = assertionTime + 3600; // 1-hour validity
+
+  const jwtHeader = {
+    alg: "RS256",
+    typ: "JWT",
+  };
+
+  const jwtPayload = {
+    iss: env.GOOGLE_DRIVE_CLIENT_EMAIL,
+    scope: "https://www.googleapis.com/auth/drive.file",
+    aud: tokenEndpoint,
+    exp: expiryTime,
+    iat: assertionTime,
+  };
+
+  const jwtUnsigned =
+    objectToBase64url(jwtHeader) + "." + objectToBase64url(jwtPayload);
+
+  const signedJwt =
+    jwtUnsigned + "." + (await sign(jwtUnsigned, env.GOOGLE_DRIVE_PRIVATE_KEY));
+
+  const response = await fetch(tokenEndpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${signedJwt}`,
+  });
+
+  const json = await response.json();
+
+  // ✅ Fix: Check for authentication errors
+  if (!json.access_token) {
+    console.error("❌ Google OAuth Token Error:", json);
+    throw new Error("Failed to generate Google OAuth token");
   }
 
-  const jwtHeader = objectToBase64url({ alg: "RS256", typ: "JWT" });
-  try {
-    const assertiontime = Math.round(Date.now() / 1000);
-    const expirytime = assertiontime + 3600;
-    const claimset = objectToBase64url({
-      iss: env.GOOGLE_DRIVE_CLIENT_EMAIL,
-      scope: "https://www.googleapis.com/auth/drive.file",
-      aud: "https://oauth2.googleapis.com/token",
-      exp: expirytime,
-      iat: assertiontime,
-    });
-
-    const jwtUnsigned = jwtHeader + "." + claimset;
-    const signedJwt =
-      jwtUnsigned +
-      "." +
-      (await sign(jwtUnsigned, env.GOOGLE_DRIVE_PRIVATE_KEY));
-    const body =
-      "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=" +
-      signedJwt;
-    const response = await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Cache-Control": "no-cache",
-        Host: "oauth2.googleapis.com",
-      },
-      body: body,
-    });
-    const oauth = await response.json();
-    return oauth.access_token;
-  } catch (err) {
-    console.log(err);
-  }
+  console.log("✅ Google Access Token Retrieved");
+  return json.access_token;
 }
 
 async function uploadFileToDatabase(file, fileName, env) {
   console.log(`Uploading ${fileName} to Google Drive...`);
 
   const accessToken = await getAccessToken(env);
+  if (!accessToken) {
+    throw new Error("❌ Google OAuth token is missing. Cannot upload file.");
+  }
+
   const metadata = {
     name: fileName,
-    parents: [env.GOOGLE_DRIVE_FOLDER_ID], // Upload inside shared folder
+    parents: [env.GOOGLE_DRIVE_FOLDER_ID],
   };
 
   const boundary = "-------314159265358979323846";
@@ -214,10 +301,14 @@ async function uploadFileToDatabase(file, fileName, env) {
   );
 
   const jsonResponse = await response.json();
-  console.log("File Uploaded:", jsonResponse);
 
-  if (!jsonResponse.id) throw new Error("Google Drive Upload Failed");
+  // ✅ Fix: Log upload errors properly
+  if (!jsonResponse.id) {
+    console.error("❌ Google Drive Upload Failed:", jsonResponse);
+    throw new Error("Google Drive Upload Failed");
+  }
 
+  console.log("✅ File Uploaded:", jsonResponse);
   return `https://drive.google.com/uc?id=${jsonResponse.id}`;
 }
 
