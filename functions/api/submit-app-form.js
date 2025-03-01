@@ -2,77 +2,116 @@
 
 // import { Resend } from "resend";
 import { Storage } from "megajs";
+import { google } from "googleapis";
 
 function capitalizeFirstLetter(name) {
   if (!name) return "Unknown";
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-// Helper function to attempt file upload
-async function attemptMegaUpload(file, fileName, credentials) {
-  const mega = new Storage({
-    email: credentials.email,
-    password: credentials.password,
-  });
+async function uploadFileToMega(file, fileName, env) {
+  console.log(`Uploading ${fileName} to MEGA...`);
+
+  const credentials = {
+    email: env.MEGA_EMAIL,
+    password: env.MEGA_PASSWORD,
+  };
 
   await mega.ready; // Ensure login is successful
 
-  console.log(`Using MEGA Account: ${credentials.email}`);
+  console.log(`Logged into MEGA as ${env.MEGA_EMAIL}`);
   console.log(`Used Storage: ${mega.space.used} bytes`);
   console.log(`Available Storage: ${mega.space.total - mega.space.used} bytes`);
   console.log(`Available Bandwidth: ${mega.quota.free} bytes`);
 
   // Convert file to buffer
   const fileBuffer = new Uint8Array(await file.arrayBuffer());
-  const fileSize = fileBuffer.length;
+  const fileSize = fileBuffer.length; // Get file size
 
+  // Upload file to MEGA
   const uploadStream = mega.upload({ name: fileName, size: fileSize });
-  uploadStream.end(fileBuffer);
+  uploadStream.end(fileBuffer); // Send file buffer to MEGA
 
   return new Promise((resolve, reject) => {
-    uploadStream.on("complete", (file) => {
+    uploadStream.on("complete", async (file) => {
       console.log(`File uploaded successfully: ${file.name}`);
-      resolve(file.downloadLink);
+
+      try {
+        // Generate public share link
+        const shareURL = await file.link();
+        console.log(`🔗 MEGA File Link: ${shareURL}`);
+        resolve(shareURL);
+      } catch (linkError) {
+        console.error("Error generating MEGA file link:", linkError);
+        reject(new Error("Failed to generate MEGA file link"));
+      }
     });
 
     uploadStream.on("error", (err) => {
-      console.error("File Upload Error:", err);
-      reject(err);
+      console.error("MEGA Upload Error:", err);
+      reject(new Error("MEGA Upload Failed"));
     });
   });
 }
 
-async function uploadFileToDrive(file, fileName, env) {
-  console.log(`Uploading ${fileName} to MEGA...`);
+async function uploadFileToGoogleDrive(file, fileName, env) {
+  console.log(`Uploading ${fileName} to Google Drive...`);
 
-  const primaryCredentials = {
-    email: env.MEGA_EMAIL,
-    password: env.MEGA_PASSWORD,
+  const auth = new google.auth.GoogleAuth({
+    credentials: JSON.parse(env.GOOGLE_CREDENTIALS), // Store credentials as a secret
+    scopes: ["https://www.googleapis.com/auth/drive.file"],
+  });
+
+  const drive = google.drive({ version: "v3", auth });
+
+  const fileBuffer = new Uint8Array(await file.arrayBuffer());
+  const fileMetadata = {
+    name: fileName,
+    parents: [env.GOOGLE_DRIVE_FOLDER_ID], // Set folder ID in Google Drive
   };
 
-  const backupCredentials = {
-    email: env.MEGA_BACKUP_EMAIL,
-    password: env.MEGA_BACKUP_PASSWORD,
+  const media = {
+    mimeType: file.type,
+    body: Buffer.from(fileBuffer),
   };
 
-  // Try uploading with primary account
+  const response = await drive.files.create({
+    requestBody: fileMetadata,
+    media: media,
+  });
+
+  return `https://drive.google.com/file/d/${response.data.id}/view`;
+}
+
+async function uploadFileToBothStorages(file, fileName, env) {
+  let megaUrl = null;
+  let driveUrl = null;
+
+  console.log(`Uploading ${fileName} to MEGA and Google Drive...`);
+
+  // Try MEGA upload
   try {
-    return await attemptMegaUpload(file, fileName, primaryCredentials);
-  } catch (error) {
-    console.error("Primary account file upload failed:", error.message);
-
-    // Try uploading with backup account
-    console.log("Switching to backup account...");
-    try {
-      return await attemptMegaUpload(file, fileName, backupCredentials);
-    } catch (backupError) {
-      console.error(
-        "Backup account file upload also failed:",
-        backupError.message
-      );
-      throw new Error("Both primary and backup account file uploads failed.");
-    }
+    megaUrl = await uploadFileToMega(file, fileName, env);
+    console.log(`MEGA Upload Successful: ${megaUrl}`);
+  } catch (megaError) {
+    console.error("MEGA Upload Failed:", megaError.message);
   }
+
+  // Try Google Drive upload
+  try {
+    driveUrl = await uploadFileToGoogleDrive(file, fileName, env);
+    console.log(`Google Drive Upload Successful: ${driveUrl}`);
+  } catch (driveError) {
+    console.error("Google Drive Upload Failed:", driveError.message);
+  }
+
+  // If both fail, throw an error
+  if (!megaUrl && !driveUrl) {
+    throw new Error("File uploads failed.");
+  }
+
+  // Return successful URLs (whichever worked)
+  return { megaUrl, driveUrl };
 }
 
 // async function uploadFileToDrive(file, fileName, env) {
@@ -228,8 +267,23 @@ export async function onRequestPost(context) {
 
           console.log(`Renaming ${value.name} to ${fileName} before upload.`);
 
-          let fileUrl = await uploadFileToDrive(value, fileName, context.env);
-          output[key] = fileUrl;
+          // let fileUrl = await uploadFileToDrive(value, fileName, context.env);
+          // output[key] = fileUrl;
+          // Upload to MEGA & Google Drive
+          const { megaUrl, driveUrl } = await uploadFileToBothStorages(
+            value,
+            fileName,
+            context.env
+          );
+
+          // Store URLs in output
+          if (key === "photo") {
+            output.photo_mega = megaUrl || null;
+            output.photo_drive = driveUrl || null;
+          } else if (key === "aadhar-card") {
+            output.aadhar_mega = megaUrl || null;
+            output.aadhar_drive = driveUrl || null;
+          }
         } else {
           output[key] = value;
         }
