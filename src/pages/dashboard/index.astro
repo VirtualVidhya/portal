@@ -1,21 +1,19 @@
 ---
 export const prerender = true;
 
-import BaseLayout from "../layouts/BaseLayout.astro";
-// import LottieAnimCanvas from "../components/LottieAnimCanvas.astro";
+import DashboardBaseLayout from "../../layouts/DashboardBaseLayout.astro";
 
 const metadata = {
-  title:
-    "V.Vidhya - Your virtual path to knowledge | Computer Education for All in Surat",
+  title: "Dashboard - V.Vidhya",
   description:
     "Learn top computer courses at V.Vidhya in Surat. From programming to graphic design, boost your skills and indulge your creativity to do real work with the help of technology.",
 };
 ---
 
-<BaseLayout
+<DashboardBaseLayout
   metadata={metadata}
-  includeLottieAnimScript={true}
-  navSection="home"
+  includeLottieAnimScript={false}
+  navSection="dashboard"
 >
   <main class="flex flex-col items-center justify-center gap-3 w-full my-20">
     <section
@@ -24,7 +22,7 @@ const metadata = {
       <h2
         class="text-center text-font-color-sec text-[34px] md:text-5xl font-extrabold"
       >
-        V.Vidhya Portal
+        V.Vidhya Dashboard
       </h2>
 
       <img
@@ -35,4 +33,4 @@ const metadata = {
       />
     </section>
   </main>
-</BaseLayout>
+</DashboardBaseLayout>

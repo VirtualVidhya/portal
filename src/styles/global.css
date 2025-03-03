@@ -654,4 +654,59 @@
   .form-file-info {
     list-style-type: "• ";
   }
+
+  /* APPLICATION DATA TABLE */
+  .app-data-container {
+    @apply border-2 border-solid border-font-color-pri rounded-lg overflow-hidden;
+  }
+
+  .app-data-table {
+    @apply w-full border-collapse text-left;
+  }
+
+  .app-data-table th,
+  td {
+    @apply px-4 py-2 border-2 border-solid border-color-border-pri;
+  }
+
+  /* Remove borders on the outer edges to prevent overlap with the container */
+  .app-data-table thead th {
+    border-top-width: 0;
+  }
+  .app-data-table tbody tr:last-child td {
+    border-bottom-width: 0;
+  }
+  .app-data-table tr th:first-child,
+  .app-data-table tr td:first-child {
+    border-left-width: 0;
+  }
+  .app-data-table tr th:last-child,
+  .app-data-table tr td:last-child {
+    border-right-width: 0;
+    border-left-width: 0;
+  }
+  .app-data-table tr th:nth-last-child(2),
+  .app-data-table tr td:nth-last-child(2) {
+    border-right-width: 0;
+  }
+
+  .app-data-table th {
+    @apply text-lg bg-navbar-color-pri;
+  }
+
+  .app-data-table tr:hover {
+    @apply bg-navbar-color-pri cursor-pointer;
+  }
+
+  /* .app-data-table tr:hover .view-more-btn {
+    @apply text-font-color-pri;
+  } */
+
+  .view-more-btn {
+    @apply transition-all flex justify-center items-center cursor-pointer w-7 h-7 rounded-full bg-font-color-sec text-font-color-white hover:text-font-color-pri active:text-font-color-pri;
+  }
+
+  .view-more-btn.touch {
+    @apply text-font-color-pri;
+  }
 }

@@ -1,0 +1,35 @@
+---
+export const prerender = false;
+import type { Application } from "../../../scripts/types";
+
+const { id } = Astro.params;
+
+const response = await fetch(`/api/get-ind-application?id=${id}`);
+if (!response.ok) {
+  throw new Error("Application not found or an error occurred.");
+}
+const application: Application = await response.json();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Application Details - {application.full_name}</title>
+    <meta name="description" content="Full application details" />
+  </head>
+  <body>
+    <main class="app-detail">
+      <h1>Application Details</h1>
+      <section>
+        <p><strong>Name:</strong> {application.full_name}</p>
+        <p><strong>Email:</strong> {application.email}</p>
+        <p><strong>Contact No:</strong> {application.contact_no}</p>
+        <p><strong>Course:</strong> {application.course}</p>
+        <p><strong>Status:</strong> {application.status}</p>
+        <!-- Include additional fields as needed -->
+      </section>
+      <a href="/dashboard/">Back to Dashboard</a>
+    </main>
+  </body>
+</html>

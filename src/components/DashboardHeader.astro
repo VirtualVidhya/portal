@@ -1,11 +1,11 @@
 ---
-import SocialLinks from "./SocialLinks.astro";
+// import SocialLinks from "./SocialLinks.astro";
 
 const { navSection } = Astro.props;
 ---
 
 <header class="header">
-  <a href="/">
+  <a href="/dashboard/">
     <!-- <img
         class="h-9 sm:h-12 md:h-16 lg:h-18 w-auto pr-0.5 md:pr-2"
         src="/images/med-logo.png"
@@ -254,7 +254,7 @@ c0,12.78-10.44,23.24-23.19,23.24H78.04c-12.75,0-23.19-10.46-23.19-23.24v-62.9"
     >
   </button>
 
-  <div
+  <!-- <div
     class="topbar-menu bg-navbar-color-pri sm:flex z-10 sm:z-auto absolute sm:static box-border sm:box-content h-dvh sm:h-auto w-full sm:w-auto left-[-640px] top-[50px] opacity-0 sm:opacity-100 transition-all ease-in duration-200"
   >
     <nav
@@ -270,47 +270,6 @@ c0,12.78-10.44,23.24-23.19,23.24H78.04c-12.75,0-23.19-10.46-23.19-23.24v-62.9"
       >
         Home
       </a>
-      <!-- <div class="sm:relative group">
-        <span
-          name="close"
-          class={`submenu-trigger h-full flex flex-row items-center cursor-pointer header-navmenu-hover ${
-            navSection === "courses"
-              ? "underline"
-              : "link-interaction-underline-effect"
-          }`}
-        >
-          Courses
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 320 512"
-            class="util-icon"
-            fill="currentColor"
-            stroke="currentColor"
-            stroke-width="15"
-          >
-            <path
-              d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"
-            ></path></svg
-          >
-        </span>
-        <div
-          class="sub-menu hidden sm:absolute flex-col gap-4 bg-navbar-color-pri rounded-md py-3 pl-5 sm:pt-6 sm:pb-4 sm:px-6 min-w-max sm:right-0"
-        >
-          <a href="/courses/" class="link-interaction-effect">All Courses</a>
-          <a href="/courses/multimedia/" class="link-interaction-effect"
-            >Multimedia Courses</a
-          >
-          <a href="/courses/programming/" class="link-interaction-effect"
-            >Programming Courses</a
-          >
-          <a href="/courses/kids/" class="link-interaction-effect"
-            >Kids Courses</a
-          >
-          <a href="/courses/literacy/" class="link-interaction-effect"
-            >Literacy Courses</a
-          >
-        </div>
-      </div> -->
       <a
         href="/application-form/"
         class={`flex items-center header-navmenu-hover ${
@@ -332,5 +291,5 @@ c0,12.78-10.44,23.24-23.19,23.24H78.04c-12.75,0-23.19-10.46-23.19-23.24v-62.9"
         <SocialLinks />
       </div>
     </div>
-  </div>
+  </div> -->
 </header>

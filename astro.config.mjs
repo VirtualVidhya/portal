@@ -9,7 +9,7 @@ import compressor from "astro-compressor";
 import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
-  site: "https://portal.vvidhya.com",
+  // site: "https://portal.vvidhya.com",
 
   integrations: [
     // sitemap({
