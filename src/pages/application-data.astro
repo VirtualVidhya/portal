@@ -1,5 +1,6 @@
 ---
-const response = await fetch("/api/get-applications");
+// const response = await fetch("/api/get-applications");
+const response = await fetch(import.meta.env.PUBLIC_API_URL + "/api/get-applications");
 const applications = await response.json();
 
 // Function to decrypt a file

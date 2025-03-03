@@ -12,6 +12,7 @@
     "wrangler:log": "wrangler pages deployment tail"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.2.3",
     "@playform/compress": "^0.1.7",
     "@tailwindcss/vite": "^4.0.6",
     "astro": "^5.3.0",
