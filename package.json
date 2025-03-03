@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev:astro": "astro dev",
-    "build:worker": "esbuild functions/api/submit-app-form.js --bundle --platform=node --external:resend --outfile=dist/worker.js",
+    "build:worker": "esbuild functions/api/submit-app-form.js --bundle --platform=node --external:resend --outfile=functions/submit-app-form.js && esbuild functions/api/get-applications.js --bundle --platform=node --external:resend --outfile=functions/get-applications.js",
     "build:astro": "astro build",
     "build": "npm run build:worker && npm run build:astro",
     "preview:astro": "astro preview",

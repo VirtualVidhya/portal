@@ -1,0 +1,111 @@
+---
+const response = await fetch("/api/get-applications");
+const applications = await response.json();
+
+// Function to decrypt a file
+async function decryptFile(encryptedBase64, keyBase64, ivBase64) {
+  const key = Uint8Array.from(atob(keyBase64), (c) => c.charCodeAt(0));
+  const iv = Uint8Array.from(atob(ivBase64), (c) => c.charCodeAt(0));
+  const encryptedData = Uint8Array.from(atob(encryptedBase64), (c) =>
+    c.charCodeAt(0)
+  );
+
+  // Import key for decryption
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    key,
+    { name: "AES-GCM" },
+    false,
+    ["decrypt"]
+  );
+
+  // Decrypt file
+  const decryptedBuffer = await crypto.subtle.decrypt(
+    { name: "AES-GCM", iv },
+    cryptoKey,
+    encryptedData
+  );
+
+  return new Blob([decryptedBuffer]);
+}
+---
+
+<!-- ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+// import FormArrow from "../components/FormArrow.astro";
+
+const metadata = {
+  title: "Application Data - V.Vidhya | For Best Computer Education in Surat",
+  description:
+    "Get in touch with V.Vidhya for the best computer education in Surat. Visit our institute, call us, or drop a message to learn more about offered courses.",
+};
+---
+
+<BaseLayout metadata={metadata} navSection="application-data">
+
+</BaseLayout> -->
+<html lang="en">
+  <head>
+    <title>Application Data</title>
+  </head>
+  <body>
+    <h1>Application Form Submissions</h1>
+
+    {
+      applications.length > 0 ? (
+        <table border="1">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Contact No</th>
+              <th>Course</th>
+              <th>Photo</th>
+              <th>Aadhar Card</th>
+            </tr>
+          </thead>
+          <tbody>
+            {applications.map(async (app) => {
+              // Fetch encrypted file from Google Drive
+              const photoBlob = await decryptFile(
+                app.photo_url,
+                app.photo_key,
+                app.photo_iv
+              );
+              const aadharBlob = await decryptFile(
+                app.aadhar_url,
+                app.aadhar_key,
+                app.aadhar_iv
+              );
+
+              const photoURL = URL.createObjectURL(photoBlob);
+              const aadharURL = URL.createObjectURL(aadharBlob);
+
+              return (
+                <tr>
+                  <td>{app.full_name}</td>
+                  <td>{app.email}</td>
+                  <td>{app.contact_no}</td>
+                  <td>{app.course}</td>
+                  <td>
+                    <img src={photoURL} width="100" height="100" />
+                  </td>
+                  <td>
+                    <a
+                      href={aadharURL}
+                      download={`${app.full_name}_Aadhar.pdf`}
+                    >
+                      Download Aadhar PDF
+                    </a>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      ) : (
+        <p>No applications found.</p>
+      )
+    }
+  </body>
+</html>
