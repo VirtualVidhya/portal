@@ -1,8 +1,8 @@
 ---
-// const response = await fetch("/api/get-applications");
-const response = await fetch(
-  "https://portal.vvidhya.com" + "/api/get-applications"
-);
+const API_URL = import.meta.env.PUBLIC_API_URL + "/api/get-applications";
+console.log("Fetching from:", API_URL);
+
+const response = await fetch(`${API_URL}`);
 const applications = await response.json();
 
 // Function to decrypt a file
@@ -32,8 +32,38 @@ async function decryptFile(encryptedBase64, keyBase64, ivBase64) {
   return new Blob([decryptedBuffer]);
 }
 
+// **Pre-fetch and decrypt files before rendering**
+const processedApplications = await Promise.all(
+  applications.map(async (app) => {
+    try {
+      const photoBlob = await decryptFile(
+        app.photo_url,
+        app.photo_key,
+        app.photo_iv
+      );
+      const aadharBlob = await decryptFile(
+        app.aadhar_url,
+        app.aadhar_key,
+        app.aadhar_iv
+      );
+
+      return {
+        ...app,
+        photoURL: URL.createObjectURL(photoBlob),
+        aadharURL: URL.createObjectURL(aadharBlob),
+      };
+    } catch (err) {
+      console.error(`Error decrypting files for ${app.full_name}:`, err);
+      return {
+        ...app,
+        photoURL: null,
+        aadharURL: null,
+      };
+    }
+  })
+);
+
 import BaseLayout from "../layouts/BaseLayout.astro";
-// import FormArrow from "../components/FormArrow.astro";
 
 const metadata = {
   title: "Application Data - V.Vidhya | For Best Computer Education in Surat",
@@ -46,7 +76,7 @@ const metadata = {
   <h1>Application Form Submissions</h1>
 
   {
-    applications.length > 0 ? (
+    processedApplications.length > 0 ? (
       <table border="1">
         <thead>
           <tr>
@@ -59,39 +89,38 @@ const metadata = {
           </tr>
         </thead>
         <tbody>
-          {applications.map(async (app) => {
-            // Fetch encrypted file from Google Drive
-            const photoBlob = await decryptFile(
-              app.photo_url,
-              app.photo_key,
-              app.photo_iv
-            );
-            const aadharBlob = await decryptFile(
-              app.aadhar_url,
-              app.aadhar_key,
-              app.aadhar_iv
-            );
-
-            const photoURL = URL.createObjectURL(photoBlob);
-            const aadharURL = URL.createObjectURL(aadharBlob);
-
-            return (
-              <tr>
-                <td>{app.full_name}</td>
-                <td>{app.email}</td>
-                <td>{app.contact_no}</td>
-                <td>{app.course}</td>
-                <td>
-                  <img src={photoURL} width="100" height="100" />
-                </td>
-                <td>
-                  <a href={aadharURL} download={`${app.full_name}_Aadhar.pdf`}>
+          {processedApplications.map((app) => (
+            <tr>
+              <td>{app.full_name}</td>
+              <td>{app.email}</td>
+              <td>{app.contact_no}</td>
+              <td>{app.course}</td>
+              <td>
+                {app.photoURL ? (
+                  <img
+                    src={app.photoURL}
+                    width="100"
+                    height="100"
+                    alt="Passport Photo"
+                  />
+                ) : (
+                  "Decryption Failed"
+                )}
+              </td>
+              <td>
+                {app.aadharURL ? (
+                  <a
+                    href={app.aadharURL}
+                    download={`${app.full_name}_Aadhar.pdf`}
+                  >
                     Download Aadhar PDF
                   </a>
-                </td>
-              </tr>
-            );
-          })}
+                ) : (
+                  "Decryption Failed"
+                )}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     ) : (
