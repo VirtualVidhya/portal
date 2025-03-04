@@ -2,6 +2,7 @@
 const API_URL = "/api/get-applications";
 
 async function fetchApplications() {
+  console.log("Fetching Applications...");
   try {
     console.log("Fetching applications from:", API_URL);
     const response = await fetch(API_URL);
@@ -43,6 +44,7 @@ async function decryptFile(encryptedBase64, keyBase64, ivBase64) {
 }
 
 async function displayApplications() {
+  console.log("Displaying Applications...");
   const applications = await fetchApplications();
   const tableBody = document.getElementById("applications-table");
 
