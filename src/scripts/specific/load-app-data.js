@@ -24,7 +24,7 @@ async function decryptFile(encryptedBase64, keyBase64, ivBase64) {
 
     // Convert Base64 to Uint8Array properly
     function base64ToUint8Array(base64) {
-      base64 = base64.replace(/-/g, "+").replace(/_/g, "/"); // Fix URL-safe Base64
+      base64 = base64.replace(/-/g, "+").replace(/_/g, "/"); // Handle URL-safe Base64
       return new Uint8Array(
         atob(base64)
           .split("")

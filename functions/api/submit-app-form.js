@@ -144,7 +144,11 @@ async function encryptFile(file) {
 }
 
 function encodeBase64(data) {
-  return btoa(String.fromCharCode(...data));
+  return btoa(
+    Array.from(data)
+      .map((byte) => String.fromCharCode(byte))
+      .join("")
+  );
 }
 
 async function uploadFileToDatabase(file, fileName, env) {
