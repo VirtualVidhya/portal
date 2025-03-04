@@ -1,130 +1,32 @@
 ---
-const API_URL = import.meta.env.PUBLIC_API_URL + "/api/get-applications";
-console.log("Fetching from:", API_URL);
-
-const response = await fetch(`${API_URL}`);
-const applications = await response.json();
-
-// Function to decrypt a file
-async function decryptFile(encryptedBase64, keyBase64, ivBase64) {
-  const key = Uint8Array.from(atob(keyBase64), (c) => c.charCodeAt(0));
-  const iv = Uint8Array.from(atob(ivBase64), (c) => c.charCodeAt(0));
-  const encryptedData = Uint8Array.from(atob(encryptedBase64), (c) =>
-    c.charCodeAt(0)
-  );
-
-  // Import key for decryption
-  const cryptoKey = await crypto.subtle.importKey(
-    "raw",
-    key,
-    { name: "AES-GCM" },
-    false,
-    ["decrypt"]
-  );
-
-  // Decrypt file
-  const decryptedBuffer = await crypto.subtle.decrypt(
-    { name: "AES-GCM", iv },
-    cryptoKey,
-    encryptedData
-  );
-
-  return new Blob([decryptedBuffer]);
-}
-
-// **Pre-fetch and decrypt files before rendering**
-const processedApplications = await Promise.all(
-  applications.map(async (app) => {
-    try {
-      const photoBlob = await decryptFile(
-        app.photo_url,
-        app.photo_key,
-        app.photo_iv
-      );
-      const aadharBlob = await decryptFile(
-        app.aadhar_url,
-        app.aadhar_key,
-        app.aadhar_iv
-      );
-
-      return {
-        ...app,
-        photoURL: URL.createObjectURL(photoBlob),
-        aadharURL: URL.createObjectURL(aadharBlob),
-      };
-    } catch (err) {
-      console.error(`Error decrypting files for ${app.full_name}:`, err);
-      return {
-        ...app,
-        photoURL: null,
-        aadharURL: null,
-      };
-    }
-  })
-);
-
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const metadata = {
-  title: "Application Data - V.Vidhya | For Best Computer Education in Surat",
-  description:
-    "Get in touch with V.Vidhya for the best computer education in Surat. Visit our institute, call us, or drop a message to learn more about offered courses.",
+  title: "Application Data - V.Vidhya",
+  description: "View submitted applications securely.",
 };
 ---
 
 <BaseLayout metadata={metadata} navSection="application-data">
   <h1>Application Form Submissions</h1>
 
-  {
-    processedApplications.length > 0 ? (
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Contact No</th>
-            <th>Course</th>
-            <th>Photo</th>
-            <th>Aadhar Card</th>
-          </tr>
-        </thead>
-        <tbody>
-          {processedApplications.map((app) => (
-            <tr>
-              <td>{app.full_name}</td>
-              <td>{app.email}</td>
-              <td>{app.contact_no}</td>
-              <td>{app.course}</td>
-              <td>
-                {app.photoURL ? (
-                  <img
-                    src={app.photoURL}
-                    width="100"
-                    height="100"
-                    alt="Passport Photo"
-                  />
-                ) : (
-                  "Decryption Failed"
-                )}
-              </td>
-              <td>
-                {app.aadharURL ? (
-                  <a
-                    href={app.aadharURL}
-                    download={`${app.full_name}_Aadhar.pdf`}
-                  >
-                    Download Aadhar PDF
-                  </a>
-                ) : (
-                  "Decryption Failed"
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    ) : (
-      <p>No applications found.</p>
-    )
-  }
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Contact No</th>
+        <th>Course</th>
+        <th>Photo</th>
+        <th>Aadhar Card</th>
+      </tr>
+    </thead>
+    <tbody id="applications-table">
+      <tr>
+        <td colspan="6">Loading applications...</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script src="../scripts/specific/load-app-data.js"></script>
 </BaseLayout>
