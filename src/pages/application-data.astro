@@ -8,7 +8,7 @@ const metadata = {
 ---
 
 <BaseLayout metadata={metadata} navSection="application-data">
-  <h1>Application Form Submissions</h1>
+  <!-- <h1>Application Form Submissions</h1> -->
 
   <table border="1">
     <thead>
@@ -28,5 +28,7 @@ const metadata = {
     </tbody>
   </table>
 
-  <script src="../scripts/specific/load-app-data.js"></script>
+  <slot slot="specific-scripts-slot">
+    <script src="../scripts/specific/load-app-data.js"></script>
+  </slot>
 </BaseLayout>
