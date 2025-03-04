@@ -102,7 +102,8 @@ async function displayApplications() {
   });
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM fully loaded, starting application display...");
-  displayApplications();
-});
+// window.addEventListener("DOMContentLoaded", () => {
+//   console.log("DOM fully loaded, starting application display...");
+// });
+
+displayApplications();
