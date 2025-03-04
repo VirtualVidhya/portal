@@ -143,6 +143,10 @@ async function encryptFile(file) {
   };
 }
 
+function encodeBase64(data) {
+  return btoa(String.fromCharCode(...data));
+}
+
 async function uploadFileToDatabase(file, fileName, env) {
   console.log(`Uploading ${fileName} to Google Drive...`);
 
@@ -204,8 +208,8 @@ async function uploadFileToDatabase(file, fileName, env) {
   // Return Google Drive file link & store encryption key somewhere safe
   return {
     fileUrl: `https://drive.google.com/uc?id=${jsonResponse.id}`,
-    encryptionKey: btoa(String.fromCharCode(...new Uint8Array(encryptionKey))), // Convert key to Base64 for storage
-    iv: btoa(String.fromCharCode(...new Uint8Array(iv))), // Convert IV to Base64 for storage
+    encryptionKey: encodeBase64(new Uint8Array(encryptionKey)), // Convert key to Base64 for storage
+    iv: encodeBase64(new Uint8Array(iv)), // Convert IV to Base64 for storage
   };
 }
 
