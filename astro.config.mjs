@@ -6,7 +6,7 @@ import compress from "@playform/compress";
 import compressor from "astro-compressor";
 // import fs from "fs";
 // import path from "path";
-import cloudflare from "@astrojs/cloudflare";
+// import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
   // site: "https://portal.vvidhya.com",
@@ -96,8 +96,8 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  output: "server",
-  adapter: cloudflare(),
+  output: "static",
+  // adapter: cloudflare(),
 
   build: {
     assets: "resources",
