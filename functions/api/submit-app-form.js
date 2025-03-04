@@ -143,12 +143,8 @@ async function encryptFile(file) {
   };
 }
 
-function encodeBase64(data) {
-  return btoa(
-    Array.from(data)
-      .map((byte) => String.fromCharCode(byte))
-      .join("")
-  );
+function encodeBase64(uint8Array) {
+  return btoa(String.fromCharCode.apply(null, uint8Array));
 }
 
 async function uploadFileToDatabase(file, fileName, env) {

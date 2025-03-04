@@ -25,11 +25,12 @@ async function decryptFile(encryptedBase64, keyBase64, ivBase64) {
     // Convert Base64 to Uint8Array properly
     function base64ToUint8Array(base64) {
       base64 = base64.replace(/-/g, "+").replace(/_/g, "/"); // Handle URL-safe Base64
-      return new Uint8Array(
-        atob(base64)
-          .split("")
-          .map((c) => c.charCodeAt(0))
-      );
+      const binaryString = atob(base64);
+      const uint8Array = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        uint8Array[i] = binaryString.charCodeAt(i);
+      }
+      return uint8Array;
     }
 
     const key = base64ToUint8Array(keyBase64);
