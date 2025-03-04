@@ -1,4 +1,7 @@
 // const API_URL = import.meta.env.PUBLIC_API_URL + "/api/get-applications";
+
+console.log("Executing load-data.js");
+
 const API_URL = "/api/get-applications";
 
 async function fetchApplications() {
@@ -99,4 +102,7 @@ async function displayApplications() {
   });
 }
 
-window.addEventListener("DOMContentLoaded", displayApplications);
+window.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM fully loaded, starting application display...");
+  displayApplications();
+});
