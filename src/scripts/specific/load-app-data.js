@@ -19,11 +19,21 @@ async function fetchApplications() {
 
 async function decryptFile(encryptedBase64, keyBase64, ivBase64) {
   try {
-    const key = Uint8Array.from(atob(keyBase64), (c) => c.charCodeAt(0));
-    const iv = Uint8Array.from(atob(ivBase64), (c) => c.charCodeAt(0));
-    const encryptedData = Uint8Array.from(atob(encryptedBase64), (c) =>
-      c.charCodeAt(0)
-    );
+    console.log("Decrypting with key:", keyBase64);
+    console.log("Decrypting with IV:", ivBase64);
+
+    // Convert Base64 to Uint8Array properly
+    function base64ToUint8Array(base64) {
+      return new Uint8Array(
+        atob(base64.replace(/-/g, "+").replace(/_/g, "/"))
+          .split("")
+          .map((c) => c.charCodeAt(0))
+      );
+    }
+
+    const key = base64ToUint8Array(keyBase64);
+    const iv = base64ToUint8Array(ivBase64);
+    const encryptedData = base64ToUint8Array(encryptedBase64);
 
     const cryptoKey = await crypto.subtle.importKey(
       "raw",
