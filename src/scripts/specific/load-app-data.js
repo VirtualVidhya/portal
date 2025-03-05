@@ -137,7 +137,7 @@ function base64ToUint8Array(base64) {
   return bytes;
 }
 
-// Decrypts an encrypted file by fetching its binary data, then using the provided key and IV.
+// Decrypts an encrypted file by fetching its binary data via the proxy endpoint.
 async function decryptFile(fileUrl, keyBase64, ivBase64) {
   try {
     console.log("Decrypting file from:", fileUrl);
@@ -148,8 +148,9 @@ async function decryptFile(fileUrl, keyBase64, ivBase64) {
     const keyBytes = base64ToUint8Array(keyBase64);
     const ivBytes = base64ToUint8Array(ivBase64);
 
-    // Fetch the encrypted file as an ArrayBuffer
-    const fileResponse = await fetch(fileUrl);
+    // Use a proxy endpoint to fetch the file to bypass CORS restrictions.
+    const proxyUrl = `/api/proxy?url=${encodeURIComponent(fileUrl)}`;
+    const fileResponse = await fetch(proxyUrl);
     if (!fileResponse.ok) {
       throw new Error("Failed to fetch encrypted file.");
     }
