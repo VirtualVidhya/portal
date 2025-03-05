@@ -17,21 +17,21 @@ async function fetchApplications() {
   }
 }
 
+function base64ToUint8Array(base64) {
+  base64 = base64.replace(/-/g, "+").replace(/_/g, "/"); // Handle URL-safe Base64
+  const binaryString = atob(base64);
+  const length = binaryString.length;
+  const bytes = new Uint8Array(length);
+  for (let i = 0; i < length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes;
+}
+
 async function decryptFile(encryptedBase64, keyBase64, ivBase64) {
   try {
     console.log("Decrypting with key:", keyBase64);
     console.log("Decrypting with IV:", ivBase64);
-
-    // Convert Base64 to Uint8Array properly
-    function base64ToUint8Array(base64) {
-      base64 = base64.replace(/-/g, "+").replace(/_/g, "/"); // Handle URL-safe encoding
-      const raw = atob(base64);
-      const outputArray = new Uint8Array(raw.length);
-      for (let i = 0; i < raw.length; i++) {
-        outputArray[i] = raw.charCodeAt(i);
-      }
-      return outputArray;
-    }
 
     const key = base64ToUint8Array(keyBase64);
     const iv = base64ToUint8Array(ivBase64);
