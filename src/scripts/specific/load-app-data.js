@@ -126,9 +126,7 @@ const API_URL = "/api/get-applications";
 
 // Helper: Convert URL-safe Base64 to Uint8Array, adding padding if necessary.
 function base64ToUint8Array(base64) {
-  // Convert URL-safe Base64 to standard Base64
   base64 = base64.replace(/-/g, "+").replace(/_/g, "/");
-  // Add padding if missing
   while (base64.length % 4 !== 0) {
     base64 += "=";
   }
@@ -141,9 +139,21 @@ function base64ToUint8Array(base64) {
   return bytes;
 }
 
+// Adjust the Google Drive URL to force file download.
+function adjustDriveUrl(url) {
+  // If URL contains "uc?id=" but not "export=download", add it.
+  if (url.includes("drive.google.com/uc") && !url.includes("export=download")) {
+    // Replace "uc?id=" with "uc?export=download&id="
+    url = url.replace("uc?id=", "uc?export=download&id=");
+  }
+  return url;
+}
+
 // Decrypts an encrypted file by fetching its binary data via the proxy endpoint.
 async function decryptFile(fileUrl, keyBase64, ivBase64) {
   try {
+    // Adjust file URL to force download.
+    fileUrl = adjustDriveUrl(fileUrl);
     console.log("Decrypting file from:", fileUrl);
     console.log("Using key:", keyBase64);
     console.log("Using IV:", ivBase64);

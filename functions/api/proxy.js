@@ -10,7 +10,6 @@ export async function onRequest(context) {
   try {
     const response = await fetch(targetUrl);
     const newResponse = new Response(response.body, response);
-    // Allow all origins
     newResponse.headers.set("Access-Control-Allow-Origin", "*");
     return newResponse;
   } catch (err) {
