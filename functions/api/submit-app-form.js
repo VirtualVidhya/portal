@@ -100,11 +100,11 @@ async function getAccessToken(env) {
 
   // Check for authentication errors
   if (!json.access_token) {
-    console.error("Google OAuth Token Error:", json);
-    throw new Error("Failed to generate Google OAuth token");
+    console.error("OAuth Token Error:", json);
+    throw new Error("Failed to generate OAuth token");
   }
 
-  console.log("Google Access Token Retrieved");
+  console.log("Access Token Retrieved");
   return json.access_token;
 }
 
@@ -148,14 +148,15 @@ function encodeBase64(uint8Array) {
 }
 
 async function uploadFileToDatabase(file, fileName, env) {
-  console.log(`Uploading ${fileName} to Google Drive...`);
+  console.log(`Uploading file to DataStorage...`);
+  // console.log(`Uploading ${fileName} to DataStorage...`);
 
   // Encrypt the file first
   const { encryptedFile, encryptionKey, iv } = await encryptFile(file);
 
   const accessToken = await getAccessToken(env);
   if (!accessToken) {
-    throw new Error("Google OAuth token is missing. Cannot upload file.");
+    throw new Error("OAuth token is missing. Cannot upload file.");
   }
 
   const metadata = {
@@ -197,11 +198,12 @@ async function uploadFileToDatabase(file, fileName, env) {
   const jsonResponse = await response.json();
 
   if (!jsonResponse.id) {
-    console.error("Google Drive Upload Failed:", jsonResponse);
-    throw new Error("Google Drive Upload Failed");
+    console.error("File Upload to DataStorage Failed:", jsonResponse);
+    throw new Error("File Upload to DataStorage Failed");
   }
 
-  console.log("File Uploaded Successfully:", jsonResponse);
+  console.log("File Uploaded Successfully...");
+  // console.log("File Uploaded Successfully:", jsonResponse);
 
   // return `https://drive.google.com/uc?id=${jsonResponse.id}`;
 
@@ -217,11 +219,12 @@ async function storeInDatabase(env, formData) {
   const supabaseUrl = env.SUPABASE_URL;
   const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY;
 
-  console.log("Supabase URL:", supabaseUrl);
-  console.log(
-    "Supabase Key (Hidden for Security):",
-    supabaseKey ? "Present" : "Missing"
-  );
+  console.log("Storing data in Database...");
+  // console.log("Supabase URL:", supabaseUrl);
+  // console.log(
+  //   "Supabase Key (Hidden for Security):",
+  //   supabaseKey ? "Present" : "Missing"
+  // );
 
   if (supabaseUrl === undefined || supabaseKey === undefined) {
     throw new Error("Supabase URL or Key is missing");
@@ -286,8 +289,8 @@ async function storeInDatabase(env, formData) {
   });
 
   const responseText = await response.text();
-  console.log("Supabase Response Status:", response.status);
-  console.log("Supabase Response Body:", responseText);
+  // console.log("Supabase Response Status:", response.status);
+  // console.log("Supabase Response Body:", responseText);
 
   if (!response.ok) {
     throw new Error(`Failed to store application in database`);

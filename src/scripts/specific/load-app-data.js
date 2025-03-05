@@ -150,15 +150,16 @@ async function decryptFile(fileUrl, keyBase64, ivBase64) {
   try {
     const fileId = extractFileId(fileUrl);
     if (!fileId) throw new Error("Invalid file URL, cannot extract fileId");
-    console.log("Fetching encrypted file for fileId:", fileId);
-    console.log("Using key:", keyBase64);
-    console.log("Using IV:", ivBase64);
+    console.log("Fetching encrypted file...");
+    // console.log("Fetching encrypted file for fileId:", fileId);
+    // console.log("Using key:", keyBase64);
+    // console.log("Using IV:", ivBase64);
 
     // Call our drive-proxy endpoint with the fileId.
-    const proxyUrl = `/api/drive-proxy?fileId=${encodeURIComponent(fileId)}`;
+    const proxyUrl = `/api/proxy?fileId=${encodeURIComponent(fileId)}`;
     const fileResponse = await fetch(proxyUrl);
     if (!fileResponse.ok) {
-      throw new Error("Failed to fetch encrypted file from drive-proxy.");
+      throw new Error("Failed to fetch encrypted file from proxy.");
     }
     const encryptedBuffer = await fileResponse.arrayBuffer();
 
@@ -224,8 +225,8 @@ async function displayApplications() {
       <td>${app.email}</td>
       <td>${app.contact_no}</td>
       <td>${app.course}</td>
-      <td class="photo-cell">Decrypting...</td>
-      <td class="aadhar-cell">Decrypting...</td>
+      <td class="photo-cell">Loading...</td>
+      <td class="aadhar-cell">Loading...</td>
     `;
     tableBody.appendChild(row);
 
