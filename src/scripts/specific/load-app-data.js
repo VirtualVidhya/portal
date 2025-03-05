@@ -124,7 +124,7 @@ console.log("Executing load-app-data.js");
 
 const API_URL = "/api/get-applications";
 
-// Helper: Convert URL-safe Base64 to Uint8Array, adding padding if necessary.
+// Helper: Convert URL-safe Base64 to Uint8Array (with padding).
 function base64ToUint8Array(base64) {
   base64 = base64.replace(/-/g, "+").replace(/_/g, "/");
   while (base64.length % 4 !== 0) {
@@ -139,38 +139,34 @@ function base64ToUint8Array(base64) {
   return bytes;
 }
 
-// Adjust the Google Drive URL to force file download.
-function adjustDriveUrl(url) {
-  // If URL contains "uc?id=" but not "export=download", add it.
-  if (url.includes("drive.google.com/uc") && !url.includes("export=download")) {
-    // Replace "uc?id=" with "uc?export=download&id="
-    url = url.replace("uc?id=", "uc?export=download&id=");
-  }
-  return url;
+// Extract fileId from a Google Drive URL of the form "https://drive.google.com/uc?id=<fileId>"
+function extractFileId(url) {
+  const match = url.match(/[?&]id=([^&]+)/);
+  return match ? match[1] : null;
 }
 
-// Decrypts an encrypted file by fetching its binary data via the proxy endpoint.
+// Decrypts an encrypted file by fetching its binary data from our drive-proxy.
 async function decryptFile(fileUrl, keyBase64, ivBase64) {
   try {
-    // Adjust file URL to force download.
-    fileUrl = adjustDriveUrl(fileUrl);
-    console.log("Decrypting file from:", fileUrl);
+    const fileId = extractFileId(fileUrl);
+    if (!fileId) throw new Error("Invalid file URL, cannot extract fileId");
+    console.log("Fetching encrypted file for fileId:", fileId);
     console.log("Using key:", keyBase64);
     console.log("Using IV:", ivBase64);
 
-    // Decode key and IV from Base64 (with proper padding)
-    const keyBytes = base64ToUint8Array(keyBase64);
-    const ivBytes = base64ToUint8Array(ivBase64);
-
-    // Use a proxy endpoint to fetch the file to bypass CORS restrictions.
-    const proxyUrl = `/api/proxy?url=${encodeURIComponent(fileUrl)}`;
+    // Call our drive-proxy endpoint with the fileId.
+    const proxyUrl = `/api/drive-proxy?fileId=${encodeURIComponent(fileId)}`;
     const fileResponse = await fetch(proxyUrl);
     if (!fileResponse.ok) {
-      throw new Error("Failed to fetch encrypted file.");
+      throw new Error("Failed to fetch encrypted file from drive-proxy.");
     }
     const encryptedBuffer = await fileResponse.arrayBuffer();
 
-    // Import the key for decryption using AES-GCM
+    // Decode key and IV from Base64.
+    const keyBytes = base64ToUint8Array(keyBase64);
+    const ivBytes = base64ToUint8Array(ivBase64);
+
+    // Import the key for decryption using AES-GCM.
     const cryptoKey = await crypto.subtle.importKey(
       "raw",
       keyBytes,
@@ -179,14 +175,14 @@ async function decryptFile(fileUrl, keyBase64, ivBase64) {
       ["decrypt"]
     );
 
-    // Decrypt the binary data
+    // Decrypt the encrypted binary data.
     const decryptedBuffer = await crypto.subtle.decrypt(
       { name: "AES-GCM", iv: ivBytes },
       cryptoKey,
       encryptedBuffer
     );
 
-    // Create an object URL from the decrypted data.
+    // Return an object URL for the decrypted file.
     return URL.createObjectURL(new Blob([decryptedBuffer]));
   } catch (error) {
     console.error("Decryption failed:", error);
@@ -194,7 +190,7 @@ async function decryptFile(fileUrl, keyBase64, ivBase64) {
   }
 }
 
-// Fetch application data from the API.
+// Fetch application data from our API.
 async function fetchApplications() {
   console.log("Fetching Applications from:", API_URL);
   try {
@@ -221,10 +217,8 @@ async function displayApplications() {
 
   tableBody.innerHTML = ""; // Clear any loading message
 
-  // For each application record, create a table row and decrypt file data.
   applications.forEach(async (app) => {
     const row = document.createElement("tr");
-
     row.innerHTML = `
       <td>${app.full_name}</td>
       <td>${app.email}</td>
@@ -233,14 +227,11 @@ async function displayApplications() {
       <td class="photo-cell">Decrypting...</td>
       <td class="aadhar-cell">Decrypting...</td>
     `;
-
     tableBody.appendChild(row);
 
-    // Locate the cells where decrypted data will be shown.
     const photoCell = row.querySelector(".photo-cell");
     const aadharCell = row.querySelector(".aadhar-cell");
 
-    // Decrypt the photo (assumed to be an image)
     let photoURL = null;
     if (app.photo_url && app.photo_key && app.photo_iv) {
       photoURL = await decryptFile(app.photo_url, app.photo_key, app.photo_iv);
@@ -251,7 +242,6 @@ async function displayApplications() {
       photoCell.innerHTML = "Decryption Failed";
     }
 
-    // Decrypt the aadhar document (assumed to be a PDF)
     let aadharURL = null;
     if (app.aadhar_url && app.aadhar_key && app.aadhar_iv) {
       aadharURL = await decryptFile(
@@ -268,5 +258,5 @@ async function displayApplications() {
   });
 }
 
-// Start the application display process.
+// Start the display process.
 displayApplications();
