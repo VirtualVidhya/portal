@@ -124,10 +124,14 @@ console.log("Executing load-app-data.js");
 
 const API_URL = "/api/get-applications";
 
-// Helper: Convert URL-safe Base64 to Uint8Array.
+// Helper: Convert URL-safe Base64 to Uint8Array, adding padding if necessary.
 function base64ToUint8Array(base64) {
   // Convert URL-safe Base64 to standard Base64
   base64 = base64.replace(/-/g, "+").replace(/_/g, "/");
+  // Add padding if missing
+  while (base64.length % 4 !== 0) {
+    base64 += "=";
+  }
   const binaryString = atob(base64);
   const length = binaryString.length;
   const bytes = new Uint8Array(length);
@@ -144,7 +148,7 @@ async function decryptFile(fileUrl, keyBase64, ivBase64) {
     console.log("Using key:", keyBase64);
     console.log("Using IV:", ivBase64);
 
-    // Decode key and IV from Base64
+    // Decode key and IV from Base64 (with proper padding)
     const keyBytes = base64ToUint8Array(keyBase64);
     const ivBytes = base64ToUint8Array(ivBase64);
 
