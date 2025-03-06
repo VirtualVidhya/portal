@@ -44,3 +44,37 @@ export async function onRequest(context) {
     return Response.redirect("https://portal.vvidhya.com/dashboard/login/");
   }
 }
+
+import { jwtVerify } from "jose";
+
+export async function onRequest(context) {
+  const { request, next } = context;
+  const url = new URL(request.url);
+
+  // Exclude the login page (and any other public routes under /dashboard/)
+  if (url.pathname.startsWith("/dashboard/login")) {
+    return next();
+  }
+
+  // Extract token from cookies.
+  const cookieHeader = request.headers.get("Cookie") || "";
+  const tokenMatch = cookieHeader.match(/session_token=([^;]+)/);
+  const token = tokenMatch ? tokenMatch[1] : null;
+
+  // Construct absolute login URL.
+  const loginUrl = new URL("/dashboard/login/", request.url).toString();
+  // const loginUrl = "https://portal.vvidhya.com/dashboard/login/";
+
+  if (!token) {
+    return Response.redirect(loginUrl);
+  }
+
+  try {
+    // Use globalThis.JWT_TOKEN which should have been set as an environment secret.
+    const secret = new TextEncoder().encode(globalThis.JWT_TOKEN);
+    await jwtVerify(token, secret);
+    return next();
+  } catch (error) {
+    return Response.redirect(loginUrl);
+  }
+}
