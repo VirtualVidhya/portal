@@ -1,6 +1,0 @@
-name = "auth"
-workers_dev = false
-
-routes = [
-  { pattern = "portal.vvidhya.com/dashboard/*", script = "auth" }
-]
