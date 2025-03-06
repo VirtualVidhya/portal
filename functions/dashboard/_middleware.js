@@ -22,7 +22,9 @@ export async function onRequest({ request, next }) {
   }
 
   // Get the JWT secret from global variables.
-  const secretKey = globalThis.JWT_TOKEN;
+  const secretKey = globalThis.JWT_TOKEN || "";
+  console.log("JWT_TOKEN exists?", Boolean(secretKey));
+
   if (!secretKey) {
     console.error("JWT secret is not set (globalThis.JWT_TOKEN is empty).");
     return new Response("Internal Server Error", { status: 500 });
