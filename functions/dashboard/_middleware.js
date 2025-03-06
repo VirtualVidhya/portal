@@ -23,27 +23,27 @@
 //   }
 // }
 
-import { jwtVerify } from "jose";
+// import { jwtVerify } from "jose";
 
-export async function onRequest(context) {
-  const { request } = context;
-  const cookieHeader = request.headers.get("Cookie") || "";
-  const tokenMatch = cookieHeader.match(/session_token=([^;]+)/);
-  const token = tokenMatch ? tokenMatch[1] : null;
+// export async function onRequest(context) {
+//   const { request } = context;
+//   const cookieHeader = request.headers.get("Cookie") || "";
+//   const tokenMatch = cookieHeader.match(/session_token=([^;]+)/);
+//   const token = tokenMatch ? tokenMatch[1] : null;
 
-  if (!token) {
-    return Response.redirect("https://portal.vvidhya.com/dashboard/login/");
-  }
+//   if (!token) {
+//     return Response.redirect("https://portal.vvidhya.com/dashboard/login/");
+//   }
 
-  try {
-    const secret = new TextEncoder().encode(globalThis.JWT_TOKEN);
-    const { payload } = await jwtVerify(token, secret);
-    context.state.user = payload;
-    return context.next();
-  } catch (error) {
-    return Response.redirect("https://portal.vvidhya.com/dashboard/login/");
-  }
-}
+//   try {
+//     const secret = new TextEncoder().encode(globalThis.JWT_TOKEN);
+//     const { payload } = await jwtVerify(token, secret);
+//     context.state.user = payload;
+//     return context.next();
+//   } catch (error) {
+//     return Response.redirect("https://portal.vvidhya.com/dashboard/login/");
+//   }
+// }
 
 import { jwtVerify } from "jose";
 
