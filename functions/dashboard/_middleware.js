@@ -32,7 +32,7 @@ export async function onRequest(context) {
   const token = tokenMatch ? tokenMatch[1] : null;
 
   if (!token) {
-    return Response.redirect("/dashboard/login/");
+    return Response.redirect("https://portal.vvidhya.com/dashboard/login/");
   }
 
   try {
@@ -41,6 +41,6 @@ export async function onRequest(context) {
     context.state.user = payload;
     return context.next();
   } catch (error) {
-    return Response.redirect("/dashboard/login/");
+    return Response.redirect("https://portal.vvidhya.com/dashboard/login/");
   }
 }
