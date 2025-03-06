@@ -21,6 +21,8 @@ export async function onRequest({ request, next }) {
     return Response.redirect(loginUrl);
   }
 
+  console.log("Global keys:", Object.keys(globalThis));
+
   // Get the JWT secret from global variables.
   const secretKey = globalThis.JWT_TOKEN || "";
   console.log("JWT_TOKEN exists?", Boolean(secretKey));
