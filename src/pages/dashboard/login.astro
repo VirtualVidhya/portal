@@ -94,8 +94,8 @@ const metadata = {
 
   <slot slot="specific-scripts-slot">
     <script>
-      const username = document.querySelector("#username");
-      const password = document.querySelector("#password");
+      const username = document.querySelector<HTMLInputElement>("#username");
+      const password = document.querySelector<HTMLInputElement>("#password");
 
       const error = document.querySelector("#error");
 
@@ -106,13 +106,13 @@ const metadata = {
       });
 
       async function verifyLogin() {
-        const usernameValue = username.value;
-        const passwordValue = password.value;
-
         const response = await fetch("/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ usernameValue, passwordValue }),
+          body: JSON.stringify({
+            username: username.value,
+            password: password.value,
+          }),
         });
 
         const result = await response.json();
@@ -123,8 +123,6 @@ const metadata = {
         } else {
           // Display error message.
           showError(result.error || "Login failed");
-          // document.getElementById("error").textContent =
-          //   result.error || "Login failed";
         }
       }
 
