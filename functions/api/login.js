@@ -78,7 +78,7 @@ export async function onRequestPost(context) {
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("1h")
-    .sign(new TextEncoder().encode(env.SECRET_KEY));
+    .sign(new TextEncoder().encode(env.JWT_TOKEN));
 
   // Set the JWT as an HttpOnly, Secure cookie.
   const cookie = `session_token=${jwt}; HttpOnly; Path=/; Max-Age=3600; Secure; SameSite=Strict`;
