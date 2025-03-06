@@ -1,5 +1,6 @@
 name = "auth"
+workers_dev = false
 
 routes = [
-  { pattern = "https://portal.vvidhya.com/dashboard/*", script = "auth" }
+  { pattern = "portal.vvidhya.com/dashboard/*", script = "auth" }
 ]
