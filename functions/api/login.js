@@ -81,7 +81,8 @@ export async function onRequestPost(context) {
     .sign(new TextEncoder().encode(env.JWT_TOKEN));
 
   // Set the JWT as an HttpOnly, Secure cookie.
-  const cookie = `session_token=${jwt}; HttpOnly; Path=/; Max-Age=3600; Secure; SameSite=Strict`;
+  // const cookie = `session_token=${jwt}; HttpOnly; Path=/; Max-Age=3600; Secure; SameSite=Strict`;
+  const cookie = `session_token=${jwt}; Domain=portal.vvidhya.com; HttpOnly; Path=/; Max-Age=3600; Secure; SameSite=Lax`;
 
   return new Response(
     JSON.stringify({ message: "Login successful", role: adminUser.role }),
