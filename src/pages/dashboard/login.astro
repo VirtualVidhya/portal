@@ -18,17 +18,17 @@ const metadata = {
       class="flex flex-col items-center justify-center gap-3 mx-auto max-w-mdsm md:max-w-2xl lg:max-w-4xl 2xl:max-w-6xl"
     >
       <h2
-        class="text-center text-font-color-sec text-[34px] md:text-5xl font-extrabold"
+        class="text-center text-font-color-sec text-[34px] md:text-5xl font-extrabold mb-10"
       >
         V.Vidhya Portal
       </h2>
 
-      <img
+      <!-- <img
         src="/images/doodles/co-working.svg"
         alt="an Illustration of a woman doing designing"
         class="ind-course-illus"
         decoding="async"
-      />
+      /> -->
     </section>
 
     <div
@@ -60,14 +60,11 @@ const metadata = {
               type="text"
               placeholder="Enter your username"
             />
-            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
-            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
-            <div class="error text-font-color-red-dark"></div>
           </div>
 
           <div class="flex flex-col w-4/5 form-field" id="password-field">
             <label id="password-label" for="password" class="form-label"
-              >Username</label
+              >Password</label
             >
             <input
               id="password"
@@ -76,8 +73,9 @@ const metadata = {
               type="password"
               placeholder="Enter your password"
             />
-            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
-            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+          </div>
+
+          <div class="flex flex-col w-4/5">
             <div class="error text-font-color-red-dark"></div>
           </div>
         </fieldset>
@@ -94,51 +92,72 @@ const metadata = {
     </div>
   </main>
 
-  <body>
-    <h1>Admin Login</h1>
-    <div id="error" style="color: red;"></div>
-    <form onsubmit="handleLogin(event)">
-      <label
-        >Username:
-        <input type="text" id="username" name="username" required />
-      </label>
-      <br />
-      <label
-        >Password:
-        <input type="password" id="password" name="password" required />
-      </label>
-      <br />
-      <button type="submit">Log In</button>
-    </form>
-  </body>
-
   <slot slot="specific-scripts-slot">
     <script>
+      const username = document.querySelector("#username");
+      const password = document.querySelector("#password");
+
+      const error = document.querySelector("#error");
+
       document.querySelector("#login-form").addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const username = document.querySelector("#username");
-        const password = document.querySelector("#password");
-
-        verifyLogin(username.value, password.value);
+        verifyLogin();
       });
 
-      async function verifyLogin(user, pass) {
+      async function verifyLogin() {
+        const usernameValue = username.value;
+        const passwordValue = password.value;
+
         const response = await fetch("/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user, pass }),
+          body: JSON.stringify({ usernameValue, passwordValue }),
         });
 
         const result = await response.json();
         if (response.ok) {
+          clearError();
           // On success, redirect to the dashboard.
-          window.location.href = "/dashboard/index.html";
+          window.location.href = "/dashboard/";
         } else {
           // Display error message.
-          document.getElementById("error").textContent =
-            result.error || "Login failed";
+          showError(result.error || "Login failed");
+          // document.getElementById("error").textContent =
+          //   result.error || "Login failed";
         }
+      }
+
+      function showError(msg) {
+        error.textContent = msg;
+
+        let elements = [username, password];
+
+        elements.forEach((element) => {
+          element.classList.remove("border-font-color-green");
+
+          if (!element.classList.contains("border-2")) {
+            element.classList.add("border-2");
+          }
+
+          element.classList.add("border-font-color-red-dark");
+        });
+      }
+
+      function clearError() {
+        error.textContent = "";
+
+        let elements = [username, password];
+
+        elements.forEach((element) => {
+          element.classList.remove("border-font-color-red-dark");
+
+          if (!element.classList.contains("border-2")) {
+            element.classList.add("border-2");
+          }
+
+          element.classList.add("border-font-color-green");
+        });
       }
     </script>
   </slot>
