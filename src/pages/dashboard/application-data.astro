@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import DashboardBaseLayout from "../../layouts/DashboardBaseLayout.astro";
 
 const metadata = {
   title: "Application Data - V.Vidhya",
@@ -7,10 +7,14 @@ const metadata = {
 };
 ---
 
-<BaseLayout metadata={metadata} navSection="application-data">
+<DashboardBaseLayout
+  metadata={metadata}
+  navSection="application-data"
+  includeLottieAnimScript={false}
+>
   <!-- <h1>Application Form Submissions</h1> -->
 
-  <table border="1">
+  <table>
     <thead>
       <tr>
         <th>Name</th>
@@ -29,6 +33,6 @@ const metadata = {
   </table>
 
   <slot slot="specific-scripts-slot">
-    <script src="../scripts/specific/load-app-data.js"></script>
+    <script src="../../scripts/specific/load-app-data.js"></script>
   </slot>
-</BaseLayout>
+</DashboardBaseLayout>

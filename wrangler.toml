@@ -1,0 +1,5 @@
+name = "auth"
+
+routes = [
+  { pattern = "https://portal.vvidhya.com/dashboard/*", script = "auth" }
+]

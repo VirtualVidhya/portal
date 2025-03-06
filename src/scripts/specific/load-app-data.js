@@ -120,8 +120,6 @@
 
 // displayApplications();
 
-console.log("Executing load-app-data.js");
-
 const API_URL = "/api/get-applications";
 
 // Helper: Convert URL-safe Base64 to Uint8Array (with padding).
@@ -150,7 +148,7 @@ async function decryptFile(fileUrl, keyBase64, ivBase64) {
   try {
     const fileId = extractFileId(fileUrl);
     if (!fileId) throw new Error("Invalid file URL, cannot extract fileId");
-    console.log("Fetching encrypted file...");
+    // console.log("Fetching encrypted file...");
     // console.log("Fetching encrypted file for fileId:", fileId);
     // console.log("Using key:", keyBase64);
     // console.log("Using IV:", ivBase64);
@@ -193,7 +191,7 @@ async function decryptFile(fileUrl, keyBase64, ivBase64) {
 
 // Fetch application data from our API.
 async function fetchApplications() {
-  console.log("Fetching Applications from:", API_URL);
+  // console.log("Fetching Applications from:", API_URL);
   try {
     const response = await fetch(API_URL);
     const applications = await response.json();
@@ -206,7 +204,7 @@ async function fetchApplications() {
 
 // Display the applications on the page.
 async function displayApplications() {
-  console.log("Displaying Applications...");
+  // console.log("Displaying Applications...");
   const applications = await fetchApplications();
   const tableBody = document.getElementById("applications-table");
 

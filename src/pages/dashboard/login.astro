@@ -1,0 +1,145 @@
+---
+import DashboardBaseLayout from "../../layouts/DashboardBaseLayout.astro";
+
+const metadata = {
+  title: "Login Dashboard - V.Vidhya",
+  description:
+    "Learn top computer courses at V.Vidhya in Surat. From programming to graphic design, boost your skills and indulge your creativity to do real work with the help of technology.",
+};
+---
+
+<DashboardBaseLayout
+  metadata={metadata}
+  includeLottieAnimScript={false}
+  navSection="dashboard"
+>
+  <main class="flex flex-col items-center justify-center gap-3 w-full my-20">
+    <section
+      class="flex flex-col items-center justify-center gap-3 mx-auto max-w-mdsm md:max-w-2xl lg:max-w-4xl 2xl:max-w-6xl"
+    >
+      <h2
+        class="text-center text-font-color-sec text-[34px] md:text-5xl font-extrabold"
+      >
+        V.Vidhya Portal
+      </h2>
+
+      <img
+        src="/images/doodles/co-working.svg"
+        alt="an Illustration of a woman doing designing"
+        class="ind-course-illus"
+        decoding="async"
+      />
+    </section>
+
+    <div
+      class="mx-auto mb-24 w-full px-7 xs:px-0 xs:max-w-[420px] sm:max-w-lg md:max-w-2xl lg:max-w-4xl 2xl:max-w-5xl"
+    >
+      <h2 class="text-center contact-section-heading mt-3 mb-9">
+        Dashboard Login
+      </h2>
+
+      <form
+        name="login"
+        method="POST"
+        id="login-form"
+        autocomplete="off"
+        novalidate
+        class="flex flex-col items-center justify-center gap-20 mx-auto py-10 md:py-20 border-solid border-2 border-b-6 rounded-xl bg-navbar-color-pri"
+      >
+        <fieldset class="form-fieldset">
+          <!-- <legend class="app-form-legend">Personal Details</legend> -->
+
+          <div class="flex flex-col w-4/5 form-field" id="username-field">
+            <label id="username-label" for="username" class="form-label"
+              >Username</label
+            >
+            <input
+              id="username"
+              name="username"
+              class="form-fieldbox"
+              type="text"
+              placeholder="Enter your username"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+
+          <div class="flex flex-col w-4/5 form-field" id="password-field">
+            <label id="password-label" for="password" class="form-label"
+              >Username</label
+            >
+            <input
+              id="password"
+              name="password"
+              class="form-fieldbox"
+              type="password"
+              placeholder="Enter your password"
+            />
+            <!-- <i class="fas fa-exclamation-circle failure-icon opacity-0"></i> -->
+            <!-- <i class="far fa-check-circle success-icon opacity-0"></i> -->
+            <div class="error text-font-color-red-dark"></div>
+          </div>
+        </fieldset>
+
+        <button
+          id="submit"
+          class="form-submit-btn"
+          type="submit"
+          aria-label="Submit Form"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <body>
+    <h1>Admin Login</h1>
+    <div id="error" style="color: red;"></div>
+    <form onsubmit="handleLogin(event)">
+      <label
+        >Username:
+        <input type="text" id="username" name="username" required />
+      </label>
+      <br />
+      <label
+        >Password:
+        <input type="password" id="password" name="password" required />
+      </label>
+      <br />
+      <button type="submit">Log In</button>
+    </form>
+  </body>
+
+  <slot slot="specific-scripts-slot">
+    <script>
+      document.querySelector("#login-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const username = document.querySelector("#username");
+        const password = document.querySelector("#password");
+
+        verifyLogin(username.value, password.value);
+      });
+
+      async function verifyLogin(user, pass) {
+        const response = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user, pass }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          // On success, redirect to the dashboard.
+          window.location.href = "/dashboard/index.html";
+        } else {
+          // Display error message.
+          document.getElementById("error").textContent =
+            result.error || "Login failed";
+        }
+      }
+    </script>
+  </slot>
+</DashboardBaseLayout>
