@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const metadata = {
+  title: "Page Not Found - V.Vidhya | For Best Computer Education in Surat",
+  description:
+    "Get in touch with V.Vidhya for the best computer education in Surat. Visit our institute, call us, or drop a message to learn more about offered courses.",
+};
+---
+
+<BaseLayout metadata={metadata} navSection="contact">
+  <main class="my-20">
+    <section
+      class="flex flex-col items-center justify-center gap-3 mx-auto mb-24 max-w-mdsm md:max-w-2xl lg:max-w-4xl 2xl:max-w-6xl"
+    >
+      <div
+        class="text-center text-font-color-brown text-xl md:text-3xl font-extrabold mb-20"
+      >
+        <p class="text-font-color-green mb-5">Oops!</p>
+        <p>The page you're looking for doesn't exist.</p>
+      </div>
+
+      <img
+        src="/images/doodles/404-error.svg"
+        alt="404 error illustration"
+        class="ind-course-illus"
+        decoding="async"
+      />
+    </section>
+  </main>
+</BaseLayout>
