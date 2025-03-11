@@ -1,125 +1,3 @@
-// // const API_URL = import.meta.env.PUBLIC_API_URL + "/api/get-applications";
-
-// console.log("Executing load-data.js");
-
-// const API_URL = "/api/get-applications";
-
-// async function fetchApplications() {
-//   console.log("Fetching Applications...");
-//   try {
-//     console.log("Fetching applications from:", API_URL);
-//     const response = await fetch(API_URL);
-//     const applications = await response.json();
-//     return applications;
-//   } catch (error) {
-//     console.error("Error fetching applications:", error);
-//     return [];
-//   }
-// }
-
-// function base64ToUint8Array(base64) {
-//   base64 = base64.replace(/-/g, "+").replace(/_/g, "/"); // Handle URL-safe Base64
-//   const binaryString = atob(base64);
-//   const length = binaryString.length;
-//   const bytes = new Uint8Array(length);
-//   for (let i = 0; i < length; i++) {
-//     bytes[i] = binaryString.charCodeAt(i);
-//   }
-//   return bytes;
-// }
-
-// async function decryptFile(encryptedBase64, keyBase64, ivBase64) {
-//   try {
-//     console.log("Decrypting with key:", keyBase64);
-//     console.log("Decrypting with IV:", ivBase64);
-
-//     const key = base64ToUint8Array(keyBase64);
-//     const iv = base64ToUint8Array(ivBase64);
-//     const encryptedData = base64ToUint8Array(encryptedBase64);
-
-//     const cryptoKey = await crypto.subtle.importKey(
-//       "raw",
-//       key,
-//       { name: "AES-GCM" },
-//       false,
-//       ["decrypt"]
-//     );
-
-//     const decryptedBuffer = await crypto.subtle.decrypt(
-//       { name: "AES-GCM", iv },
-//       cryptoKey,
-//       encryptedData
-//     );
-
-//     return URL.createObjectURL(new Blob([decryptedBuffer]));
-//   } catch (error) {
-//     console.error("Decryption failed:", error);
-//     return null;
-//   }
-// }
-
-// async function displayApplications() {
-//   console.log("Displaying Applications...");
-//   const applications = await fetchApplications();
-//   const tableBody = document.getElementById("applications-table");
-
-//   if (applications.length === 0) {
-//     tableBody.innerHTML =
-//       "<tr><td colspan='6'>No applications found.</td></tr>";
-//     return;
-//   }
-
-//   tableBody.innerHTML = ""; // Clear loading message
-
-//   applications.forEach(async (app) => {
-//     const row = document.createElement("tr");
-
-//     row.innerHTML = `
-//       <td>${app.full_name}</td>
-//       <td>${app.email}</td>
-//       <td>${app.contact_no}</td>
-//       <td>${app.course}</td>
-//       <td class="photo-cell">Decrypting...</td>
-//       <td class="aadhar-cell">Decrypting...</td>
-//     `;
-
-//     tableBody.appendChild(row);
-
-//     // Decrypt photo & aadhar asynchronously
-//     const photoCell = row.querySelector(".photo-cell");
-//     const aadharCell = row.querySelector(".aadhar-cell");
-
-//     const photoURL = await decryptFile(
-//       app.photo_url,
-//       app.photo_key,
-//       app.photo_iv
-//     );
-//     const aadharURL = await decryptFile(
-//       app.aadhar_url,
-//       app.aadhar_key,
-//       app.aadhar_iv
-//     );
-
-//     if (photoURL) {
-//       photoCell.innerHTML = `<img src="${photoURL}" width="100" height="100" alt="Passport Photo" />`;
-//     } else {
-//       photoCell.innerHTML = "Decryption Failed";
-//     }
-
-//     if (aadharURL) {
-//       aadharCell.innerHTML = `<a href="${aadharURL}" download="${app.full_name}_Aadhar.pdf">Download Aadhar</a>`;
-//     } else {
-//       aadharCell.innerHTML = "Decryption Failed";
-//     }
-//   });
-// }
-
-// // window.addEventListener("DOMContentLoaded", () => {
-// //   console.log("DOM fully loaded, starting application display...");
-// // });
-
-// displayApplications();
-
 const API_URL = "/api/get-applications";
 
 // Helper: Convert URL-safe Base64 to Uint8Array (with padding).
@@ -219,41 +97,48 @@ async function displayApplications() {
   applications.forEach(async (app) => {
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${app.full_name}</td>
-      <td>${app.email}</td>
-      <td>${app.contact_no}</td>
-      <td>${app.course}</td>
-      <td class="photo-cell">Loading...</td>
-      <td class="aadhar-cell">Loading...</td>
-    `;
+    <td>${app.full_name}</td>
+    <td>${app.email}</td>
+    <td>${app.contact_no}</td>
+    <td>${app.course}</td>
+    <td>${app.status}</td>
+  `;
+    // row.innerHTML = `
+    //   <td>${app.full_name}</td>
+    //   <td>${app.email}</td>
+    //   <td>${app.contact_no}</td>
+    //   <td>${app.course}</td>
+    //   <td class="photo-cell">Loading...</td>
+    //   <td class="aadhar-cell">Loading...</td>
+    // `;
     tableBody.appendChild(row);
 
-    const photoCell = row.querySelector(".photo-cell");
-    const aadharCell = row.querySelector(".aadhar-cell");
+    // const photoCell = row.querySelector(".photo-cell");
+    // const aadharCell = row.querySelector(".aadhar-cell");
 
-    let photoURL = null;
-    if (app.photo_url && app.photo_key && app.photo_iv) {
-      photoURL = await decryptFile(app.photo_url, app.photo_key, app.photo_iv);
-    }
-    if (photoURL) {
-      photoCell.innerHTML = `<img src="${photoURL}" width="100" height="100" alt="Passport Photo" />`;
-    } else {
-      photoCell.innerHTML = "Decryption Failed";
-    }
+    // let photoURL = null;
+    // if (app.photo_url && app.photo_key && app.photo_iv) {
+    //   photoURL = await decryptFile(app.photo_url, app.photo_key, app.photo_iv);
+    // }
+    // if (photoURL) {
+    //   photoCell.innerHTML = `<img src="${photoURL}" width="100" height="100" alt="Passport Photo" />`;
+    // } else {
+    //   photoCell.innerHTML = "Decryption Failed";
+    // }
 
-    let aadharURL = null;
-    if (app.aadhar_url && app.aadhar_key && app.aadhar_iv) {
-      aadharURL = await decryptFile(
-        app.aadhar_url,
-        app.aadhar_key,
-        app.aadhar_iv
-      );
-    }
-    if (aadharURL) {
-      aadharCell.innerHTML = `<a href="${aadharURL}" download="${app.full_name}_Aadhar.pdf">Download Aadhar</a>`;
-    } else {
-      aadharCell.innerHTML = "Decryption Failed";
-    }
+    // let aadharURL = null;
+    // if (app.aadhar_url && app.aadhar_key && app.aadhar_iv) {
+    //   aadharURL = await decryptFile(
+    //     app.aadhar_url,
+    //     app.aadhar_key,
+    //     app.aadhar_iv
+    //   );
+    // }
+    // if (aadharURL) {
+    //   aadharCell.innerHTML = `<a href="${aadharURL}" download="${app.full_name}_Aadhar.pdf">Download Aadhar</a>`;
+    // } else {
+    //   aadharCell.innerHTML = "Decryption Failed";
+    // }
   });
 }
 
