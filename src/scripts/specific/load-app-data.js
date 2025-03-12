@@ -80,15 +80,16 @@ async function fetchApplications() {
   }
 }
 
+let applications;
+
 // Display the applications on the page.
 async function displayApplications() {
   // console.log("Displaying Applications...");
-  const applications = await fetchApplications();
+  applications = await fetchApplications();
   const tableBody = document.getElementById("applications-table");
 
   if (applications.length === 0) {
-    tableBody.innerHTML =
-      "<tr><td colspan='6'>No applications found.</td></tr>";
+    tableBody.innerHTML = `<tr class="text-center"><td colspan='6'>No applications found.</td></tr>`;
     return;
   }
 
@@ -102,6 +103,11 @@ async function displayApplications() {
     <td>${app.contact_no}</td>
     <td>${app.course}</td>
     <td>${app.status}</td>
+    <td>
+      <a href="/dashboard/application/${app.id}">
+        <ViewMoreBtn attributes={viewAppBtnAttr} />
+      </a>
+    </td>
   `;
     // row.innerHTML = `
     //   <td>${app.full_name}</td>
@@ -144,3 +150,5 @@ async function displayApplications() {
 
 // Start the display process.
 displayApplications();
+
+function showIndividualApplication() {}

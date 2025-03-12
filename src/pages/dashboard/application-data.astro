@@ -1,9 +1,17 @@
 ---
+export const prerender = true;
+
 import DashboardBaseLayout from "../../layouts/DashboardBaseLayout.astro";
+import ViewMoreBtn from "../../components/ViewMoreBtn.astro";
 
 const metadata = {
   title: "Application Data - V.Vidhya",
   description: "View submitted applications securely.",
+};
+
+const viewAppBtnAttr = {
+  title: "View Full Application",
+  ariaLabel: "View Full Application",
 };
 ---
 
@@ -31,28 +39,46 @@ const metadata = {
               <th>Contact No</th>
               <th>Course</th>
               <th>Status</th>
+              <th></th>
               <!-- <th>Photo</th> -->
               <!-- <th>Aadhar Card</th> -->
             </tr>
           </thead>
           <tbody id="applications-table">
-            <tr class="text-center">
-              <td colspan="5">Loading applications...</td>
-            </tr>
-            <!-- <tr>
+            <!-- <tr class="text-center">
+              <td colspan="6">Loading applications...</td>
+            </tr> -->
+            <tr>
               <td>Man Rakeshbhai Patel</td>
               <td>manpatel@gmail.com</td>
               <td>9876754321</td>
               <td>Game Development</td>
               <td>Submitted</td>
-            </tr> -->
+              <td>
+                <a href="/dashboard/application/${app.id}">
+                  <ViewMoreBtn attributes={viewAppBtnAttr} />
+                </a>
+              </td>
+              <tr>
+                <td>Priya Mohanbhai Mehta</td>
+                <td>priyamehta@gmail.com</td>
+                <td>9898767654</td>
+                <td>Figma</td>
+                <td>Submitted</td>
+                <td>
+                  <a href="/dashboard/application/${app.id}">
+                    <ViewMoreBtn attributes={viewAppBtnAttr} />
+                  </a>
+                </td>
+              </tr>
+            </tr>
           </tbody>
         </table>
       </div>
-    </section>
-  </main>
 
-  <slot slot="specific-scripts-slot">
-    <script src="../../scripts/specific/load-app-data.js"></script>
-  </slot>
-</DashboardBaseLayout>
+      <slot slot="specific-scripts-slot">
+        <!-- <script src="../../scripts/specific/load-app-data.js"></script> -->
+      </slot>
+    </section>
+  </main></DashboardBaseLayout
+>
