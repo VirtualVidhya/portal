@@ -4,7 +4,8 @@ import type { Application } from "../../../scripts/types";
 
 const { id } = Astro.params;
 
-const response = await fetch(`/api/get-ind-application?id=${id}`);
+const pageUrl = new URL(`/api/get-ind-application?id=${id}`, Astro.site).toString();
+const response = await fetch(pageUrl);
 if (!response.ok) {
   throw new Error("Application not found or an error occurred.");
 }
