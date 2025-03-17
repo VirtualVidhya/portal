@@ -3,8 +3,11 @@ export const prerender = false;
 import type { Application } from "../../../scripts/types";
 
 const { id } = Astro.params;
+console.log("Dynamic route id:", id);
 
 const pageUrl = new URL(`/api/get-ind-application?id=${id}`, Astro.site).toString();
+console.log("Fetching from:", pageUrl);
+
 const response = await fetch(pageUrl);
 if (!response.ok) {
   throw new Error("Application not found or an error occurred.");
