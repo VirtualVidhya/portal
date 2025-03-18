@@ -33,6 +33,8 @@ try {
   console.error("Error fetching application:", errorMessage);
 }
 
+const applicationDataJson = JSON.stringify(application);
+
 import DashboardBaseLayout from "../../../layouts/DashboardBaseLayout.astro";
 
 const metadata = {
@@ -221,18 +223,19 @@ const metadata = {
       function runDecryptionLogic() {
         console.log("Running decryption logic");
 
-        // Ensure application data is available from server rendering.
-        const applicationData = {
-          photo_url: "{application.photo_url}",
-          photo_key: "{application.photo_key}",
-          photo_iv: "{application.photo_iv}",
-          aadhar_url: "{application.aadhar_url}",
-          aadhar_key: "{application.aadhar_key}",
-          aadhar_iv: "{application.aadhar_iv}",
-          full_name: "{application.full_name}",
-        };
+        const applicationData = JSON.parse(`$applicationDataJson`);
+        console.log("Injected Application Data:", applicationData);
 
-        console.log("Application Data:", applicationData);
+        // Ensure application data is available from server rendering.
+        // const applicationData = {
+        //   photo_url: "{application.photo_url}",
+        //   photo_key: "{application.photo_key}",
+        //   photo_iv: "{application.photo_iv}",
+        //   aadhar_url: "{application.aadhar_url}",
+        //   aadhar_key: "{application.aadhar_key}",
+        //   aadhar_iv: "{application.aadhar_iv}",
+        //   full_name: "{application.full_name}",
+        // };
 
         const passportImg = document.getElementById("passport-photo");
         if (
