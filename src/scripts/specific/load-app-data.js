@@ -1,4 +1,4 @@
-const API_URL = "https://api.portal.vvidhya.com/api/get-applications";
+const API_URL = "https://api.vvidhya.com/api/get-applications";
 
 // Helper: Convert URL-safe Base64 to Uint8Array (with padding).
 function base64ToUint8Array(base64) {
@@ -32,7 +32,7 @@ async function decryptFile(fileUrl, keyBase64, ivBase64) {
     // console.log("Using IV:", ivBase64);
 
     // Call our drive-proxy endpoint with the fileId.
-    const proxyUrl = `https://api.portal.vvidhya.com/api/proxy?fileId=${encodeURIComponent(fileId)}`;
+    const proxyUrl = `https://api.vvidhya.com/api/proxy?fileId=${encodeURIComponent(fileId)}`;
     const fileResponse = await fetch(proxyUrl);
     if (!fileResponse.ok) {
       throw new Error("Failed to fetch encrypted file from proxy.");
