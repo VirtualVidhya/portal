@@ -43,6 +43,8 @@ const metadata = {
 };
 ---
 
+<astro-greet data-message={applicationDataJson}> </astro-greet>
+
 <DashboardBaseLayout
   metadata={metadata}
   navSection="application-data"
@@ -165,6 +167,8 @@ const metadata = {
         )
       }
     </section>
+
+    <div id="app-data" data-app={applicationDataJson}></div>
   </main>
 
   <slot name="specific-scripts-slot">
@@ -223,7 +227,12 @@ const metadata = {
       function runDecryptionLogic() {
         console.log("Running decryption logic");
 
-        const applicationData = JSON.parse(`${applicationDataJson}`);
+        const appDataEl = document.getElementById("app-data");
+        if (!appDataEl || !appDataEl.dataset.app) {
+          console.error("Application data not found in the DOM.");
+          return;
+        }
+        const applicationData = JSON.parse(appDataEl.dataset.app);
         console.log("Injected Application Data:", applicationData);
 
         const passportImg = document.getElementById("passport-photo");
