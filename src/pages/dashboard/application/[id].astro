@@ -34,7 +34,6 @@ try {
 }
 
 import DashboardBaseLayout from "../../../layouts/DashboardBaseLayout.astro";
-import LoadFilesForIndApp from "../../../components/LoadFilesForIndApp.astro";
 
 const metadata = {
   title: "Individual Application Data - V.Vidhya",
@@ -67,6 +66,7 @@ const metadata = {
                 <tr class="text-left">
                   <td colspan="2">
                     <img
+                      id="passport-photo"
                       src="/images/examples/passport-photo.png"
                       alt="Passport Photo"
                       class="w-18 h-18"
@@ -166,6 +166,125 @@ const metadata = {
   </main>
 
   <slot name="specific-scripts-slot">
-    <LoadFilesForIndApp />
+    <script>
+      // Helper functions (copy from your previous implementation)
+      function base64ToUint8Array(base64) {
+        base64 = base64.replace(/-/g, "+").replace(/_/g, "/");
+        while (base64.length % 4 !== 0) {
+          base64 += "=";
+        }
+        const binaryString = atob(base64);
+        const length = binaryString.length;
+        const bytes = new Uint8Array(length);
+        for (let i = 0; i < length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        return bytes;
+      }
+
+      async function decryptFile(fileUrl, keyBase64, ivBase64) {
+        try {
+          // Extract fileId from Google Drive URL
+          const match = fileUrl.match(/[?&]id=([^&]+)/);
+          if (!match) throw new Error("Invalid file URL");
+          const fileId = match[1];
+          // Use your API worker proxy endpoint (adjust path if necessary)
+          const proxyUrl = `https://api.vvidhya.com/api/proxy?fileId=${encodeURIComponent(fileId)}`;
+          const response = await fetch(proxyUrl);
+          if (!response.ok) throw new Error("Failed to fetch encrypted file");
+          const encryptedBuffer = await response.arrayBuffer();
+
+          const keyBytes = base64ToUint8Array(keyBase64);
+          const ivBytes = base64ToUint8Array(ivBase64);
+
+          const cryptoKey = await crypto.subtle.importKey(
+            "raw",
+            keyBytes,
+            { name: "AES-GCM" },
+            false,
+            ["decrypt"]
+          );
+
+          const decryptedBuffer = await crypto.subtle.decrypt(
+            { name: "AES-GCM", iv: ivBytes },
+            cryptoKey,
+            encryptedBuffer
+          );
+
+          return URL.createObjectURL(new Blob([decryptedBuffer]));
+        } catch (err) {
+          console.error("Decryption failed:", err);
+          return null;
+        }
+      }
+
+      function runDecryptionLogic() {
+        console.log("Running decryption logic");
+
+        // Ensure application data is available from server rendering.
+        const application = {
+          photo_url: "{application.photo_url}",
+          photo_key: "{application.photo_key}",
+          photo_iv: "{application.photo_iv}",
+          aadhar_url: "{application.aadhar_url}",
+          aadhar_key: "{application.aadhar_key}",
+          aadhar_iv: "{application.aadhar_iv}",
+          full_name: "{application.full_name}",
+        };
+
+        const passportImg = document.getElementById("passport-photo");
+        if (
+          passportImg &&
+          application.photo_url &&
+          application.photo_key &&
+          application.photo_iv
+        ) {
+          decryptFile(
+            application.photo_url,
+            application.photo_key,
+            application.photo_iv
+          ).then((photoBlobUrl) => {
+            if (photoBlobUrl) {
+              (passportImg as HTMLImageElement).src = photoBlobUrl;
+            } else {
+              console.log("Failed to decrypt passport photo file.");
+            }
+          });
+        } else {
+          console.log("Photo HtmlElement, URL, key, or IV is missing.");
+        }
+
+        const aadharLink = document.getElementById("view-aadhar-card");
+        if (
+          aadharLink &&
+          application.aadhar_url &&
+          application.aadhar_key &&
+          application.aadhar_iv
+        ) {
+          decryptFile(
+            application.aadhar_url,
+            application.aadhar_key,
+            application.aadhar_iv
+          ).then((aadharBlobUrl) => {
+            if (aadharBlobUrl) {
+              (aadharLink as HTMLAnchorElement).href = aadharBlobUrl;
+              (aadharLink as HTMLAnchorElement).download =
+                `${application.full_name}_Aadhar.pdf`;
+            } else {
+              console.log("Failed to decrypt Aadhar Card file.");
+            }
+          });
+        } else {
+          console.log("Aadhar HtmlElement, URL, key, or IV is missing.");
+        }
+      }
+
+      // Check if DOM is already loaded; if so, run logic immediately, else wait for DOMContentLoaded.
+      if (document.readyState !== "loading") {
+        runDecryptionLogic();
+      } else {
+        window.addEventListener("DOMContentLoaded", runDecryptionLogic);
+      }
+    </script>
   </slot>
 </DashboardBaseLayout>
