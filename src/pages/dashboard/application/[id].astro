@@ -168,7 +168,7 @@ const metadata = {
   </main>
 
   <slot name="specific-scripts-slot">
-    <script>
+    <script define:vars={{ applicationDataJson: applicationDataJson }}>
       // Helper functions (copy from your previous implementation)
       function base64ToUint8Array(base64) {
         base64 = base64.replace(/-/g, "+").replace(/_/g, "/");
@@ -223,7 +223,7 @@ const metadata = {
       function runDecryptionLogic() {
         console.log("Running decryption logic");
 
-        const applicationData = JSON.parse(`$applicationDataJson`);
+        const applicationData = JSON.parse(`${applicationDataJson}`);
         console.log("Injected Application Data:", applicationData);
 
         // Ensure application data is available from server rendering.
