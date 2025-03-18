@@ -222,7 +222,7 @@ const metadata = {
         console.log("Running decryption logic");
 
         // Ensure application data is available from server rendering.
-        const application = {
+        const applicationData = {
           photo_url: "{application.photo_url}",
           photo_key: "{application.photo_key}",
           photo_iv: "{application.photo_iv}",
@@ -232,17 +232,19 @@ const metadata = {
           full_name: "{application.full_name}",
         };
 
+        console.log("Application Data:", applicationData);
+
         const passportImg = document.getElementById("passport-photo");
         if (
           passportImg &&
-          application.photo_url &&
-          application.photo_key &&
-          application.photo_iv
+          applicationData.photo_url &&
+          applicationData.photo_key &&
+          applicationData.photo_iv
         ) {
           decryptFile(
-            application.photo_url,
-            application.photo_key,
-            application.photo_iv
+            applicationData.photo_url,
+            applicationData.photo_key,
+            applicationData.photo_iv
           ).then((photoBlobUrl) => {
             if (photoBlobUrl) {
               (passportImg as HTMLImageElement).src = photoBlobUrl;
@@ -257,19 +259,19 @@ const metadata = {
         const aadharLink = document.getElementById("view-aadhar-card");
         if (
           aadharLink &&
-          application.aadhar_url &&
-          application.aadhar_key &&
-          application.aadhar_iv
+          applicationData.aadhar_url &&
+          applicationData.aadhar_key &&
+          applicationData.aadhar_iv
         ) {
           decryptFile(
-            application.aadhar_url,
-            application.aadhar_key,
-            application.aadhar_iv
+            applicationData.aadhar_url,
+            applicationData.aadhar_key,
+            applicationData.aadhar_iv
           ).then((aadharBlobUrl) => {
             if (aadharBlobUrl) {
               (aadharLink as HTMLAnchorElement).href = aadharBlobUrl;
               (aadharLink as HTMLAnchorElement).download =
-                `${application.full_name}_Aadhar.pdf`;
+                `${applicationData.full_name}_Aadhar.pdf`;
             } else {
               console.log("Failed to decrypt Aadhar Card file.");
             }
