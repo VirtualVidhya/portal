@@ -111,6 +111,7 @@ const metadata = {
         const response = await fetch("https://api.vvidhya.com/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({
             username: username.value,
             password: password.value,
@@ -120,7 +121,7 @@ const metadata = {
         const result = await response.json();
         if (response.ok) {
           clearError();
-          // On success, redirect to the dashboard.
+          // On success, redirect to the dashboard
           window.location.href = "/dashboard/";
         } else {
           // Display error message.
