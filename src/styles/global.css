@@ -709,4 +709,50 @@
   .view-more-btn.touch {
     @apply text-font-color-pri;
   }
+
+  .ind-app-data-container {
+    @apply border-2 border-solid border-font-color-pri rounded-lg overflow-hidden;
+  }
+
+  .ind-app-data-table {
+    @apply w-full border-collapse text-left;
+  }
+
+  .ind-app-data-table th,
+  td {
+    @apply px-4 py-2 border-2 border-solid border-color-border-pri;
+  }
+
+  /* Remove borders on the outer edges to prevent overlap with the container */
+  .ind-app-data-table thead th {
+    border-top-width: 0;
+  }
+  .ind-app-data-table tbody tr:last-child td {
+    border-bottom-width: 0;
+  }
+  .ind-app-data-table tr th:first-child,
+  .ind-app-data-table tr td:first-child {
+    border-left-width: 0;
+  }
+  .ind-app-data-table tr th:last-child,
+  .ind-app-data-table tr td:last-child {
+    border-right-width: 0;
+    /* border-left-width: 0; */
+  }
+  .ind-app-data-table tr th:nth-last-child(2),
+  .ind-app-data-table tr td:nth-last-child(2) {
+    border-right-width: 0;
+  }
+
+  .ind-app-data-table th {
+    @apply text-lg bg-navbar-color-pri;
+  }
+
+  .ind-app-data-table tr td:last-child {
+    @apply font-semibold;
+  }
+
+  /* .ind-app-data-table tr:hover {
+    @apply bg-navbar-color-pri cursor-pointer;
+  } */
 }

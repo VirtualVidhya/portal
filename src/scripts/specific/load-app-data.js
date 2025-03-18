@@ -32,7 +32,9 @@ async function decryptFile(fileUrl, keyBase64, ivBase64) {
     // console.log("Using IV:", ivBase64);
 
     // Call our drive-proxy endpoint with the fileId.
-    const proxyUrl = `https://api.vvidhya.com/api/proxy?fileId=${encodeURIComponent(fileId)}`;
+    const proxyUrl = `https://api.vvidhya.com/api/proxy?fileId=${encodeURIComponent(
+      fileId
+    )}`;
     const fileResponse = await fetch(proxyUrl);
     if (!fileResponse.ok) {
       throw new Error("Failed to fetch encrypted file from proxy.");
@@ -80,12 +82,12 @@ async function fetchApplications() {
   }
 }
 
-let applications;
+// let applications;
 
 // Display the applications on the page.
 async function displayApplications() {
   // console.log("Displaying Applications...");
-  applications = await fetchApplications();
+  const applications = await fetchApplications();
   const tableBody = document.getElementById("applications-table");
 
   if (applications.length === 0) {
