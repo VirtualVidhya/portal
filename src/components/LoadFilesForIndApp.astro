@@ -1,5 +1,5 @@
 ---
-
+// @ts-nocheck
 ---
 
 <script>
@@ -113,30 +113,5 @@
     } else {
       console.log("Aadhar URL, key, or IV is missing.");
     }
-
-    // Decrypt the aadhar card when user clicks the button
-    // const aadharButton = document.getElementById("view-aadhar");
-    // aadharButton.addEventListener("click", async () => {
-    //   if (
-    //     application.aadhar_url &&
-    //     application.aadhar_key &&
-    //     application.aadhar_iv
-    //   ) {
-    //     const aadharBlobUrl = await decryptFile(
-    //       application.aadhar_url,
-    //       application.aadhar_key,
-    //       application.aadhar_iv
-    //     );
-    //     if (aadharBlobUrl) {
-    //       // For example, set it as the href for a download link.
-    //       const aadharEl = document.getElementById("view-aadhar-card");
-    //       // aadharEl.innerHTML = `<a href="${aadharBlobUrl}" download="${application.full_name}_Aadhar.pdf">Download Aadhar Card</a>`;
-    //       aadharEl.href=aadharBlobUrl;
-    //       aadharEl.download = `${application.full_name}_Aadhar.pdf`;
-    //     } else {
-    //       alert("Failed to decrypt Aadhar Card file.");
-    //     }
-    //   }
-    // });
   });
 </script>
