@@ -168,7 +168,7 @@ const metadata = {
   </main>
 
   <slot name="specific-scripts-slot">
-    <script define:vars={{ applicationDataJson: applicationDataJson }}>
+    <script>
       // Helper functions (copy from your previous implementation)
       function base64ToUint8Array(base64) {
         base64 = base64.replace(/-/g, "+").replace(/_/g, "/");
@@ -223,19 +223,8 @@ const metadata = {
       function runDecryptionLogic() {
         console.log("Running decryption logic");
 
-        const applicationData = JSON.parse(`${applicationDataJson}`);
+        const applicationData = JSON.parse(`$applicationDataJson`);
         console.log("Injected Application Data:", applicationData);
-
-        // Ensure application data is available from server rendering.
-        // const applicationData = {
-        //   photo_url: "{application.photo_url}",
-        //   photo_key: "{application.photo_key}",
-        //   photo_iv: "{application.photo_iv}",
-        //   aadhar_url: "{application.aadhar_url}",
-        //   aadhar_key: "{application.aadhar_key}",
-        //   aadhar_iv: "{application.aadhar_iv}",
-        //   full_name: "{application.full_name}",
-        // };
 
         const passportImg = document.getElementById("passport-photo");
         if (
