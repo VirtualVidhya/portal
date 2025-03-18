@@ -1,0 +1,142 @@
+---
+
+---
+
+<script>
+  // Helper functions (copy from your previous implementation)
+  function base64ToUint8Array(base64) {
+    base64 = base64.replace(/-/g, "+").replace(/_/g, "/");
+    while (base64.length % 4 !== 0) {
+      base64 += "=";
+    }
+    const binaryString = atob(base64);
+    const length = binaryString.length;
+    const bytes = new Uint8Array(length);
+    for (let i = 0; i < length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes;
+  }
+
+  async function decryptFile(fileUrl, keyBase64, ivBase64) {
+    try {
+      // Extract fileId from Google Drive URL
+      const match = fileUrl.match(/[?&]id=([^&]+)/);
+      if (!match) throw new Error("Invalid file URL");
+      const fileId = match[1];
+      // Use your API worker proxy endpoint (adjust path if necessary)
+      const proxyUrl = `https://api.vvidhya.com/api/proxy?fileId=${encodeURIComponent(fileId)}`;
+      const response = await fetch(proxyUrl);
+      if (!response.ok) throw new Error("Failed to fetch encrypted file");
+      const encryptedBuffer = await response.arrayBuffer();
+
+      const keyBytes = base64ToUint8Array(keyBase64);
+      const ivBytes = base64ToUint8Array(ivBase64);
+
+      const cryptoKey = await crypto.subtle.importKey(
+        "raw",
+        keyBytes,
+        { name: "AES-GCM" },
+        false,
+        ["decrypt"]
+      );
+
+      const decryptedBuffer = await crypto.subtle.decrypt(
+        { name: "AES-GCM", iv: ivBytes },
+        cryptoKey,
+        encryptedBuffer
+      );
+
+      return URL.createObjectURL(new Blob([decryptedBuffer]));
+    } catch (err) {
+      console.error("Decryption failed:", err);
+      return null;
+    }
+  }
+
+  // Once the page loads, decrypt and display the passport photo and aadhar card.
+  window.addEventListener("DOMContentLoaded", async () => {
+    console.log("DOMContentLoaded event triggered");
+
+    // Ensure application data is available from server rendering.
+    const application = {
+      photo_url: "{application.photo_url}",
+      photo_key: "{application.photo_key}",
+      photo_iv: "{application.photo_iv}",
+      aadhar_url: "{application.aadhar_url}",
+      aadhar_key: "{application.aadhar_key}",
+      aadhar_iv: "{application.aadhar_iv}",
+      full_name: "{application.full_name}",
+    };
+
+    const passportImg = document.getElementById(
+      "passport-photo"
+    ) as HTMLImageElement;
+    // Decrypt the passport photo
+    if (
+      application.photo_url &&
+      application.photo_key &&
+      application.photo_iv
+    ) {
+      const photoBlobUrl = await decryptFile(
+        application.photo_url,
+        application.photo_key,
+        application.photo_iv
+      );
+      if (photoBlobUrl) {
+        passportImg.src = photoBlobUrl;
+      }
+    } else {
+      console.log("Photo URL, key, or IV is missing.");
+    }
+
+    if (
+      application.aadhar_url &&
+      application.aadhar_key &&
+      application.aadhar_iv
+    ) {
+      const aadharBlobUrl = await decryptFile(
+        application.aadhar_url,
+        application.aadhar_key,
+        application.aadhar_iv
+      );
+      if (aadharBlobUrl) {
+        // For example, set it as the href for a download link.
+        const aadharLink = document.getElementById(
+          "view-aadhar-card"
+        ) as HTMLAnchorElement;
+        aadharLink.href = aadharBlobUrl;
+        aadharLink.download = `${application.full_name}_Aadhar.pdf`;
+      } else {
+        alert("Failed to decrypt Aadhar Card file.");
+      }
+    } else {
+      console.log("Aadhar URL, key, or IV is missing.");
+    }
+
+    // Decrypt the aadhar card when user clicks the button
+    // const aadharButton = document.getElementById("view-aadhar");
+    // aadharButton.addEventListener("click", async () => {
+    //   if (
+    //     application.aadhar_url &&
+    //     application.aadhar_key &&
+    //     application.aadhar_iv
+    //   ) {
+    //     const aadharBlobUrl = await decryptFile(
+    //       application.aadhar_url,
+    //       application.aadhar_key,
+    //       application.aadhar_iv
+    //     );
+    //     if (aadharBlobUrl) {
+    //       // For example, set it as the href for a download link.
+    //       const aadharEl = document.getElementById("view-aadhar-card");
+    //       // aadharEl.innerHTML = `<a href="${aadharBlobUrl}" download="${application.full_name}_Aadhar.pdf">Download Aadhar Card</a>`;
+    //       aadharEl.href=aadharBlobUrl;
+    //       aadharEl.download = `${application.full_name}_Aadhar.pdf`;
+    //     } else {
+    //       alert("Failed to decrypt Aadhar Card file.");
+    //     }
+    //   }
+    // });
+  });
+</script>
