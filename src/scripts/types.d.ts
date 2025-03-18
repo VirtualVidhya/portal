@@ -1,4 +1,3 @@
-// src/types.d.ts
 export interface Application {
   id: string;
   full_name: string;
@@ -32,5 +31,4 @@ export interface Application {
   reference: string;
 
   status: string;
-  // Add any additional fields here.
 }
