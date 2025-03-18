@@ -54,11 +54,8 @@
     }
   }
 
-  console.log("Script loaded");
-
-  // Once the page loads, decrypt and display the passport photo and aadhar card.
-  window.addEventListener("DOMContentLoaded", async () => {
-    console.log("DOMContentLoaded event triggered");
+  function runDecryptionLogic() {
+    console.log("Running decryption logic");
 
     // Ensure application data is available from server rendering.
     const application = {
@@ -71,49 +68,55 @@
       full_name: "{application.full_name}",
     };
 
-    const passportImg = document.getElementById(
-      "passport-photo"
-    ) as HTMLImageElement;
-    // Decrypt the passport photo
+    const passportImg = document.getElementById("passport-photo");
     if (
+      passportImg &&
       application.photo_url &&
       application.photo_key &&
       application.photo_iv
     ) {
-      const photoBlobUrl = await decryptFile(
+      decryptFile(
         application.photo_url,
         application.photo_key,
         application.photo_iv
-      );
-      if (photoBlobUrl) {
-        passportImg.src = photoBlobUrl;
-      }
+      ).then((photoBlobUrl) => {
+        if (photoBlobUrl) {
+          (passportImg as HTMLImageElement).src = photoBlobUrl;
+        }
+      });
     } else {
       console.log("Photo URL, key, or IV is missing.");
     }
 
+    const aadharLink = document.getElementById("view-aadhar-card");
     if (
+      aadharLink &&
       application.aadhar_url &&
       application.aadhar_key &&
       application.aadhar_iv
     ) {
-      const aadharBlobUrl = await decryptFile(
+      decryptFile(
         application.aadhar_url,
         application.aadhar_key,
         application.aadhar_iv
-      );
-      if (aadharBlobUrl) {
-        // For example, set it as the href for a download link.
-        const aadharLink = document.getElementById(
-          "view-aadhar-card"
-        ) as HTMLAnchorElement;
-        aadharLink.href = aadharBlobUrl;
-        aadharLink.download = `${application.full_name}_Aadhar.pdf`;
-      } else {
-        alert("Failed to decrypt Aadhar Card file.");
-      }
+      ).then((aadharBlobUrl) => {
+        if (aadharBlobUrl) {
+          (aadharLink as HTMLAnchorElement).href = aadharBlobUrl;
+          (aadharLink as HTMLAnchorElement).download =
+            `${application.full_name}_Aadhar.pdf`;
+        } else {
+          alert("Failed to decrypt Aadhar Card file.");
+        }
+      });
     } else {
       console.log("Aadhar URL, key, or IV is missing.");
     }
-  });
+  }
+
+  // Check if DOM is already loaded; if so, run logic immediately, else wait for DOMContentLoaded.
+  if (document.readyState !== "loading") {
+    runDecryptionLogic();
+  } else {
+    window.addEventListener("DOMContentLoaded", runDecryptionLogic);
+  }
 </script>
