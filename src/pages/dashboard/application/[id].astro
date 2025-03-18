@@ -219,6 +219,8 @@ const metadata = {
 
       // Once the page loads, decrypt and display the passport photo and aadhar card.
       window.addEventListener("DOMContentLoaded", async () => {
+        console.log("DOMContentLoaded event triggered");
+
         // Ensure application data is available from server rendering.
         const application = {
           photo_url: "{application.photo_url}",
@@ -247,6 +249,8 @@ const metadata = {
           if (photoBlobUrl) {
             passportImg.src = photoBlobUrl;
           }
+        } else {
+          console.log("Photo URL, key, or IV is missing.");
         }
 
         if (
@@ -264,12 +268,13 @@ const metadata = {
             const aadharLink = document.getElementById(
               "view-aadhar-card"
             ) as HTMLAnchorElement;
-            // aadharEl.innerHTML = `<a href="${aadharBlobUrl}" download="${application.full_name}_Aadhar.pdf">Download Aadhar Card</a>`;
             aadharLink.href = aadharBlobUrl;
             aadharLink.download = `${application.full_name}_Aadhar.pdf`;
           } else {
             alert("Failed to decrypt Aadhar Card file.");
           }
+        } else {
+          console.log("Aadhar URL, key, or IV is missing.");
         }
 
         // Decrypt the aadhar card when user clicks the button
