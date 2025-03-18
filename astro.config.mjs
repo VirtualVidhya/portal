@@ -94,11 +94,6 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-    resolve: {
-      alias: {
-        "tsconfig.json": false,
-      },
-    },
   },
 
   output: "server",
