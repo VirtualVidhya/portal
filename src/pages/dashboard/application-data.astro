@@ -1,10 +1,9 @@
 ---
+export const prerender = false;
 import DashboardBaseLayout from "../../layouts/DashboardBaseLayout.astro";
 import type { Application } from "../../scripts/types";
-import { ApplicationProvider } from "../../components/ApplicationContext.jsx";
-import ApplicationsTable from "../../components/ApplicationsTable.jsx";
+import DashboardApplications from "../../components/DashboardApplications.jsx";
 
-export const prerender = false;
 const metadata = {
   title: "Application Data - V.Vidhya",
   description: "View submitted applications securely.",
@@ -40,25 +39,11 @@ try {
         errorMessage ? (
           <p style="color: red;">{errorMessage}</p>
         ) : (
-          <ApplicationProvider initialApplications={applications} client:load>
-            <div class="app-data-container">
-              <table class="app-data-table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Contact No</th>
-                    <th>Course</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ApplicationsTable />
-                </tbody>
-              </table>
-            </div>
-          </ApplicationProvider>
+          // Render the interactive DashboardApplications island
+          <DashboardApplications
+            initialApplications={applications}
+            client:load
+          />
         )
       }
     </section>
