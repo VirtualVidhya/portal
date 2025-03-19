@@ -40,7 +40,7 @@ try {
         errorMessage ? (
           <p style="color: red;">{errorMessage}</p>
         ) : (
-          <ApplicationProvider initialApplications={applications}>
+          <ApplicationProvider initialApplications={applications} client:load>
             <div class="app-data-container">
               <table class="app-data-table">
                 <thead>
