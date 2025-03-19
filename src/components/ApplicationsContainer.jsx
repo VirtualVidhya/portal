@@ -2,7 +2,7 @@ import { h } from "preact";
 import { ApplicationProvider } from "./ApplicationContext.jsx";
 import ApplicationsTable from "./ApplicationsTable.jsx";
 
-export default function DashboardApplications({ initialApplications }) {
+export default function ApplicationsContainer({ initialApplications }) {
   return (
     <ApplicationProvider initialApplications={initialApplications}>
       <div class="app-data-container">
@@ -14,7 +14,7 @@ export default function DashboardApplications({ initialApplications }) {
               <th>Contact No</th>
               <th>Course</th>
               <th>Status</th>
-              <th>Action</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

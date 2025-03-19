@@ -2,7 +2,7 @@
 export const prerender = false;
 import DashboardBaseLayout from "../../layouts/DashboardBaseLayout.astro";
 import type { Application } from "../../scripts/types";
-import DashboardApplications from "../../components/DashboardApplications.jsx";
+import ApplicationsContainer from "../../components/ApplicationsContainer.jsx";
 
 const metadata = {
   title: "Application Data - V.Vidhya",
@@ -40,7 +40,7 @@ try {
           <p style="color: red;">{errorMessage}</p>
         ) : (
           // Render the interactive DashboardApplications island
-          <DashboardApplications
+          <ApplicationsContainer
             initialApplications={applications}
             client:load
           />
