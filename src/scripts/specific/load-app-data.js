@@ -1,4 +1,4 @@
-const API_URL = "/api/get-applications";
+const API_URL = "https://api.vvidhya.com/api/get-applications";
 
 // Helper: Convert URL-safe Base64 to Uint8Array (with padding).
 function base64ToUint8Array(base64) {
@@ -32,7 +32,9 @@ async function decryptFile(fileUrl, keyBase64, ivBase64) {
     // console.log("Using IV:", ivBase64);
 
     // Call our drive-proxy endpoint with the fileId.
-    const proxyUrl = `/api/proxy?fileId=${encodeURIComponent(fileId)}`;
+    const proxyUrl = `https://api.vvidhya.com/api/proxy?fileId=${encodeURIComponent(
+      fileId
+    )}`;
     const fileResponse = await fetch(proxyUrl);
     if (!fileResponse.ok) {
       throw new Error("Failed to fetch encrypted file from proxy.");
@@ -80,12 +82,12 @@ async function fetchApplications() {
   }
 }
 
-let applications;
+// let applications;
 
 // Display the applications on the page.
 async function displayApplications() {
   // console.log("Displaying Applications...");
-  applications = await fetchApplications();
+  const applications = await fetchApplications();
   const tableBody = document.getElementById("applications-table");
 
   if (applications.length === 0) {
@@ -105,7 +107,26 @@ async function displayApplications() {
     <td>${app.status}</td>
     <td>
       <a href="/dashboard/application/${app.id}">
-        <ViewMoreBtn attributes={viewAppBtnAttr} />
+        <button
+          id="view-more-btn"
+          class="view-more-btn"
+          title="View Full Application"
+          aria-label="View Full Application"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 448 512"
+            class="util-icon"
+            fill="currentColor"
+            stroke="currentColor"
+            stroke-width="50"
+            aria-hidden="true"
+          >
+            <path
+              d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"
+            ></path></svg
+          >
+        </button>
       </a>
     </td>
   `;
