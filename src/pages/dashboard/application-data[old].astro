@@ -1,0 +1,84 @@
+---
+export const prerender = true;
+
+import DashboardBaseLayout from "../../layouts/DashboardBaseLayout.astro";
+// import ViewMoreBtn from "../../components/ViewMoreBtn.astro";
+
+const metadata = {
+  title: "Application Data - V.Vidhya",
+  description: "View submitted applications securely.",
+};
+
+const viewAppBtnAttr = {
+  title: "View Full Application",
+  ariaLabel: "View Full Application",
+};
+---
+
+<DashboardBaseLayout
+  metadata={metadata}
+  navSection="application-data"
+  includeLottieAnimScript={false}
+>
+  <main class="flex flex-col items-center justify-center gap-3 w-full my-20">
+    <section
+      class="flex flex-col items-center justify-center gap-3 max-w-mdsm md:max-w-2xl lg:max-w-4xl 2xl:max-w-6xl"
+    >
+      <h2
+        class="text-center text-font-color-sec text-[34px] md:text-5xl font-extrabold mb-10"
+      >
+        Applications
+      </h2>
+
+      <div class="app-data-container">
+        <table class="app-data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Contact No</th>
+              <th>Course</th>
+              <th>Status</th>
+              <th></th>
+              <!-- <th>Photo</th> -->
+              <!-- <th>Aadhar Card</th> -->
+            </tr>
+          </thead>
+          <tbody id="applications-table">
+            <tr class="text-center">
+              <td colspan="6">Loading applications...</td>
+            </tr>
+            <!-- <tr>
+              <td>Man Rakeshbhai Patel</td>
+              <td>manpatel@gmail.com</td>
+              <td>9876754321</td>
+              <td>Game Development</td>
+              <td>Submitted</td>
+              <td>
+                <a href="/dashboard/application/${app.id}">
+                  <ViewMoreBtn attributes={viewAppBtnAttr} />
+                </a>
+              </td>
+              <tr>
+                <td>Priya Mohanbhai Mehta</td>
+                <td>priyamehta@gmail.com</td>
+                <td>9898767654</td>
+                <td>Figma</td>
+                <td>Submitted</td>
+                <td>
+                  <a href="/dashboard/application/${app.id}">
+                    <ViewMoreBtn attributes={viewAppBtnAttr} />
+                  </a>
+                </td>
+              </tr>
+            </tr> -->
+          </tbody>
+        </table>
+      </div>
+
+      <slot slot="specific-scripts-slot">
+        <script src="../../scripts/specific/load-app-data.js"></script>
+      </slot>
+    </section>
+  </main></DashboardBaseLayout
+>

@@ -6,6 +6,7 @@ import compress from "@playform/compress";
 import compressor from "astro-compressor";
 // import fs from "fs";
 // import path from "path";
+import preact from "@astrojs/preact";
 import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
@@ -90,6 +91,7 @@ export default defineConfig({
       gzip: true,
       brotli: true,
     }),
+    preact(),
   ],
 
   vite: {
