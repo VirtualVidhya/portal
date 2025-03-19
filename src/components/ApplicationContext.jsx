@@ -1,4 +1,3 @@
-/** @jsx h */
 import { h } from "preact";
 import { createContext } from "preact";
 import { useContext, useState } from "preact/hooks";
