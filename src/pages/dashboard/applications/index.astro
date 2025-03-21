@@ -26,40 +26,22 @@ try {
 }
 
 // Serialize the applications data so it can be properly passed to the client.
-const serializedApplications = applications ? JSON.stringify(applications) : "[]";
+const serializedApplications = applications
+  ? JSON.stringify(applications)
+  : "[]";
 ---
 
 <DashboardBaseLayout metadata={metadata} navSection="applications">
   <main class="flex flex-col items-center justify-center gap-3 w-full my-20">
-    <section
-      class="flex flex-col items-center justify-center gap-3 max-w-mdsm md:max-w-2xl lg:max-w-4xl 2xl:max-w-6xl"
-    >
-      <h2
-        class="text-center text-font-color-sec text-[34px] md:text-5xl font-extrabold mb-10"
-      >
-        Applications
-      </h2>
-      <!-- {
-        errorMessage ? (
-          <p style="color: red;">{errorMessage}</p>
-        ) : (
-          <ApplicationsContainer
-            initialApplications={applications}
-            client:load
-          />
-        )
-      } -->
-
-      {
-        errorMessage ? (
-          <p style="color: red;">{errorMessage}</p>
-        ) : (
-          <ApplicationsDashboard
-            initialApplications={serializedApplications}
-            client:load
-          />
-        )
-      }
-    </section>
+    {
+      errorMessage ? (
+        <p style="color: red;">{errorMessage}</p>
+      ) : (
+        <ApplicationsDashboard
+          initialApplications={serializedApplications}
+          client:load
+        />
+      )
+    }
   </main>
 </DashboardBaseLayout>
