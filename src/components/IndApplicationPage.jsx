@@ -107,6 +107,8 @@ export default function ApplicationDetail({ id }) {
                 aria-label="View Aadhar Card"
                 href="/images/examples/aadhar-card.pdf"
                 download="/images/examples/aadhar-card.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Aadhar Card
               </a>
