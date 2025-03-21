@@ -9,7 +9,20 @@ const ApplicationContext = createContext();
  * in state. It provides the applications and a setter via context.
  */
 export function ApplicationProvider({ initialApplications, children }) {
-  const [applications, setApplications] = useState(initialApplications || []);
+  let parsedData = [];
+  if (typeof initialApplications === "string") {
+    try {
+      parsedData = JSON.parse(initialApplications) || [];
+    } catch (e) {
+      console.error("Error parsing initialApplications:", e);
+      parsedData = [];
+    }
+  } else {
+    parsedData = initialApplications || [];
+  }
+
+  const [applications, setApplications] = useState(parsedData);
+  // console.log("ApplicationProvider initial applications:", applications);
   return (
     <ApplicationContext.Provider value={{ applications, setApplications }}>
       {children}

@@ -724,7 +724,7 @@
   }
 
   /* Remove borders on the outer edges to prevent overlap with the container */
-  .ind-app-data-table thead th {
+  .ind-app-data-table tbody tr:first-child td {
     border-top-width: 0;
   }
   .ind-app-data-table tbody tr:last-child td {

@@ -4,6 +4,8 @@ import { useApplications } from "./ApplicationContext";
 export default function ApplicationsTable() {
   const { applications } = useApplications();
 
+  // console.log("ApplicationsTable applications:", applications);
+
   if (!applications || applications.length === 0) {
     return (
       <tr className="text-center">
@@ -22,7 +24,7 @@ export default function ApplicationsTable() {
           <td>{app.course}</td>
           <td>{app.status}</td>
           <td>
-            <a href={`/dashboard/application/${app.id}`}>
+            <a href={`/dashboard/applications/${app.id}`}>
               <button
                 id="view-more-btn"
                 class="view-more-btn"
