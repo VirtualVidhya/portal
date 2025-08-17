@@ -2,11 +2,92 @@
 
 @config "../../tailwind.config.js";
 
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-/* @custom-variant hover (&:hover); */
+:root,
+html[data-theme="light"] {
+  --background: #f9f8f4;
+  --navbar: #f4f2e9;
+
+  --foreground: #1e1e1e;
+  --texthover: #6c757d;
+  --accent: #006cac;
+
+  /* --codeblock: #e7e5dd; */
+  --codeblock: #f4f2e9;
+  --muted: #e6e6e6;
+  --border: #9c9a97;
+  --borderhover: #1e1e1e;
+}
+
+html[data-theme="dark"] {
+  --background: #1e1e1e;
+  --navbar: #121212;
+
+  --foreground: #f9f8f4;
+  --texthover: #6c757d;
+  --accent: #ff6b01;
+
+  /* --codeblock: #121212; */
+  --codeblock: #121212;
+  --muted: #343f60bf;
+  --border: #6c757d;
+  --borderhover: #f9f8f4;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-navbar: var(--navbar);
+
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-texthover: var(--texthover);
+
+  --color-codeblock: var(--codeblock);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-borderhover: var(--borderhover);
+}
+
+@layer base {
+  :root {
+    --header-height: 52px;
+    --main-section-pt: 40px;
+    --main-section-pb: 40px;
+  }
+
+  @media (min-width: 640px) {
+    :root {
+      --header-height: 64px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --header-height: 88px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --header-height: 94px;
+    }
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply flex flex-col min-h-screen bg-background font-notosans text-foreground selection:bg-accent/75 selection:text-background;
+  }
+
+  main {
+    padding-top: calc(var(--header-height) + var(--main-section-pt));
+    padding-bottom: var(--main-section-pb);
+    @apply mt-10 mb-16;
+  }
+}
 
 @layer base {
   @font-face {
@@ -116,143 +197,20 @@
 }
 
 @layer components {
-  /* GENERAL */
-  .util-icon {
-    width: 1em !important;
-    height: 1em !important;
+  /* #region VVIDHYA LOGO */
+
+  /* general */
+  .dynamic-stroke {
+    stroke: var(--foreground);
   }
 
-  .link-interaction-effect {
-    /* @apply transition-all hover:text-font-color-green focus:text-font-color-green active:text-font-color-green; */
-    @apply transition-all hover:text-font-color-green active:text-font-color-green;
-  }
-
-  .link-interaction-effect.touch {
-    @apply text-font-color-green;
-  }
-
-  .link-interaction-underline-effect {
-    /* @apply transition-all hover:underline focus:underline active:underline; */
-    @apply transition-all hover:underline active:underline;
-  }
-
-  .link-interaction-underline-effect.touch {
-    @apply underline;
-  }
-
-  /* .header-navmenu-hover {
-    @apply hover:text-font-color-green;
-  } */
-
-  /* .scroll-up-btn {
-    @apply hover:text-font-color-pri;
-  } */
-
-  /* .explore-courses-btn {
-    @apply hover:text-font-color-pri hover:border-font-color-pri;
-  } */
-
-  /* .view-all-btn {
-    @apply hover:text-font-color-pri;
-  } */
-
-  /* .enroll-btn {
-    @apply hover:text-font-color-pri hover:border-font-color-pri;
-  } */
-
-  /* .form-submit-btn {
-    @apply hover:text-font-color-pri;
-  } */
-
-  /* @media (hover: hover) {
-    .link-interaction-effect {
-      @apply transition-all hover:text-font-color-green focus:text-font-color-green active:text-font-color-green;
-    }
-
-    .link-interaction-underline-effect {
-      @apply transition-all hover:underline focus:underline active:underline;
-    }
-
-    .header-navmenu-hover {
-      @apply hover:text-font-color-green focus:text-font-color-green active:text-font-color-green;
-    }
-
-    .scroll-up-btn {
-      @apply hover:text-font-color-pri focus:text-font-color-pri active:text-font-color-pri;
-    }
-
-    .explore-courses-btn {
-      @apply hover:text-font-color-pri focus:text-font-color-pri active:text-font-color-pri hover:border-font-color-pri focus:border-font-color-pri active:border-font-color-pri;
-    }
-
-    .view-all-btn {
-      @apply hover:text-font-color-pri focus:text-font-color-pri active:text-font-color-pri;
-    }
-
-    .enroll-btn {
-      @apply hover:text-font-color-pri focus:text-font-color-pri active:text-font-color-pri hover:border-font-color-pri focus:border-font-color-pri active:border-font-color-pri;
-    }
-
-    .form-submit-btn {
-      @apply hover:text-font-color-pri focus:text-font-color-pri active:text-font-color-pri;
-    }
-  } */
-
-  /* @media (hover: none) {
-    .link-interaction-effect {
-      @apply transition-all focus:text-font-color-green active:text-font-color-green;
-    }
-
-    .link-interaction-underline-effect {
-      @apply transition-all focus:underline active:underline;
-    }
-
-    .header-navmenu-hover {
-      @apply active:text-font-color-green focus:text-font-color-green;
-    }
-
-    .scroll-up-btn {
-      @apply active:text-font-color-pri focus:text-font-color-pri;
-    }
-
-    .explore-courses-btn {
-      @apply active:text-font-color-pri focus:text-font-color-pri active:border-font-color-pri focus:border-font-color-pri;
-    }
-
-    .view-all-btn {
-      @apply active:text-font-color-pri focus:text-font-color-pri;
-    }
-
-    .enroll-btn {
-      @apply active:text-font-color-pri focus:text-font-color-pri active:border-font-color-pri focus:border-font-color-pri;
-    }
-
-    .form-submit-btn {
-      @apply active:text-font-color-pri focus:text-font-color-pri;
-    }
-  } */
-
-  textarea:focus,
-  input:focus {
-    outline: none;
-  }
-
-  /* HEADER */
-  .header {
-    @apply bg-navbar-color-pri flex justify-between py-2 md:py-3 px-2 sm:px-4 md:px-8 mb-10 sticky top-0 z-10;
-  }
-
-  .header-logo-text {
-    @apply text-font-color-pri text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-2 sm:mt-3 lg:mt-4 font-black;
-  }
-
+  /* header-logo */
   .header-logo-svg {
     @apply h-9 sm:h-12 md:h-16 lg:h-18 w-auto;
   }
 
   .header-logo-svg .body-outline {
     stroke-width: 11.25;
-    @apply stroke-font-color-pri;
   }
 
   .header-logo-svg .eyes-outline {
@@ -261,44 +219,19 @@
 
   .header-logo-svg .brain-divider-line {
     stroke-width: 6.25;
-    @apply stroke-font-color-pri;
   }
 
   .header-logo-svg .brain-curves {
     stroke-width: 4.15;
-    @apply stroke-font-color-pri;
   }
 
-  .header-navmenu-hover {
-    /* @apply transition-all underline-offset-4 sm:underline-offset-8 hover:text-font-color-green focus:text-font-color-green active:text-font-color-green; */
-    @apply transition-all underline-offset-4 sm:underline-offset-8 hover:text-font-color-green active:text-font-color-green;
-  }
-
-  .header-navmenu-hover.touch {
-    @apply text-font-color-green;
-  }
-
-  .scroll-up-btn {
-    /* @apply transition-all hidden fixed justify-center items-center cursor-pointer bottom-4 right-4 z-[5] w-10 h-10 rounded-full bg-font-color-sec text-font-color-white hover:text-font-color-pri; */
-    @apply transition-all hidden fixed justify-center items-center cursor-pointer bottom-4 right-4 z-[5] w-10 h-10 rounded-full bg-font-color-sec text-font-color-white hover:text-font-color-pri active:text-font-color-pri;
-  }
-
-  .scroll-up-btn.touch {
-    @apply text-font-color-pri;
-  }
-
-  .side-navmenu-border {
-    @apply border-solid border-[1px] border-font-color-pri my-3 md:my-5;
-  }
-
-  /* HOME PAGE */
+  /* home-logo */
   .home-logo-svg {
     @apply h-20 xs:h-[88px] sm:h-24 md:h-32 lg:h-40 xl:h-48 w-auto;
   }
 
   .home-logo-svg .body-outline {
     stroke-width: 9.5;
-    @apply stroke-font-color-pri;
   }
 
   .home-logo-svg .eyes-outline {
@@ -307,240 +240,19 @@
 
   .home-logo-svg .brain-divider-line {
     stroke-width: 6.25;
-    @apply stroke-font-color-pri;
   }
 
   .home-logo-svg .brain-curves {
     stroke-width: 3.5;
-    @apply stroke-font-color-pri;
   }
 
-  .explore-courses-btn {
-    /* @apply transition-all text-font-color-white bg-font-color-blue text-lg sm:text-xl px-6 sm:px-8 py-3 sm:py-4 font-bold rounded-lg border-2 border-b-6 border-font-color-blue-dark hover:text-font-color-pri focus:text-font-color-pri active:text-font-color-pri hover:border-font-color-pri focus:border-font-color-pri active:border-font-color-pri; */
-    @apply transition-all text-font-color-white bg-font-color-blue text-lg sm:text-xl px-6 sm:px-8 py-3 sm:py-4 font-bold rounded-lg border-2 border-b-6 border-font-color-blue-dark hover:text-font-color-pri active:text-font-color-pri hover:border-font-color-pri active:border-font-color-pri;
-  }
-
-  .explore-courses-btn.touch {
-    @apply text-font-color-pri border-font-color-pri;
-  }
-
-  .lottie-placeholder {
-    transition: opacity 0.2s ease-in-out;
-  }
-
-  /* ALL COURSES PAGE   */
-  .view-all-btn {
-    @apply transition-all text-font-color-white bg-font-color-green text-base sm:text-lg px-5 sm:px-7 py-2 sm:py-3 font-bold rounded-lg hover:text-font-color-pri active:text-font-color-pri;
-  }
-
-  .view-all-btn.touch {
-    @apply text-font-color-pri;
-  }
-
-  .course-card-grid {
-    /* @apply grid [grid-template-columns:repeat(auto-fit,minmax(300px,max-content))] md:[grid-template-columns:repeat(auto-fit,minmax(320px,max-content))] lg:[grid-template-columns:repeat(auto-fit,minmax(345px,max-content))] xl:[grid-template-columns:repeat(auto-fit,minmax(365px,max-content))] 2xl:[grid-template-columns:repeat(auto-fit,minmax(380px,max-content))] justify-center justify-items-center place-content-center gap-y-5 sm:gap-y-[30px] md:gap-y-10 gap-x-5 md:gap-x-10 mb-24; */
-    @apply grid [grid-template-columns:repeat(1,300px)] md:[grid-template-columns:repeat(2,320px)] lg:[grid-template-columns:repeat(2,345px)] xl:[grid-template-columns:repeat(3,365px)] 2xl:[grid-template-columns:repeat(auto-fit,minmax(380px,max-content))] justify-center justify-items-center place-content-center gap-y-5 sm:gap-y-[30px] md:gap-y-10 gap-x-5 md:gap-x-10 mb-24;
-  }
-
-  /* .course-carousel-container {
-    @apply relative overflow-hidden [scroll-snap-type:x,mandatory] mx-auto mb-10 w-[300px] md:w-[680px] lg:w-[730px] xl:w-[1175px] 2xl:w-[1220px];
-  } */
-
-  .course-carousel-container {
-    @apply overflow-hidden mx-auto mb-10 w-[300px] md:w-[680px] lg:w-[730px] xl:w-[1175px] 2xl:w-[1220px];
-  }
-
-  .course-carousel {
-    /* @apply flex flex-row transition-transform duration-500 ease-in-out gap-x-5 md:gap-x-10 mb-24; */
-    @apply flex flex-row overflow-x-auto transition-transform duration-500 ease-in-out gap-x-5 md:gap-x-10 [scroll-behavior:smooth] [scrollbar-width:none];
-  }
-
-  .course-card {
-    /* @apply flex-shrink-0 flex flex-col items-center justify-between gap-2 box-border h-full w-[300px] md:w-[320px] lg:w-[345px] xl:w-[365px] 2xl:w-[380px] rounded-xl bg-navbar-color-pri p-5 border-2 border-b-6 border-color-border-pri hover:border-font-color-pri focus:border-font-color-pri active:border-font-color-pri; */
-    @apply flex-shrink-0 flex flex-col items-center justify-between gap-2 box-border h-full w-[300px] md:w-[320px] lg:w-[345px] xl:w-[365px] 2xl:w-[380px] rounded-xl bg-navbar-color-pri p-5 border-2 border-b-6 border-color-border-pri hover:border-font-color-pri active:border-font-color-pri;
-  }
-
-  .course-card.touch {
-    @apply border-font-color-pri;
-  }
-
-  .course-card-image {
-    @apply w-24 md:w-32 h-auto;
-  }
-
-  .course-card-heading {
-    @apply text-center font-extrabold text-xl md:text-2xl text-font-color-sec mb-3;
-  }
-
-  /* .course-card-border {
-    @apply w-full border-solid border-[0.25px] border-color-border-pri mb-3;
-  } */
-
-  .course-card-desc {
-    @apply text-[14px] md:text-base text-center mb-2;
-  }
-
-  .course-card-duration {
-    @apply text-[14px] md:text-base flex flex-row items-center justify-center gap-2;
-  }
-
-  .course-card-tags-container {
-    @apply flex flex-row flex-wrap gap-3 justify-center items-center;
-  }
-
-  .course-card-tags {
-    @apply text-[14px] md:text-base bg-font-color-blue text-font-color-white font-semibold py-1 px-2 rounded-md;
-  }
-
-  /* Hide scrollbar for Chrome/Safari/Edge */
-  /* .course-carousel::-webkit-scrollbar {
-    @apply hidden;
-  } */
-
-  .swiper-slide {
-    @apply !h-auto;
-  }
-
-  .swiper-slide.insufficient-slide {
-    @apply !w-min;
-  }
-
-  .swiper-wrapper.insufficient-slides {
-    justify-content: center;
-  }
-
-  .swiper-button-prev:after,
-  .swiper-button-next:after {
-    content: "" !important;
-  }
-
-  .carousel-nextBtn,
-  .carousel-prevBtn {
-    @apply flex justify-center items-center text-3xl md:text-4xl;
-  }
-
-  .swiper-button-prev,
-  .swiper-button-next {
-    position: static !important;
-    /* top: var(--swiper-navigation-top-offset, 50%); */
-    width: auto !important;
-    height: auto !important;
-    margin-top: 0px !important;
-    z-index: 5 !important;
-    /* cursor: pointer; */
-    /* display: flex; */
-    /* align-items: center; */
-    /* justify-content: center; */
-    color: inherit !important;
-  }
-
-  .swiper-horizontal > .swiper-scrollbar,
-  .swiper-scrollbar.swiper-scrollbar-horizontal {
-    position: static !important;
-    /* left: var(--swiper-scrollbar-sides-offset, 1%);
-    bottom: var(--swiper-scrollbar-bottom, 4px);
-    top: var(--swiper-scrollbar-top, auto); */
-    z-index: 5 !important;
-    /* height: 100% !important; */
-    height: 5px !important;
-    /* width: auto !important; */
-    width: 35% !important;
-  }
-
-  .progress-bar-container {
-    @apply w-[35%] h-[5px] bg-color-border-pri rounded-lg;
-  }
-
-  .swiper-scrollbar {
-    @apply !bg-color-border-pri !rounded-lg;
-    /* border-radius: inherit !important; */
-    position: static !important;
-    touch-action: none;
-    /* background: inherit !important; */
-  }
-
-  .swiper-scrollbar-drag {
-    /* height: 100%; */
-    /* width: 100%; */
-    /* position: relative; */
-    @apply !bg-font-color-pri;
-    border-radius: inherit !important;
-    /* left: 0; */
-    /* top: 0 */
-  }
-
-  /* COMBINE COURSE PAGE */
-  .main-combine-course-section {
-    /* @apply flex flex-col items-center justify-center gap-24 mt-10 mb-20 mx-4 sm:mx-10 md:mx-16 lg:mx-24 xl:mx-44; */
-    @apply flex flex-col items-center justify-center gap-24 mt-10 mb-20 mx-4 2xl:mx-10;
-  }
-
-  /* INDIVIDUAL COURSE PAGE */
-  .ind-course-main-section {
-    @apply flex flex-col gap-3 px-6 lg:px-0 mx-auto mt-10 mb-20 max-w-mdsm md:max-w-2xl lg:max-w-4xl 2xl:max-w-6xl;
-  }
-
-  .ind-course-header-section {
-    @apply flex flex-col items-center justify-center gap-3;
-  }
-
-  .ind-course-heading {
-    @apply text-center text-font-color-pri text-3xl md:text-5xl font-extrabold mb-10;
-  }
-
-  .enroll-btn {
-    /* @apply transition-all text-font-color-white bg-font-color-green text-lg sm:text-xl px-6 sm:px-8 py-3 font-bold rounded-lg border-2 border-b-6 border-font-color-green-dark hover:text-font-color-pri focus:text-font-color-pri active:text-font-color-pri hover:border-font-color-pri focus:border-font-color-pri active:border-font-color-pri; */
-    @apply transition-all text-font-color-white bg-font-color-green text-lg sm:text-xl px-6 sm:px-8 py-3 font-bold rounded-lg border-2 border-b-6 border-font-color-green-dark hover:text-font-color-pri active:text-font-color-pri hover:border-font-color-pri active:border-font-color-pri;
-  }
-
-  .enroll-btn.touch {
-    @apply text-font-color-pri border-font-color-pri;
-  }
-
-  .ind-course-duration {
-    @apply flex flex-row items-center justify-center font-semibold text-base sm:text-lg gap-2 mt-5 mb-10;
-  }
-
-  .ind-course-overview-section {
-    @apply mb-24;
-  }
-
-  .ind-course-section-heading {
-    @apply text-left text-font-color-green text-2xl md:text-3xl font-extrabold mt-3 mb-5;
-  }
-
-  .ind-course-illus {
-    @apply h-auto w-auto max-h-[225px] sm:max-h-[300px] md:max-h-[425px] lg:max-h-[500px] mb-10;
-  }
-
-  /* .ind-course-overview-heading {
-    @apply text-font-color-sec text-xl md:text-3xl font-extrabold mt-3 mb-5;
-  } */
-
-  .ind-course-curriculum-section {
-    @apply mb-24;
-  }
-
-  /* .ind-course-curriculum-heading {
-    @apply text-center text-font-color-sec text-xl md:text-3xl font-extrabold mt-3 mb-5;
-  } */
-
-  .ind-course-imp-text {
-    @apply text-lg text-font-color-blue font-extrabold;
-  }
-
-  .ind-course-sublist {
-    @apply list-outside list-disc mx-auto mb-5 pl-5;
-  }
-
-  /* FOOTER */
+  /* footer-logo */
   .footer-logo-svg {
     @apply h-8 md:h-10 lg:h-12 w-auto;
   }
 
   .footer-logo-svg .body-outline {
     stroke-width: 11.25;
-    @apply stroke-font-color-pri;
   }
 
   .footer-logo-svg .eyes-outline {
@@ -549,26 +261,138 @@
 
   .footer-logo-svg .brain-divider-line {
     stroke-width: 6.25;
-    @apply stroke-font-color-pri;
   }
 
   .footer-logo-svg .brain-curves {
     stroke-width: 4.15;
-    @apply stroke-font-color-pri;
+  }
+  /* #endregion */
+
+  /* #region GENERAL */
+  .util-icon {
+    width: 1em !important;
+    height: 1em !important;
   }
 
-  /* ILLUSTRATIONS */
+  .link-interaction-effect {
+    @apply transition-all hover:text-font-color-green active:text-font-color-green;
+  }
+
+  .link-interaction-effect.touch {
+    @apply text-font-color-green;
+  }
+
+  .link-interaction-underline-effect {
+    @apply transition-all hover:underline active:underline;
+  }
+
+  .link-interaction-underline-effect.touch {
+    @apply underline;
+  }
+
+  textarea:focus,
+  input:focus {
+    outline: none;
+  }
+
+  .scroll-up-btn {
+    @apply transition-all hidden fixed justify-center items-center cursor-pointer bottom-4 right-4 z-[5] w-10 h-10 rounded-full bg-font-color-sec text-font-color-white hover:text-font-color-pri active:text-font-color-pri;
+  }
+
+  .scroll-up-btn.touch {
+    @apply text-font-color-pri;
+  }
+  /* #endregion */
+
+  /* #region HEADER */
+  .header {
+    /* @apply bg-navbar-color-pri flex justify-between py-2 md:py-3 px-2 sm:px-4 md:px-8 mb-10 sticky top-0 z-10; */
+    @apply fixed top-0 right-0 left-0 z-10 mb-10 flex w-auto justify-between bg-navbar px-2 py-2 text-foreground sm:px-4 md:px-8 md:py-3;
+    height: var(--header-height);
+  }
+
+  .header-logo-text {
+    @apply text-foreground text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-2 sm:mt-3 lg:mt-4 font-black hover:text-font-color-green active:text-font-color-green;
+  }
+
+  .header-logo-text.touch {
+    @apply text-font-color-green;
+  }
+
+  .header-logo-svg:hover + .header-logo-text,
+  .header-logo-svg:active + .header-logo-text {
+    @apply text-font-color-green;
+  }
+
+  .header-logo-svg.touch + .header-logo-text {
+    @apply text-font-color-green;
+  }
+
+  .header-navmenu-hover {
+    @apply transition-all underline-offset-4 sm:underline-offset-8 hover:text-font-color-green active:text-font-color-green;
+  }
+
+  .header-navmenu-hover.touch {
+    @apply text-font-color-green;
+  }
+
+  .side-navmenu-border {
+    @apply border-solid border-[1px] border-foreground my-3 md:my-5;
+  }
+  /* #endregion */
+
+  /* #region NAV MENU */
+  .topbar-menu {
+    @apply z-10 box-border w-full bg-navbar p-4 sm:z-auto sm:box-content sm:w-auto sm:p-0;
+
+    height: calc(100vh - var(--header-height) + 5px);
+  }
+
+  @media (min-width: 640px) {
+    .topbar-menu {
+      height: auto;
+    }
+  }
+
+  .topbar-nav {
+    @apply text-base font-bold sm:flex sm:items-center sm:justify-center md:text-xl;
+  }
+  /* #endregion */
+
+  /* #region HOME PAGE */
+  .home-stroke-path {
+    fill: var(--navbar);
+  }
+
+  .explore-courses-btn {
+    @apply rounded-lg border-2 border-b-6 border-font-color-blue-dark bg-font-color-blue px-6 py-3 text-lg font-bold text-font-color-white transition-all hover:text-font-color-pri active:text-font-color-pri hover:border-borderhover active:border-borderhover sm:px-8 sm:py-4 sm:text-xl;
+  }
+
+  .explore-courses-btn.touch {
+    @apply text-font-color-pri border-borderhover;
+  }
+
+  .lottie-placeholder {
+    transition: opacity 0.2s ease-in-out;
+  }
+  /* #endregion */
+
+  /* #region ILLUSTRATIONS */
   .illus {
     @apply h-auto w-auto max-h-[225px] sm:max-h-[300px] md:max-h-[425px] lg:max-h-[500px];
   }
+  /* #endregion */
 
-  /* CONTACT */
+  /* #region CONTACT PAGE */
   .contact-section-heading {
-    @apply text-font-color-green text-[28px] md:text-4xl font-extrabold mb-3;
+    @apply text-font-color-green text-2xl md:text-4xl font-extrabold mb-3;
+  }
+
+  .contact-form {
+    @apply bg-navbar;
   }
 
   .form-submit-btn {
-    /* @apply transition-all text-font-color-white bg-font-color-green px-6 py-3 font-bold rounded-md hover:text-font-color-pri focus:text-font-color-pri active:text-font-color-pri; */
     @apply transition-all cursor-pointer text-font-color-white bg-font-color-green px-6 py-3 font-bold rounded-md hover:text-font-color-pri active:text-font-color-pri;
   }
 
@@ -577,10 +401,23 @@
   }
 
   .form-fieldbox {
-    @apply transition-all w-full bg-mainbg-color p-3 border-solid border-1 focus:outline-1 focus:outline-font-color-pri border-color-border-pri focus:border-font-color-pri active:border-font-color-pri rounded-lg;
+    @apply transition-all w-full bg-background p-3 border-solid border-1 focus:outline-1 focus:outline-foreground border-border focus:border-foreground active:border-foreground rounded-lg;
   }
 
-  /* APPLICATION FORM */
+  .form-label {
+    @apply font-semibold text-base md:text-lg mb-1;
+  }
+
+  .form-sublabel {
+    @apply font-normal text-sm;
+  }
+
+  .form-req-label {
+    @apply text-font-color-red-dark;
+  }
+  /* #endregion */
+
+  /* #region APPLICATION FORM */
   .form-fieldset {
     @apply w-full flex flex-col items-center justify-center gap-7 py-10 md:py-20;
     padding-block: 0px !important;
@@ -755,4 +592,127 @@
   /* .ind-app-data-table tr:hover {
     @apply bg-navbar-color-pri cursor-pointer;
   } */
+  /* #endregion */
+
+  /* #region CERTI-DATA-TABLE  */
+  .certi-data-container {
+    @apply mx-3 lg:mx-0 border-2 border-solid border-font-color-pri rounded-lg overflow-hidden;
+  }
+
+  .certi-data-table {
+    @apply w-full border-collapse text-left bg-background;
+  }
+
+  .certi-data-table th,
+  td {
+    @apply px-4 py-2 border-2 border-solid border-color-border-pri;
+  }
+
+  /* Remove borders on the outer edges to prevent overlap with the container */
+  .certi-data-table tbody tr:first-child td {
+    border-top-width: 0;
+  }
+  .certi-data-table tbody tr:last-child td {
+    border-bottom-width: 0;
+  }
+  .certi-data-table tr th:first-child,
+  .certi-data-table tr td:first-child {
+    border-left-width: 0;
+  }
+  .certi-data-table tr th:last-child,
+  .certi-data-table tr td:last-child {
+    border-right-width: 0;
+    /* border-left-width: 0; */
+  }
+  .certi-data-table tr th:nth-last-child(2),
+  .certi-data-table tr td:nth-last-child(2) {
+    border-right-width: 0;
+  }
+
+  .certi-data-table th {
+    @apply text-lg bg-navbar-color-pri;
+  }
+
+  .certi-data-table tr td:last-child {
+    @apply font-semibold;
+  }
+  /* #endregion */
+
+  /* #region GRADE-TABLE */
+  .grade-table-container {
+    @apply w-full sm:w-3/4 border-2 border-solid border-font-color-pri rounded-lg overflow-hidden;
+  }
+
+  .grade-table {
+    @apply w-full border-collapse text-left bg-background;
+  }
+
+  .grade-table td {
+    @apply px-4 py-2 border-2 border-solid border-color-border-pri;
+  }
+
+  .grade-table tr:first-child td {
+    border-top-width: 0;
+  }
+  .grade-table tr:last-child td {
+    border-bottom-width: 0;
+  }
+
+  .grade-table tr td:first-child {
+    border-left-width: 0;
+  }
+
+  .grade-table tr td:last-child {
+    border-right-width: 0;
+    /* border-left-width: 0; */
+  }
+
+  .grade-table tr td:nth-last-child(2) {
+    border-right-width: 0;
+  }
+  /* #endregion */
+
+  #certi-id-info, #grade-info {
+    scroll-margin-top: calc(var(--header-height) + var(--main-section-pt));
+  }
+
+  /* #region LOADING-INDICATOR */
+  /* The outer container that vtbot will toggle via html.loading */
+  .loading-indicator {
+    @apply pointer-events-none relative opacity-100 transition-all;
+  }
+
+  /* When a load is happening, vtbot adds .loading to <html> */
+  /* html.loading #vtbot-loading-indicator {
+    @apply !animate-none !opacity-100 transition-all;
+  } */
+
+  .loading-outer-ring {
+    @apply absolute top-0 left-0 h-6 w-6 rounded-full border-4 border-foreground md:h-8 md:w-8 md:border-[5px];
+  }
+
+  /* The actual spinner element inside your #vtbot-loading-indicator */
+  .loading-inner-spinner {
+    @apply absolute top-0 left-0 h-6 w-6 animate-spin rounded-full border-4 border-font-color-green border-t-transparent transition-all md:h-8 md:w-8 md:border-[5px];
+  }
+
+  .dot-loader {
+    width: 36px;
+    aspect-ratio: 4;
+    background: radial-gradient(
+        circle closest-side,
+        currentColor 90%,
+        transparent
+      )
+      0 / calc(100% / 3) 100% space;
+    clip-path: inset(0 100% 0 0);
+    animation: l1 1s steps(4) infinite;
+  }
+
+  @keyframes l1 {
+    to {
+      clip-path: inset(0 -34% 0 0);
+    }
+  }
+  /* #endregion */
 }

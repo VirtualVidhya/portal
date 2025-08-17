@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { route } from "preact-router";
 import { useApplications } from "./ApplicationContext.jsx";
+import useDecryptFiles from "./DecryptFiles.jsx";
 
 export default function ApplicationDetail({ id }) {
   // Retrieve the list of applications from context.
@@ -15,6 +16,8 @@ export default function ApplicationDetail({ id }) {
     route("/dashboard/applications");
     return <div>Application not found. Redirecting...</div>;
   }
+
+  useDecryptFiles(application);
 
   return (
     <section class="flex flex-col items-center justify-center gap-3 max-w-mdsm md:max-w-2xl lg:max-w-4xl 2xl:max-w-6xl">

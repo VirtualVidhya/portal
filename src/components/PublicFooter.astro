@@ -1,0 +1,180 @@
+---
+import LinkPage from "./LinkPage.astro";
+import SocialLinks from "./SocialLinks.astro";
+import VvidhyaLogo from "./VvidhyaLogo.astro";
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer
+  class="bg-navbar w-full flex flex-col items-center justify-center gap-5 py-16 mt-auto"
+>
+  <div
+    class="flex flex-col sm:flex-row justify-center sm:justify-between gap-10 sm:gap-0 px-10 sm:px-0 md:px-0 lg:px-10 2xl:px-12 w-full max-w-mdsm sm:max-w-xl md:max-w-2xl lg:max-w-4xl 2xl:max-w-6xl"
+  >
+    <div class="flex flex-col gap-4">
+      <h4 class="text-lg font-bold">Contact Us</h4>
+      <ul class="flex flex-col gap-4">
+        <li>
+          <p>Call Us</p>
+          <a
+            class="font-semibold link-interaction-effect"
+            href="tel:+919429267900"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Phone"
+          >
+            +91-9429267900
+          </a>
+        </li>
+        <li>
+          <p>Address</p>
+          <a
+            class="font-semibold link-interaction-effect"
+            href="https://www.google.com/maps/dir//10,+Samay+Shopping+Complex,+Opposite+Center+Point,+Adajan+Gam,+Adajan,+Surat,+Gujarat+395009/@21.1974062,72.7126246,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3be04c2d21e3ffff:0x84eb5f824f69b049!2m2!1d72.7950244!2d21.1974255?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Address"
+          >
+            10, Samay Complex, Adajan, Surat
+          </a>
+        </li>
+        <li>
+          <p>Email</p>
+          <a
+            class="font-semibold link-interaction-effect"
+            href="mailto:contact@vvidhya.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Email"
+          >
+            contact@vvidhya.com
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      <h4 class="text-lg font-bold">Quick Links</h4>
+      <ul class="flex flex-col gap-2">
+        <li>
+          <LinkPage href="https://www.vvidhya.com/" title="Home" class="link-interaction-effect" />
+        </li>
+        <li>
+          <LinkPage
+            href="https://www.vvidhya.com/about/"
+            title="About"
+            class="link-interaction-effect"
+          />
+        </li>
+        <li>
+          <LinkPage
+            href="https://www.vvidhya.com/courses/"
+            title="Courses"
+            class="link-interaction-effect"
+          />
+        </li>
+        <li>
+          <LinkPage
+            href="https://www.vvidhya.com/contact/"
+            title="Contact"
+            class="link-interaction-effect"
+          />
+        </li>
+        <li>
+          <LinkPage
+            href="https://www.vvidhya.com/terms-&-conditions/"
+            title="Terms & Conditions"
+            class="link-interaction-effect"
+          />
+        </li>
+        <li>
+          <LinkPage
+            href="https://www.vvidhya.com/privacy-policy/"
+            title="Privacy Policy"
+            class="link-interaction-effect"
+          />
+        </li>
+      </ul>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      <h4 class="text-lg font-bold">Courses</h4>
+      <ul class="flex flex-col gap-2">
+        <li>
+          <LinkPage
+            href="https://www.vvidhya.com/courses/"
+            title="All Courses"
+            class="link-interaction-effect"
+          />
+        </li>
+        <li>
+          <LinkPage
+            href="https://www.vvidhya.com/courses/multimedia/"
+            title="Multimedia Courses"
+            class="link-interaction-effect"
+          />
+        </li>
+        <li>
+          <LinkPage
+            href="https://www.vvidhya.com/courses/programming/"
+            title="Programming Courses"
+            class="link-interaction-effect"
+          />
+        </li>
+        <li>
+          <LinkPage
+            href="https://www.vvidhya.com/courses/kids/"
+            title="Kids Courses"
+            class="link-interaction-effect"
+          />
+        </li>
+        <li>
+          <LinkPage
+            href="https://www.vvidhya.com/courses/literacy/"
+            title="Literacy Courses"
+            class="link-interaction-effect"
+          />
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="flex flex-row justify-center items-center px-10 my-5 w-full">
+    <hr class="w-full border-solid border-[1px] border-foreground my-10" />
+
+    <LinkPage href="https://www.vvidhya.com/" title="">
+      <VvidhyaLogo logoClass="footer-logo-svg" />
+    </LinkPage>
+
+    <hr class="w-full border-solid border-[1px] border-foreground my-10" />
+  </div>
+
+  <div
+    class="flex flex-col md:flex-row justify-between items-center text-center gap-3 md:gap-8 w-full px-10 xl:px-24"
+  >
+    <div class="order-3 md:order-1">
+      <p>&#169; {currentYear}, V.Vidhya</p>
+    </div>
+
+    <div class="order-2 md:order-2">
+      <LinkPage
+        href="https://www.vvidhya.com/terms-&-conditions/"
+        title="Terms & Conditions"
+        class="link-interaction-effect link-interaction-underline-effect underline-offset-8"
+      />
+      |
+      <LinkPage
+        href="https://www.vvidhya.com/privacy-policy/"
+        title="Privacy Policy"
+        class="link-interaction-effect link-interaction-underline-effect underline-offset-8"
+      />
+    </div>
+
+    <div
+      class="flex flex-row justify-center items-center order-1 md:order-3 text-xl md:text-2xl space-x-4"
+    >
+      <SocialLinks />
+    </div>
+  </div>
+</footer>
