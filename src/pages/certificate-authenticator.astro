@@ -1,5 +1,5 @@
 ---
-// export const prerender = true;
+export const prerender = false;
 
 import PublicLayout from "../layouts/PublicLayout.astro";
 import IconInfo from "../components/icons/IconInfo.astro";
@@ -42,14 +42,15 @@ const metadata = {
       </h2>
 
       <form
-        name="contact"
-        method="POST"
+        name="verify-certificate"
+        method="GET"
         id="certificate-form"
-        enctype="multipart/form-data"
         autocomplete="off"
         novalidate
         class="flex flex-col items-center justify-center gap-20 mx-auto py-10 md:py-20 border-solid border-2 border-b-6 rounded-xl bg-navbar-color-pri"
-      >
+        >
+        <!-- enctype="multipart/form-data" -->
+        <!-- action="https://api.vvidhya.com/api/verify-certificate" -->
         <fieldset class="form-fieldset">
           <div class="flex flex-col w-4/5 form-field">
             <label
@@ -66,7 +67,7 @@ const metadata = {
             </label>
             <input
               id="certificate-id-ip"
-              name="certificate-id"
+              name="token"
               class="form-fieldbox"
               type="text"
               placeholder="Enter your certificate ID"
@@ -159,8 +160,6 @@ const metadata = {
         </section>
       </form>
     </div>
-
-    <div id="verification-status"></div>
 
     <ul
       class="px-2.5 sm:px-0 list-outside list-disc mx-auto flex flex-col gap-10 md:gap-12 max-w-mdsm md:max-w-2xl lg:max-w-4xl 2xl:max-w-6xl"

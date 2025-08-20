@@ -1,22 +1,23 @@
 // Dev probe config - adjust if your wrangler dev port differs.
-const DEV_WRANGLER_ORIGIN = "http://localhost:8788";
+// const DEV_WRANGLER_ORIGIN = "http://localhost:8788";
+// const DEV_WRANGLER_ORIGIN = "https://api.vvidhya.com";
 
-async function getApiBase() {
-  // Try the local Pages dev server quickly; if it responds use it, else use same-origin (production)
-  // try {
-  //   const ping = await fetch(
-  //     `${WRANGLER_ORIGIN}/certificate-authenticator?token=__ping__`,
-  //     { method: "GET", mode: "cors", cache: "no-store" }
-  //   );
-  //   if (ping.ok) return WRANGLER_ORIGIN;
-  // } catch (e) {}
+// async function getApiBase() {
+//   // Try the local Pages dev server quickly; if it responds use it, else use same-origin (production)
+//   // try {
+//   //   const ping = await fetch(
+//   //     `${WRANGLER_ORIGIN}/certificate-authenticator?token=__ping__`,
+//   //     { method: "GET", mode: "cors", cache: "no-store" }
+//   //   );
+//   //   if (ping.ok) return WRANGLER_ORIGIN;
+//   // } catch (e) {}
 
-  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    return DEV_WRANGLER_ORIGIN;
-  }
+//   if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+//     return DEV_WRANGLER_ORIGIN;
+//   }
 
-  return "";
-}
+//   return "";
+// }
 
 // --- Helper to fetch JSON safely and show helpful debug text when response isn't JSON
 async function safeFetchJson(url, fetchOptions = {}) {
@@ -117,6 +118,12 @@ function toggleError(is_showing, msg = "", is_input_error = false) {
   error_msg.textContent = `${msg}`;
 }
 
+// function buildApiUrl(path) {
+//   if (!path.startsWith("/")) path = "/" + path;
+//   const base = getApiBase();
+//   return base ? `${base}${path}` : path;
+// }
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -143,11 +150,15 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  const apiBase = await getApiBase(); // '' in prod, wrangler origin in dev if available
+  // const apiBase = await getApiBase(); // '' in prod, wrangler origin in dev if available
   // const url = `${apiBase}/certificate-authenticator/verify?token=${encodeURIComponent(certiId)}`;
-  const url = `${apiBase}/api/certificate/verify?token=${encodeURIComponent(
+  // const url = `${apiBase}/api/certificate/verify?id=${encodeURIComponent(
+  //   certiId
+  // )}`;
+  const url = `https://api.vvidhya.com/api/verify-certificate?token=${encodeURIComponent(
     certiId
   )}`;
+  // const url = buildApiUrl('/api/certificate/verify') + '?id=' + encodeURIComponent(certiId);
 
   try {
     // const resp = await fetch(
