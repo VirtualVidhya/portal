@@ -1,6 +1,7 @@
 {
   "name": "portal.vvidhya.com",
   "type": "module",
+  "packageManager": "pnpm@10.12.3",
   "version": "1.0.0",
   "scripts": {
     "dev:astro": "astro dev",
