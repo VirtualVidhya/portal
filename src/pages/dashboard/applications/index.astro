@@ -1,0 +1,47 @@
+---
+export const prerender = false;
+import DashboardBaseLayout from "../../../layouts/DashboardBaseLayout.astro";
+import type { Application } from "../../../scripts/types";
+import ApplicationsDashboard from "../../../components/ApplicationsDashboard.jsx";
+// import ApplicationsContainer from "../../../components/AllApplicationsPage.jsx";
+
+const metadata = {
+  title: "Application Data - V.Vidhya",
+  description: "View submitted applications securely.",
+};
+
+let applications: Application[] = [];
+let errorMessage: string | null = null;
+
+try {
+  const res = await fetch("https://api.vvidhya.com/api/get-applications");
+  if (!res.ok) {
+    throw new Error(`API Error: ${res.status} ${res.statusText}`);
+  }
+  applications = await res.json();
+  console.log("Fetched applications:", applications);
+} catch (error) {
+  errorMessage = error instanceof Error ? error.message : "Unknown error";
+  console.error("Error fetching applications:", errorMessage);
+}
+
+// Serialize the applications data so it can be properly passed to the client.
+const serializedApplications = applications
+  ? JSON.stringify(applications)
+  : "[]";
+---
+
+<DashboardBaseLayout metadata={metadata} navSection="applications">
+  <main class="flex flex-col items-center justify-center gap-3 w-full my-20">
+    {
+      errorMessage ? (
+        <p style="color: red;">{errorMessage}</p>
+      ) : (
+        <ApplicationsDashboard
+          initialApplications={serializedApplications}
+          client:load
+        />
+      )
+    }
+  </main>
+</DashboardBaseLayout>

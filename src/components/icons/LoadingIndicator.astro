@@ -1,0 +1,13 @@
+---
+export interface Props {
+  styleClass: string;
+}
+
+const { styleClass } = Astro.props;
+---
+
+<!-- <div class=`loading-indicator ${styleClass}`>
+  <div class="loading-outer-ring"></div>
+  <div class="loading-inner-spinner"></div>
+</div> -->
+<div class=`dot-loader ${styleClass}`></div>
