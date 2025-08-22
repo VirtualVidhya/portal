@@ -50,3 +50,6 @@ pnpm-debug.log*
 
 # FontAwesome package
 src/styles/fontawesome.css
+
+# Data Files
+certi_data.md

@@ -124,6 +124,28 @@ function toggleError(is_showing, msg = "", is_input_error = false) {
 //   return base ? `${base}${path}` : path;
 // }
 
+// Format ISO date-like string (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SSZ) to "DD-MM-YYYY".
+// Returns empty string for falsy/invalid input.
+function formatToDDMMYYYY(isoDateStr) {
+  if (!isoDateStr) return "";
+  // Keep only the date portion if there's a time component
+  const datePart = String(isoDateStr).split("T")[0].trim();
+  // Accept formats like YYYY-MM-DD
+  const m = datePart.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) {
+    // fallback: try Date parse (less reliable due to timezones)
+    const d = new Date(isoDateStr);
+    if (isNaN(d.getTime())) return isoDateStr; // return original if unparseable
+    // Use UTC components to avoid timezone shifts
+    const dd = String(d.getUTCDate()).padStart(2, "0");
+    const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
+    const yyyy = d.getUTCFullYear();
+    return `${dd}-${mm}-${yyyy}`;
+  }
+  const [, yyyy, mm, dd] = m;
+  return `${dd}-${mm}-${yyyy}`;
+}
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -207,14 +229,24 @@ form.addEventListener("submit", async (e) => {
       )}`;
       certi_grade_el.innerHTML = `${escapeHtml(certi_data.grade || "")}`;
       certi_startdate_el.innerHTML = `${escapeHtml(
-        certi_data.course_start_date || ""
+        formatToDDMMYYYY(certi_data.course_start_date)
       )}`;
       certi_enddate_el.innerHTML = `${escapeHtml(
-        certi_data.course_end_date || ""
+        formatToDDMMYYYY(certi_data.course_end_date)
       )}`;
       certi_issueddate_el.innerHTML = `${escapeHtml(
-        certi_data.issued_at || ""
+        formatToDDMMYYYY(certi_data.issued_at)
       )}`;
+
+      // certi_startdate_el.innerHTML = `${escapeHtml(
+      //   certi_data.course_start_date || ""
+      // )}`;
+      // certi_enddate_el.innerHTML = `${escapeHtml(
+      //   certi_data.course_end_date || ""
+      // )}`;
+      // certi_issueddate_el.innerHTML = `${escapeHtml(
+      //   certi_data.issued_at || ""
+      // )}`;
 
       valid_response_section.classList.remove("hidden");
       valid_response_section.classList.add("flex");
