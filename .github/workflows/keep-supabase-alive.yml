@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Use Node.js 18
+          node-version: '20' # Use Node.js 18
 
       # Step 3: Install Supabase Client
       - name: Install Supabase Client
@@ -42,7 +42,7 @@ jobs:
               const supabase = createClient(process.env.DATABASE_URL, process.env.DATABASE_KEY);
 
               // Ping Supabase by querying a table (e.g., 'songs')
-              const { data, error } = await supabase.from('inquiries').select('*').limit(10);
+              const { data, error } = await supabase.from('certificates').select('*').limit(10);
 
               // Handle errors
               if (error) throw error;
