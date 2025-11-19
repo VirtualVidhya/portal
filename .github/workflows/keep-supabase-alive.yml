@@ -3,7 +3,7 @@ name: Ping Supabase to Prevent Pausing
 # Runs at 09:00 UTC every Monday and Thursday. Adjust cron as needed.
 on:
   schedule:
-    - cron: '0 9 * * 1,4'
+    - cron: "0 9 * * 1,4"
   workflow_dispatch:
 
 concurrency:
@@ -87,7 +87,6 @@ jobs:
 
       - name: Cleanup temp files
         run: rm -f /tmp/supabase-ping-resp || true
-
 # name: Ping Supabase to Prevent Pausing
 
 # on:
