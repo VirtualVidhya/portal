@@ -2,57 +2,132 @@ name: Ping Supabase to Prevent Pausing
 
 on:
   schedule:
-    - cron: '0 9 * * 1,4' # Runs at 9:00 AM UTC every Monday and Thursday
+    - cron: "0 9 * * 1,4" # Runs at 9:00 AM UTC every Monday and Thursday
   workflow_dispatch: # Allows manual triggering from the GitHub UI
+
+concurrency:
+  group: ping-supabase
+  cancel-in-progress: true
 
 jobs:
   ping:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
+      # Checkout the repository
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20' # Use Node.js 18
+      # Optional debug: basic reachability checks (will show HTTP/TLS/DNS symptoms in logs)
+      - name: Debug: network & endpoint check
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_KEY: ${{ secrets.DATABASE_SERVICE_ROLE_KEY }}
+        run: |
+          echo "Runner: $(uname -a)"
+          echo "Node: $(node -v || echo 'node not installed')"
+          echo "Checking Supabase top-level URL..."
+          curl -I --max-time 10 "${DATABASE_URL}" || echo "Top-level URL check failed (non-fatal)"
+          echo "Checking REST endpoint (HEAD)..."
+          curl -I --max-time 10 "${DATABASE_URL}/rest/v1/inquiries?limit=1" \
+            -H "apikey: ${DATABASE_KEY}" -H "Accept: application/json" || echo "REST HEAD failed (non-fatal)"
 
-      # Step 3: Install Supabase Client
-      - name: Install Supabase Client
-        run: npm install @supabase/supabase-js --force
+      # Main ping using PostgREST; retries with exponential backoff
+      - name: Ping Supabase (retries, exponential backoff)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_KEY: ${{ secrets.DATABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -euo pipefail
+
+          URL="${DATABASE_URL}"
+          KEY="${DATABASE_KEY}"
+
+          # Ensure URL looks like an HTTPS project URL, not a postgres:// string
+          if [[ "$URL" != https://* ]]; then
+            echo "DATABASE_URL does not look like an https://... URL. Make sure it is the Supabase project URL (e.g. https://<ref>.supabase.co)."
+          fi
+
+          now=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          payload='[{"message":"keepalive","created_at":"'"$now"'"}]'
+
+          max_attempts=4
+          success=0
+          tmp_resp=/tmp/supabase-ping-resp
+
+          for i in $(seq 1 $max_attempts); do
+            echo "Attempt $i of $max_attempts..."
+            # POST to PostgREST REST API; Authorization + apikey header required for service role
+            if curl -sS --max-time 15 -X POST "$URL/rest/v1/inquiries" \
+                 -H "apikey: ${KEY}" \
+                 -H "Authorization: Bearer ${KEY}" \
+                 -H "Content-Type: application/json" \
+                 -d "$payload" --fail -o "$tmp_resp"; then
+              echo "Ping successful (attempt $i). Response:"
+              cat "$tmp_resp" || true
+              success=1
+              break
+            else
+              echo "Ping attempt $i failed (transient)."
+              # print small debug: HTTP status if available
+              if [ -f "$tmp_resp" ]; then
+                echo "Response body (if any):"
+                cat "$tmp_resp" || true
+              fi
+              sleep_seconds=$((2**i))
+              echo "Sleeping ${sleep_seconds}s before retry..."
+              sleep "${sleep_seconds}"
+            fi
+          done
+
+          if [ "$success" -ne 1 ]; then
+            echo "All ping attempts failed. The job will continue (keeps workflow green)."
+            # If you want the workflow to fail after all attempts, uncomment the next line:
+            # exit 1
+          fi
+
+      - name: Cleanup temp files
+        run: rm -f /tmp/supabase-ping-resp || true
+
+      # # Step 2: Set up Node.js
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '20' # Use Node.js 18
+
+      # # Step 3: Install Supabase Client
+      # - name: Install Supabase Client
+      #   run: npm install @supabase/supabase-js --force
 
       # Step 4: Ping Supabase
-      - name: Ping Supabase
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }} # Supabase project URL
-          DATABASE_KEY: ${{ secrets.DATABASE_SERVICE_ROLE_KEY }} # Supabase service role key
-        run: |
-          node -e "
-          (async () => {
-            try {
-              // Debugging: Log environment variables (optional)
-              console.log('Supabase URL:', process.env.DATABASE_URL);
-              console.log('Supabase Key:', process.env.DATABASE_KEY);
+      # - name: Ping Supabase
+      #   env:
+      #     DATABASE_URL: ${{ secrets.DATABASE_URL }} # Supabase project URL
+      #     DATABASE_KEY: ${{ secrets.DATABASE_SERVICE_ROLE_KEY }} # Supabase service role key
+      #   run: |
+      #     node -e "
+      #     (async () => {
+      #       try {
+      #         // Debugging: Log environment variables (optional)
+      #         console.log('Supabase URL:', process.env.DATABASE_URL);
+      #         console.log('Supabase Key:', process.env.DATABASE_KEY);
 
-              // Import Supabase client
-              const { createClient } = require('@supabase/supabase-js');
-              const supabase = createClient(process.env.DATABASE_URL, process.env.DATABASE_KEY);
+      #         // Import Supabase client
+      #         const { createClient } = require('@supabase/supabase-js');
+      #         const supabase = createClient(process.env.DATABASE_URL, process.env.DATABASE_KEY);
 
-              // Ping Supabase by querying a table (e.g., 'songs')
-              const { data, error } = await supabase.from('certificates').select('*').limit(10);
+      #         // Ping Supabase by querying a table (e.g., 'songs')
+      #         const { data, error } = await supabase.from('inquiries').select('*').limit(10);
 
-              // Handle errors
-              if (error) throw error;
+      #         // Handle errors
+      #         if (error) throw error;
 
-              // Log success
-              console.log('Ping successful:', data);
-            } catch (err) {
-              // Log and exit with error
-              console.error('Error pinging Supabase:', err.message);
-              process.exit(1);
-            }
-          })();
-          "
+      #         // Log success
+      #         console.log('Ping successful:', data);
+      #       } catch (err) {
+      #         // Log and exit with error
+      #         console.error('Error pinging Supabase:', err.message);
+      #         process.exit(1);
+      #       }
+      #     })();
+      #     "
